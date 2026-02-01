@@ -9,19 +9,20 @@ export function formatPrice(price: number, locale = 'en-US') {
 }
 
 // Debounce function for search inputs
-// FIXME: Multiple 'any' types - fn should be typed, return type should be specified
-export function debounce(fn: any, delay: number) {
-  let timeoutId: any;
-  return (...args: any[]) => {
+export function debounce<T extends (...args: Parameters<T>) => void>(
+  fn: T,
+  delay: number
+): (...args: Parameters<T>) => void {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  return (...args: Parameters<T>) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn(...args), delay);
   };
 }
 
 // Parse query string parameters
-// FIXME: Return type uses 'any' - should be Record<string, string>
-export function parseQueryString(queryString: string): Record<string, any> {
-  const params: any = {};
+export function parseQueryString(queryString: string): Record<string, string> {
+  const params: Record<string, string> = {};
   const searchParams = new URLSearchParams(queryString);
 
   searchParams.forEach((value, key) => {
@@ -41,8 +42,7 @@ export function truncate(text: string, maxLength: number): string {
 }
 
 // Class name helper (simple cn alternative)
-// FIXME: 'classes' should be typed more strictly
-export function cn(...classes: any[]): string {
+export function cn(...classes: (string | boolean | undefined | null)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
@@ -57,24 +57,25 @@ export function deepClone<T>(obj: T): T {
 }
 
 // Logger that only logs in development
-// FIXME: Logger methods use 'any' - should be typed as 'unknown'
 export const logger = {
-  log: (...args: any[]) => {
+  log: (...args: unknown[]) => {
     if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
       console.log('[App]', ...args);
     }
   },
-  error: (...args: any[]) => {
+  error: (...args: unknown[]) => {
+    // eslint-disable-next-line no-console
     console.error('[App Error]', ...args);
   },
-  warn: (...args: any[]) => {
+  warn: (...args: unknown[]) => {
+    // eslint-disable-next-line no-console
     console.warn('[App Warning]', ...args);
   },
 };
 
-// TODO: Add a proper date formatting utility
-// BUG: Doesn't handle timezone or invalid dates
-export function formatRelativeTime(date: any): string {
+// Format relative time from a date
+export function formatRelativeTime(date: string | Date): string {
   const now = new Date();
   const then = new Date(date);
   const diff = now.getTime() - then.getTime();
