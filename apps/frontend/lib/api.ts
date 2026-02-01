@@ -12,6 +12,21 @@ export async function api<T>(endpoint: string, options?: RequestInit): Promise<T
   return res.json();
 }
 
+// Pagination metadata type
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasMore: boolean;
+}
+
+// Paginated response type
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: PaginationMeta;
+}
+
 // Campaign input type for create/update
 interface CampaignInput {
   name: string;
@@ -58,8 +73,14 @@ export const createCampaign = (data: CampaignInput) =>
   api<Campaign>('/api/campaigns', { method: 'POST', body: JSON.stringify(data) });
 
 // Ad Slots
-export const getAdSlots = (publisherId?: string) =>
-  api<AdSlot[]>(publisherId ? `/api/ad-slots?publisherId=${publisherId}` : '/api/ad-slots');
+export const getAdSlots = (params?: { publisherId?: string; page?: number; limit?: number }) => {
+  const searchParams = new URLSearchParams();
+  if (params?.publisherId) searchParams.set('publisherId', params.publisherId);
+  if (params?.page) searchParams.set('page', String(params.page));
+  if (params?.limit) searchParams.set('limit', String(params.limit));
+  const query = searchParams.toString();
+  return api<PaginatedResponse<AdSlot>>(`/api/ad-slots${query ? `?${query}` : ''}`);
+};
 export const getAdSlot = (id: string) => api<AdSlot>(`/api/ad-slots/${id}`);
 export const createAdSlot = (data: AdSlotInput) =>
   api<AdSlot>('/api/ad-slots', { method: 'POST', body: JSON.stringify(data) });
