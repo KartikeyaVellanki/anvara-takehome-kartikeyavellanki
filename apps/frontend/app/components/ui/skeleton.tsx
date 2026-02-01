@@ -1,102 +1,96 @@
-import { type HTMLAttributes } from 'react';
+/**
+ * Material You (MD3) Skeleton Components
+ *
+ * Shimmer animation with tonal surface colors
+ */
 
-interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
-  /** Width of the skeleton */
-  width?: string | number;
-  /** Height of the skeleton */
-  height?: string | number;
-  /** Make it circular */
-  circle?: boolean;
+interface SkeletonProps {
+  width?: number | string;
+  height?: number | string;
+  className?: string;
+  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
 }
 
-/**
- * Skeleton Component
- *
- * Loading placeholder with subtle animation.
- * Swiss minimal style: clean, no distracting effects.
- */
-export function Skeleton({
-  width,
-  height,
-  circle = false,
+const roundedStyles = {
+  none: 'rounded-none',
+  sm: 'rounded-lg',
+  md: 'rounded-xl',
+  lg: 'rounded-2xl',
+  full: 'rounded-full',
+};
+
+export function Skeleton({ 
+  width = '100%', 
+  height = 16, 
   className = '',
-  style,
-  ...props
+  rounded = 'md'
 }: SkeletonProps) {
   return (
     <div
       className={`
-        bg-[--color-bg-subtle]
-        animate-pulse
-        ${circle ? 'rounded-full' : 'rounded-[--radius-sm]'}
+        animate-pulse bg-[--md-surface-container-high]
+        ${roundedStyles[rounded]}
         ${className}
-      `.trim()}
+      `}
       style={{
         width: typeof width === 'number' ? `${width}px` : width,
         height: typeof height === 'number' ? `${height}px` : height,
-        ...style,
       }}
-      aria-hidden="true"
-      {...props}
     />
   );
 }
 
 /**
- * Text Skeleton - For placeholder text lines
+ * TextSkeleton - For text content
  */
 interface TextSkeletonProps {
   lines?: number;
-  /** Last line is shorter */
-  lastLineWidth?: string;
+  className?: string;
 }
 
-export function TextSkeleton({ lines = 3, lastLineWidth = '60%' }: TextSkeletonProps) {
+export function TextSkeleton({ lines = 3, className = '' }: TextSkeletonProps) {
   return (
-    <div className="space-y-2">
+    <div className={`space-y-3 ${className}`}>
       {Array.from({ length: lines }).map((_, i) => (
-        <Skeleton key={i} height={14} width={i === lines - 1 ? lastLineWidth : '100%'} />
+        <Skeleton
+          key={i}
+          height={14}
+          width={i === lines - 1 ? '75%' : '100%'}
+          rounded="sm"
+        />
       ))}
     </div>
   );
 }
 
 /**
- * Card Skeleton - For placeholder cards
+ * CardSkeleton - For card placeholders
  */
-export function CardSkeleton() {
+export function CardSkeleton({ className = '' }: { className?: string }) {
   return (
-    <div className="bg-[--color-bg-elevated] border border-[--color-border] rounded-[--radius-sm] p-5">
+    <div className={`rounded-3xl bg-[--md-surface-container] p-6 ${className}`}>
       <div className="flex items-start justify-between mb-4">
-        <div className="space-y-2">
-          <Skeleton height={20} width={140} />
-          <Skeleton height={14} width={80} />
-        </div>
-        <Skeleton height={24} width={60} />
+        <Skeleton height={24} width="60%" rounded="sm" />
+        <Skeleton height={24} width={80} rounded="full" />
       </div>
-      <Skeleton height={14} width="100%" className="mb-2" />
-      <Skeleton height={14} width="70%" className="mb-4" />
-      <div className="flex items-center justify-between pt-4 border-t border-[--color-border]">
-        <Skeleton height={14} width={100} />
-        <Skeleton height={32} width={80} />
+      <TextSkeleton lines={2} />
+      <div className="mt-6 flex items-center justify-between pt-4 border-t border-[--md-outline-variant]">
+        <Skeleton height={24} width={80} rounded="full" />
+        <Skeleton height={36} width={100} rounded="full" />
       </div>
     </div>
   );
 }
 
 /**
- * Table Row Skeleton
+ * TableRowSkeleton - For table row placeholders
  */
-interface TableRowSkeletonProps {
-  columns: number;
-}
-
-export function TableRowSkeleton({ columns }: TableRowSkeletonProps) {
+export function TableRowSkeleton({ columns = 4 }: { columns?: number }) {
   return (
-    <tr className="border-b border-[--color-border]">
+    <tr className="border-b border-[--md-outline-variant]">
       {Array.from({ length: columns }).map((_, i) => (
-        <td key={i} className="py-4 px-4">
-          <Skeleton height={14} width={i === 0 ? '80%' : '60%'} />
+        <td key={i} className="px-4 py-4">
+          <Skeleton height={16} width={i === 0 ? '70%' : '50%'} rounded="sm" />
         </td>
       ))}
     </tr>
@@ -104,22 +98,17 @@ export function TableRowSkeleton({ columns }: TableRowSkeletonProps) {
 }
 
 /**
- * Table Skeleton
+ * TableSkeleton - Full table skeleton
  */
-interface TableSkeletonProps {
-  rows?: number;
-  columns?: number;
-}
-
-export function TableSkeleton({ rows = 5, columns = 5 }: TableSkeletonProps) {
+export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; columns?: number }) {
   return (
-    <div className="bg-[--color-bg-elevated] border border-[--color-border] rounded-[--radius-sm] overflow-hidden">
+    <div className="rounded-3xl bg-[--md-surface-container] overflow-hidden">
       <table className="w-full">
-        <thead className="bg-[--color-bg-subtle]">
-          <tr>
+        <thead>
+          <tr className="border-b border-[--md-outline-variant] bg-[--md-surface-container-high]">
             {Array.from({ length: columns }).map((_, i) => (
-              <th key={i} className="py-3 px-4 text-left">
-                <Skeleton height={12} width={80} />
+              <th key={i} className="px-4 py-4 text-left">
+                <Skeleton height={14} width="60%" rounded="sm" />
               </th>
             ))}
           </tr>
@@ -135,14 +124,36 @@ export function TableSkeleton({ rows = 5, columns = 5 }: TableSkeletonProps) {
 }
 
 /**
- * Stats Card Skeleton
+ * StatsCardSkeleton - For stats card placeholders
  */
 export function StatsCardSkeleton() {
   return (
-    <div className="bg-[--color-bg-elevated] border border-[--color-border] rounded-[--radius-sm] p-5">
-      <Skeleton height={12} width={80} className="mb-2" />
-      <Skeleton height={32} width={120} className="mb-1" />
-      <Skeleton height={12} width={60} />
+    <div className="rounded-3xl bg-[--md-surface-container] p-6">
+      <Skeleton height={12} width={80} rounded="sm" className="mb-3" />
+      <Skeleton height={32} width={100} rounded="sm" className="mb-2" />
+      <Skeleton height={14} width="60%" rounded="sm" />
+    </div>
+  );
+}
+
+/**
+ * AvatarSkeleton - For profile pictures
+ */
+export function AvatarSkeleton({ size = 40 }: { size?: number }) {
+  return <Skeleton width={size} height={size} rounded="full" />;
+}
+
+/**
+ * ListItemSkeleton - For list item placeholders
+ */
+export function ListItemSkeleton() {
+  return (
+    <div className="flex items-center gap-4 py-3">
+      <AvatarSkeleton />
+      <div className="flex-1">
+        <Skeleton height={16} width="40%" rounded="sm" className="mb-2" />
+        <Skeleton height={14} width="60%" rounded="sm" />
+      </div>
     </div>
   );
 }

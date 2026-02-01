@@ -1,27 +1,27 @@
 /**
  * Anvara UI Component Library
  *
- * Reusable components following Swiss Minimalist design principles:
- * - Sharp corners, thin borders
- * - Monochrome with ONE accent color
- * - High contrast, clear typography
- * - Generous whitespace
+ * Material You (Material Design 3) components:
+ * - Pill-shaped buttons with state layers
+ * - Tonal surface system (not pure white)
+ * - Large organic border radii
+ * - Smooth cubic-bezier animations
  */
 
 // Core components
-export { Button, IconButton } from './button';
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './card';
-export { Badge, StatusBadge, TypeBadge } from './badge';
-export { Input, Textarea, Select, Label, HelperText, FormField } from './input';
+export { Button, IconButton, FAB } from './button';
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardMedia, StatsCard } from './card';
+export { Badge, StatusBadge, TypeBadge, CampaignStatusBadge, Chip } from './badge';
+export { Input, Textarea, Select, Label, HelperText, FormField, SearchInput } from './input';
 export {
   Table,
-  TableWrapper,
   TableHeader,
   TableBody,
   TableRow,
   TableHead,
   TableCell,
   TableEmpty,
+  TablePagination,
 } from './table';
 export {
   Dialog,
@@ -31,6 +31,7 @@ export {
   DialogBody,
   DialogFooter,
   ConfirmDialog,
+  FullScreenDialog,
 } from './dialog';
 export {
   Skeleton,
@@ -39,5 +40,7 @@ export {
   TableRowSkeleton,
   TableSkeleton,
   StatsCardSkeleton,
+  AvatarSkeleton,
+  ListItemSkeleton,
 } from './skeleton';
 export { EmptyState, EmptyStateIcons } from './empty-state';

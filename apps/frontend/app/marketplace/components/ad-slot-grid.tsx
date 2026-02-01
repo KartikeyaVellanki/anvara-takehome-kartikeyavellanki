@@ -20,7 +20,7 @@ type SortOption = 'price-asc' | 'price-desc' | 'name';
  */
 function LoadingState() {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: 6 }).map((_, i) => (
         <CardSkeleton key={i} />
       ))}
@@ -29,13 +29,13 @@ function LoadingState() {
 }
 
 /**
- * Error state
+ * Error state - Material You style
  */
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
-    <div className="border border-[--error] bg-[--error-light] p-8 text-center">
-      <div className="mx-auto mb-4 h-12 w-12 text-[--error]">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <div className="rounded-3xl bg-[--md-error-container] p-8 text-center">
+      <div className="mx-auto mb-4 h-16 w-16 flex items-center justify-center rounded-full bg-[--md-error]/20 text-[--md-error]">
+        <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -43,10 +43,10 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
           />
         </svg>
       </div>
-      <h3 className="mb-2 font-display text-[--text-lg] font-semibold text-[--error]">
+      <h3 className="mb-2 text-[--text-title-large] font-medium text-[--md-on-error-container]">
         Unable to load marketplace
       </h3>
-      <p className="mb-6 text-[--text-sm] text-red-700">{message}</p>
+      <p className="mb-6 text-[--text-body-medium] text-[--md-on-error-container]/80">{message}</p>
       <Button variant="danger" onClick={onRetry}>
         Try Again
       </Button>
@@ -55,7 +55,7 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
 }
 
 /**
- * Filter bar
+ * Filter bar - Material You style
  */
 function FilterBar({
   typeFilter,
@@ -78,8 +78,7 @@ function FilterBar({
         value={typeFilter}
         onChange={(e) => onTypeChange(e.target.value as FilterType)}
         aria-label="Filter by type"
-        size="sm"
-        className="w-auto min-w-[140px]"
+        className="!h-12 w-auto min-w-[140px]"
       >
         <option value="">All Types</option>
         <option value="DISPLAY">Display</option>
@@ -93,20 +92,19 @@ function FilterBar({
         value={sortOption}
         onChange={(e) => onSortChange(e.target.value as SortOption)}
         aria-label="Sort by"
-        size="sm"
-        className="w-auto min-w-[160px]"
+        className="!h-12 w-auto min-w-[160px]"
       >
         <option value="name">Sort: Name</option>
         <option value="price-asc">Price: Low to High</option>
         <option value="price-desc">Price: High to Low</option>
       </Select>
 
-      <label className="flex cursor-pointer items-center gap-2 text-[--text-sm] text-[--color-text-secondary]">
+      <label className="flex cursor-pointer items-center gap-3 px-4 py-3 rounded-full bg-[--md-surface-container] text-[--text-label-large] text-[--md-on-surface-variant] hover:bg-[--md-surface-container-high] transition-colors">
         <input
           type="checkbox"
           checked={availableOnly}
           onChange={(e) => onAvailableChange(e.target.checked)}
-          className="h-4 w-4 rounded-[--radius-sm] border-[--color-border] text-[--accent] focus:ring-[--accent]"
+          className="h-5 w-5 rounded-sm border-[--md-outline] text-[--md-primary] focus:ring-[--md-primary] focus:ring-offset-0"
         />
         Available only
       </label>
@@ -115,23 +113,23 @@ function FilterBar({
 }
 
 /**
- * Ad Slot Card - Clean, minimal design
+ * Ad Slot Card - Material You style
  */
 function AdSlotCard({ slot }: { slot: AdSlot }) {
   return (
     <Link
       href={`/marketplace/${slot.id}`}
-      className="group block border border-[--color-border] bg-[--color-bg-elevated] transition-all duration-[--transition-base] hover:border-[--accent]"
+      className="group block rounded-3xl bg-[--md-surface-container] overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
     >
-      <div className="p-5">
+      <div className="p-6">
         {/* Header */}
-        <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="mb-4 flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <h3 className="truncate font-display text-[--text-base] font-semibold text-[--color-text] transition-colors group-hover:text-[--accent]">
+            <h3 className="truncate text-[--text-title-large] font-medium text-[--md-on-surface] transition-colors group-hover:text-[--md-primary]">
               {slot.name}
             </h3>
             {slot.publisher && (
-              <p className="mt-0.5 truncate text-[--text-sm] text-[--color-text-muted]">
+              <p className="mt-1 truncate text-[--text-body-medium] text-[--md-on-surface-variant]">
                 {slot.publisher.name}
               </p>
             )}
@@ -143,19 +141,19 @@ function AdSlotCard({ slot }: { slot: AdSlot }) {
 
         {/* Description */}
         {slot.description && (
-          <p className="mb-4 text-[--text-sm] leading-relaxed text-[--color-text-secondary] line-clamp-2">
+          <p className="mb-4 text-[--text-body-medium] leading-relaxed text-[--md-on-surface-variant] line-clamp-2">
             {slot.description}
           </p>
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-t border-[--color-border] pt-4">
+        <div className="flex items-center justify-between pt-4 border-t border-[--md-outline-variant]">
           <StatusBadge status={slot.isAvailable ? 'available' : 'booked'} />
           <div className="text-right">
-            <span className="font-display text-[--text-lg] font-semibold text-[--color-text]">
+            <span className="text-[--text-headline-medium] font-medium text-[--md-on-surface]">
               ${Number(slot.basePrice).toLocaleString()}
             </span>
-            <span className="text-[--text-sm] text-[--color-text-muted]">/mo</span>
+            <span className="text-[--text-body-medium] text-[--md-on-surface-variant]">/mo</span>
           </div>
         </div>
       </div>
@@ -164,7 +162,7 @@ function AdSlotCard({ slot }: { slot: AdSlot }) {
 }
 
 /**
- * Pagination
+ * Pagination - Material You style
  */
 function Pagination({
   pagination,
@@ -203,15 +201,15 @@ function Pagination({
 
   return (
     <div className="mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
-      <p className="text-[--text-sm] text-[--color-text-muted]">
-        Showing <span className="font-medium text-[--color-text]">{startItem}</span> to{' '}
-        <span className="font-medium text-[--color-text]">{endItem}</span> of{' '}
-        <span className="font-medium text-[--color-text]">{total}</span>
+      <p className="text-[--text-body-medium] text-[--md-on-surface-variant]">
+        Showing <span className="font-medium text-[--md-on-surface]">{startItem}</span> to{' '}
+        <span className="font-medium text-[--md-on-surface]">{endItem}</span> of{' '}
+        <span className="font-medium text-[--md-on-surface]">{total}</span>
       </p>
 
       <nav className="flex items-center gap-1" aria-label="Pagination">
         <Button
-          variant="secondary"
+          variant="tonal"
           size="sm"
           onClick={() => onPageChange(page - 1)}
           disabled={page === 1}
@@ -222,7 +220,7 @@ function Pagination({
         <div className="flex items-center gap-1 mx-2">
           {getPageNumbers().map((pageNum, idx) =>
             pageNum === 'ellipsis' ? (
-              <span key={`ellipsis-${idx}`} className="px-2 text-[--color-text-muted]">
+              <span key={`ellipsis-${idx}`} className="px-2 text-[--md-on-surface-variant]">
                 ...
               </span>
             ) : (
@@ -230,12 +228,13 @@ function Pagination({
                 key={pageNum}
                 onClick={() => onPageChange(pageNum)}
                 className={`
-                  h-9 w-9 text-[--text-sm] font-medium
-                  transition-colors duration-[--transition-fast]
+                  h-10 w-10 rounded-full text-[--text-label-large] font-medium
+                  transition-all duration-200 ease-[cubic-bezier(0.2,0,0,1)]
+                  active:scale-95
                   ${
                     pageNum === page
-                      ? 'bg-[--accent] text-white'
-                      : 'border border-[--color-border] text-[--color-text-secondary] hover:border-[--accent] hover:text-[--accent]'
+                      ? 'bg-[--md-primary] text-[--md-on-primary]'
+                      : 'text-[--md-on-surface-variant] hover:bg-[--md-primary]/10'
                   }
                 `}
                 aria-current={pageNum === page ? 'page' : undefined}
@@ -247,7 +246,7 @@ function Pagination({
         </div>
 
         <Button
-          variant="secondary"
+          variant="tonal"
           size="sm"
           onClick={() => onPageChange(page + 1)}
           disabled={page === totalPages}
@@ -326,7 +325,7 @@ export function AdSlotGrid() {
         description="There are no ad slots in the marketplace right now. Check back later for new opportunities."
         action={
           <Link href="/">
-            <Button variant="secondary">Return to Homepage</Button>
+            <Button variant="tonal">Return to Homepage</Button>
           </Link>
         }
       />
@@ -345,20 +344,20 @@ export function AdSlotGrid() {
       />
 
       {filteredSlots.length === 0 ? (
-        <div className="border border-[--color-border] bg-[--color-bg-subtle] py-12 text-center">
-          <p className="text-[--color-text-muted]">No ad slots match your filters.</p>
+        <div className="rounded-3xl bg-[--md-surface-container] py-12 text-center">
+          <p className="text-[--md-on-surface-variant]">No ad slots match your filters.</p>
           <button
             onClick={() => {
               setTypeFilter('');
               setAvailableOnly(false);
             }}
-            className="mt-2 text-[--text-sm] text-[--accent] hover:underline"
+            className="mt-2 text-[--text-label-large] text-[--md-primary] hover:underline"
           >
             Clear filters
           </button>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {filteredSlots.map((slot) => (
             <AdSlotCard key={slot.id} slot={slot} />
           ))}

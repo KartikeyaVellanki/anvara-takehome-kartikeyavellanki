@@ -1,130 +1,169 @@
 import { type HTMLAttributes, type ReactNode } from 'react';
 
-type BadgeVariant = 'default' | 'success' | 'warning' | 'error' | 'accent';
-type BadgeSize = 'sm' | 'md';
+/**
+ * Material You (MD3) Badge/Chip Component
+ *
+ * Key characteristics:
+ * - Pill-shaped (rounded-full)
+ * - Uses tonal container colors
+ * - Small, compact sizing
+ */
+
+type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'accent';
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant;
-  size?: BadgeSize;
-  children: ReactNode;
-  /** Optional dot indicator */
   dot?: boolean;
+  children: ReactNode;
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: 'bg-[--color-bg-subtle] text-[--color-text-secondary] border-[--color-border]',
-  success: 'bg-[--success-light] text-green-800 border-green-200',
-  warning: 'bg-[--warning-light] text-yellow-800 border-yellow-200',
-  error: 'bg-[--error-light] text-red-800 border-red-200',
-  accent: 'bg-[--accent-muted] text-[--accent] border-teal-200',
+  default: 'bg-[--md-surface-container-high] text-[--md-on-surface]',
+  primary: 'bg-[--md-primary-container] text-[--md-on-primary-container]',
+  secondary: 'bg-[--md-secondary-container] text-[--md-on-secondary-container]',
+  success: 'bg-[--md-success-container] text-[--md-on-success-container]',
+  error: 'bg-[--md-error-container] text-[--md-on-error-container]',
+  warning: 'bg-[--md-warning-container] text-[--md-on-warning-container]',
+  accent: 'bg-[--md-tertiary-container] text-[--md-on-tertiary-container]',
 };
 
 const dotColors: Record<BadgeVariant, string> = {
-  default: 'bg-[--color-text-muted]',
-  success: 'bg-green-600',
-  warning: 'bg-yellow-600',
-  error: 'bg-red-600',
-  accent: 'bg-[--accent]',
+  default: 'bg-[--md-outline]',
+  primary: 'bg-[--md-primary]',
+  secondary: 'bg-[--md-secondary]',
+  success: 'bg-[--md-success]',
+  error: 'bg-[--md-error]',
+  warning: 'bg-[--md-warning]',
+  accent: 'bg-[--md-tertiary]',
 };
 
-const sizeStyles: Record<BadgeSize, string> = {
-  sm: 'px-1.5 py-0.5 text-[10px]',
-  md: 'px-2 py-0.5 text-[11px]',
-};
-
-/**
- * Badge Component
- *
- * Status indicator with semantic colors.
- * Uses subtle backgrounds with clear text contrast.
- */
-export function Badge({
-  variant = 'default',
-  size = 'md',
-  dot = false,
-  children,
-  className = '',
-  ...props
-}: BadgeProps) {
+export function Badge({ variant = 'default', dot = false, children, className = '', ...props }: BadgeProps) {
   return (
     <span
       className={`
         inline-flex items-center gap-1.5
-        font-medium uppercase tracking-wide
-        border rounded-[--radius-sm]
+        rounded-full px-3 py-1
+        text-[--text-label-small] font-medium
         ${variantStyles[variant]}
-        ${sizeStyles[size]}
         ${className}
-      `.trim()}
+      `}
       {...props}
     >
-      {dot && (
-        <span className={`w-1.5 h-1.5 rounded-full ${dotColors[variant]}`} aria-hidden="true" />
-      )}
+      {dot && <span className={`h-1.5 w-1.5 rounded-full ${dotColors[variant]}`} />}
       {children}
     </span>
   );
 }
 
 /**
- * Status Badge - Predefined badges for common statuses
+ * StatusBadge - Pre-configured for availability status
  */
-type StatusType =
-  | 'active'
-  | 'inactive'
-  | 'pending'
-  | 'completed'
-  | 'draft'
-  | 'paused'
-  | 'available'
-  | 'booked';
-
-const statusConfig: Record<StatusType, { variant: BadgeVariant; label: string }> = {
-  active: { variant: 'success', label: 'Active' },
-  inactive: { variant: 'default', label: 'Inactive' },
-  pending: { variant: 'warning', label: 'Pending' },
-  completed: { variant: 'accent', label: 'Completed' },
-  draft: { variant: 'default', label: 'Draft' },
-  paused: { variant: 'warning', label: 'Paused' },
-  available: { variant: 'success', label: 'Available' },
-  booked: { variant: 'accent', label: 'Booked' },
-};
-
-interface StatusBadgeProps extends Omit<BadgeProps, 'variant' | 'children'> {
-  status: StatusType;
+interface StatusBadgeProps {
+  status: 'available' | 'booked' | 'pending' | 'active' | 'inactive';
 }
 
-export function StatusBadge({ status, ...props }: StatusBadgeProps) {
+const statusConfig: Record<StatusBadgeProps['status'], { variant: BadgeVariant; label: string; showDot: boolean }> = {
+  available: { variant: 'success', label: 'Available', showDot: true },
+  booked: { variant: 'default', label: 'Booked', showDot: false },
+  pending: { variant: 'warning', label: 'Pending', showDot: true },
+  active: { variant: 'success', label: 'Active', showDot: true },
+  inactive: { variant: 'default', label: 'Inactive', showDot: false },
+};
+
+export function StatusBadge({ status }: StatusBadgeProps) {
   const config = statusConfig[status];
   return (
-    <Badge variant={config.variant} dot {...props}>
+    <Badge variant={config.variant} dot={config.showDot}>
       {config.label}
     </Badge>
   );
 }
 
 /**
- * Type Badge - For ad slot types
+ * TypeBadge - Pre-configured for ad slot types
+ * Uses secondary container for consistency
  */
-type AdSlotType = 'DISPLAY' | 'VIDEO' | 'NATIVE' | 'NEWSLETTER' | 'PODCAST';
-
-const typeConfig: Record<AdSlotType, { label: string }> = {
-  DISPLAY: { label: 'Display' },
-  VIDEO: { label: 'Video' },
-  NATIVE: { label: 'Native' },
-  NEWSLETTER: { label: 'Newsletter' },
-  PODCAST: { label: 'Podcast' },
-};
-
-interface TypeBadgeProps extends Omit<BadgeProps, 'children'> {
-  type: AdSlotType;
+interface TypeBadgeProps {
+  type: 'DISPLAY' | 'VIDEO' | 'NATIVE' | 'NEWSLETTER' | 'PODCAST';
 }
 
-export function TypeBadge({ type, ...props }: TypeBadgeProps) {
+const typeConfig: Record<TypeBadgeProps['type'], { label: string; variant: BadgeVariant }> = {
+  DISPLAY: { label: 'Display', variant: 'primary' },
+  VIDEO: { label: 'Video', variant: 'error' },
+  NATIVE: { label: 'Native', variant: 'success' },
+  NEWSLETTER: { label: 'Newsletter', variant: 'secondary' },
+  PODCAST: { label: 'Podcast', variant: 'warning' },
+};
+
+export function TypeBadge({ type }: TypeBadgeProps) {
   const config = typeConfig[type];
+  return <Badge variant={config.variant}>{config.label}</Badge>;
+}
+
+/**
+ * CampaignStatusBadge - Pre-configured for campaign statuses
+ */
+interface CampaignStatusBadgeProps {
+  status: 'DRAFT' | 'ACTIVE' | 'PAUSED' | 'COMPLETED';
+}
+
+const campaignStatusConfig: Record<CampaignStatusBadgeProps['status'], { variant: BadgeVariant; label: string; showDot: boolean }> = {
+  DRAFT: { variant: 'default', label: 'Draft', showDot: false },
+  ACTIVE: { variant: 'success', label: 'Active', showDot: true },
+  PAUSED: { variant: 'warning', label: 'Paused', showDot: true },
+  COMPLETED: { variant: 'primary', label: 'Completed', showDot: false },
+};
+
+export function CampaignStatusBadge({ status }: CampaignStatusBadgeProps) {
+  const config = campaignStatusConfig[status];
   return (
-    <Badge variant="default" {...props}>
+    <Badge variant={config.variant} dot={config.showDot}>
       {config.label}
     </Badge>
+  );
+}
+
+/**
+ * Chip - Interactive badge (can be selected/deselected)
+ * Used for filters, tags
+ */
+interface ChipProps extends HTMLAttributes<HTMLButtonElement> {
+  selected?: boolean;
+  leadingIcon?: ReactNode;
+  trailingIcon?: ReactNode;
+  children: ReactNode;
+}
+
+export function Chip({
+  selected = false,
+  leadingIcon,
+  trailingIcon,
+  children,
+  className = '',
+  ...props
+}: ChipProps) {
+  return (
+    <button
+      type="button"
+      className={`
+        inline-flex items-center gap-2
+        rounded-full px-4 py-2
+        text-[--text-label-large] font-medium
+        transition-all duration-200 ease-[cubic-bezier(0.2,0,0,1)]
+        active:scale-95
+        ${
+          selected
+            ? 'bg-[--md-secondary-container] text-[--md-on-secondary-container]'
+            : 'bg-[--md-surface] text-[--md-on-surface-variant] border border-[--md-outline]'
+        }
+        hover:shadow-sm
+        ${className}
+      `}
+      {...props}
+    >
+      {leadingIcon && <span className="shrink-0 -ml-1">{leadingIcon}</span>}
+      {children}
+      {trailingIcon && <span className="shrink-0 -mr-1">{trailingIcon}</span>}
+    </button>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Bricolage_Grotesque, DM_Sans } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 import './globals.css';
 import { Nav } from './components/nav';
 import { GoogleAnalyticsProvider } from './components/google-analytics';
@@ -8,28 +8,17 @@ import { ABTestDebugPanel } from './components/ab-test-debug-panel';
 import { ThemeProvider } from './components/theme-provider';
 
 /**
- * Typography Setup
+ * Typography Setup - Material You (MD3)
  *
- * Bricolage Grotesque: Display font for headings
- * - Distinctive, confident, modern
- * - Used for h1-h6 and display text
- *
- * DM Sans: Body font for readable content
+ * Roboto: The canonical Material Design typeface
  * - Clean, professional, highly legible
- * - Used for paragraphs, labels, UI text
+ * - Used throughout the interface
  */
-const displayFont = Bricolage_Grotesque({
+const roboto = Roboto({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-display',
-  weight: ['400', '500', '600', '700'],
-});
-
-const bodyFont = DM_Sans({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-body',
-  weight: ['400', '500', '600', '700'],
+  variable: '--font-roboto',
+  weight: ['400', '500', '700'],
 });
 
 export const metadata: Metadata = {
@@ -72,12 +61,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${displayFont.variable} ${bodyFont.variable}`}
-      suppressHydrationWarning
-    >
-      <body className="min-h-screen bg-[--color-bg] text-[--color-text] antialiased">
+    <html lang="en" className={roboto.variable} suppressHydrationWarning>
+      <body className="min-h-screen bg-[--md-background] text-[--md-on-background] antialiased">
         <ThemeProvider>
           {/* Google Analytics 4 - loads script and tracks page views */}
           <GoogleAnalyticsProvider />
