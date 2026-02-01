@@ -1,10 +1,7 @@
 // Frontend utility functions
 
 // Format a price for display
-// FIXME: 'price' has implicit 'any' type - should be 'number'
-// BUG: unusedFormatter is declared but never used
-export function formatPrice(price: any, locale = 'en-US') {
-  const unusedFormatter = new Intl.NumberFormat(locale);
+export function formatPrice(price: number, locale = 'en-US') {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: 'USD',
@@ -38,9 +35,7 @@ export function parseQueryString(queryString: string): Record<string, any> {
 export const isClient = typeof window !== 'undefined';
 
 // Truncate text with ellipsis
-// BUG: unusedCheck is declared but never used
 export function truncate(text: string, maxLength: number): string {
-  const unusedCheck = text.length > maxLength;
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength) + '...';
 }

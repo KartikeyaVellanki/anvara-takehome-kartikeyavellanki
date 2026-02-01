@@ -14,12 +14,12 @@ export default function Home() {
       </p>
 
       <div className="flex gap-4">
-        <a
+        <Link
           href="/login"
           className="rounded-lg bg-[--color-primary] px-6 py-3 text-white hover:bg-[--color-primary-hover]"
         >
           Get Started
-        </a>
+        </Link>
       </div>
 
       <div className="mt-16 grid gap-8 text-left sm:grid-cols-2">
