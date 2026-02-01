@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { getAdSlot } from '@/lib/api';
 import { authClient } from '@/auth-client';
 import { RequestQuoteModal } from './request-quote-modal';
+import { useAnalytics } from '@/lib/hooks/use-analytics';
+import { useABTest } from '@/lib/hooks/use-ab-test';
 
 interface AdSlot {
   id: string;
@@ -66,6 +68,17 @@ export function AdSlotDetail({ id }: Props) {
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [showQuoteModal, setShowQuoteModal] = useState(false);
 
+  // Analytics hook for tracking user interactions
+  const { trackListing, trackCTA, trackBooking, trackError: trackErr } = useAnalytics();
+
+  // A/B test for CTA button text
+  const ctaVariant = useABTest('cta-button-text');
+
+  // Get CTA text based on A/B test variant
+  const getCtaText = () => {
+    return ctaVariant === 'B' ? '🚀 Get Started' : '🚀 Book Now';
+  };
+
   useEffect(() => {
     // Fetch ad slot
     getAdSlot(id)
@@ -96,8 +109,28 @@ export function AdSlotDetail({ id }: Props) {
       .catch(() => setRoleLoading(false));
   }, [id]);
 
+  // Track listing view when adSlot is loaded (conversion tracking)
+  useEffect(() => {
+    if (adSlot) {
+      trackListing({
+        id: adSlot.id,
+        name: adSlot.name,
+        type: adSlot.type,
+        price: Number(adSlot.basePrice),
+      });
+    }
+    // Only track when listing ID changes, not on every adSlot update
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [adSlot?.id, trackListing]);
+
   const handleBooking = async () => {
     if (!roleInfo?.sponsorId || !adSlot) return;
+
+    // Track CTA click
+    trackCTA(getCtaText(), 'listing-detail-sidebar', {
+      listingId: adSlot.id,
+      listingPrice: Number(adSlot.basePrice),
+    });
 
     setBooking(true);
     setBookingError(null);
@@ -120,13 +153,33 @@ export function AdSlotDetail({ id }: Props) {
         throw new Error(data.error || 'Failed to book placement');
       }
 
+      // Track successful booking (macro-conversion)
+      trackBooking({
+        id: adSlot.id,
+        name: adSlot.name,
+        price: Number(adSlot.basePrice),
+      });
+
       setBookingSuccess(true);
       setAdSlot({ ...adSlot, isAvailable: false });
     } catch (err) {
-      setBookingError(err instanceof Error ? err.message : 'Failed to book placement');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to book placement';
+      trackErr('booking_error', errorMessage, { listingId: adSlot.id });
+      setBookingError(errorMessage);
     } finally {
       setBooking(false);
     }
+  };
+
+  // Handler for opening quote modal with analytics
+  const handleOpenQuoteModal = () => {
+    if (adSlot) {
+      trackCTA('Request Quote', 'listing-detail', {
+        listingId: adSlot.id,
+        listingPrice: Number(adSlot.basePrice),
+      });
+    }
+    setShowQuoteModal(true);
   };
 
   const handleUnbook = async () => {
@@ -402,7 +455,7 @@ export function AdSlotDetail({ id }: Props) {
                           Booking...
                         </>
                       ) : (
-                        '🚀 Book Now'
+                        getCtaText()
                       )}
                     </button>
                     <div className="relative">
@@ -416,7 +469,7 @@ export function AdSlotDetail({ id }: Props) {
                       </div>
                     </div>
                     <button
-                      onClick={() => setShowQuoteModal(true)}
+                      onClick={handleOpenQuoteModal}
                       className="w-full rounded-lg border border-[--color-border] px-4 py-3 font-medium transition-colors hover:bg-slate-50 dark:hover:bg-slate-700"
                     >
                       💬 Request Custom Quote
@@ -441,7 +494,7 @@ export function AdSlotDetail({ id }: Props) {
                       </div>
                     </div>
                     <button
-                      onClick={() => setShowQuoteModal(true)}
+                      onClick={handleOpenQuoteModal}
                       className="w-full rounded-lg border border-[--color-border] px-4 py-3 font-medium transition-colors hover:bg-slate-50 dark:hover:bg-slate-700"
                     >
                       💬 Request Quote (No Login)
@@ -463,7 +516,7 @@ export function AdSlotDetail({ id }: Props) {
                   </p>
                 </div>
                 <button
-                  onClick={() => setShowQuoteModal(true)}
+                  onClick={handleOpenQuoteModal}
                   className="w-full rounded-lg bg-[--color-secondary] px-4 py-3 font-semibold text-white transition-all hover:bg-[--color-secondary-hover] hover:shadow-md"
                 >
                   💬 Request Quote
