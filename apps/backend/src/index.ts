@@ -1,15 +1,90 @@
-import express, { type Application } from 'express';
+import express, { type Application, type Request, type Response, type NextFunction } from 'express';
 import cors from 'cors';
 import routes from './routes/index.js';
 
 const app: Application = express();
 const PORT = process.env.BACKEND_PORT || 4291;
 
-// Middleware
-// FIXME: CORS is configured with defaults - for production, specify allowed origins
-// TODO: Add rate limiting middleware to prevent abuse (e.g., express-rate-limit)
-app.use(cors());
+// ============================================================================
+// CORS CONFIGURATION
+// ============================================================================
+
+/**
+ * Configure CORS with proper security settings
+ * In production, this should use environment-specific allowed origins
+ */
+const corsOptions: cors.CorsOptions = {
+  // In development, allow all origins; in production, use specific origins
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3847']
+      : true,
+  credentials: true, // Allow cookies for authentication
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+};
+
+// ============================================================================
+// RATE LIMITING
+// ============================================================================
+
+/**
+ * Simple in-memory rate limiter
+ * For production, consider using redis-based rate limiting (e.g., express-rate-limit with redis store)
+ */
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute window
+const RATE_LIMIT_MAX_REQUESTS = 100; // Max 100 requests per minute
+
+function rateLimiter(req: Request, res: Response, next: NextFunction): void {
+  // Use IP address as identifier (in production, consider using user ID for authenticated requests)
+  const clientId = req.ip || req.socket.remoteAddress || 'unknown';
+  const now = Date.now();
+
+  const clientData = rateLimitStore.get(clientId);
+
+  if (!clientData || now > clientData.resetTime) {
+    // New window - reset counter
+    rateLimitStore.set(clientId, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    next();
+    return;
+  }
+
+  if (clientData.count >= RATE_LIMIT_MAX_REQUESTS) {
+    // Rate limit exceeded
+    res.status(429).json({
+      error: 'Too many requests',
+      retryAfter: Math.ceil((clientData.resetTime - now) / 1000),
+    });
+    return;
+  }
+
+  // Increment counter
+  clientData.count++;
+  next();
+}
+
+// Clean up old rate limit entries periodically (every 5 minutes)
+setInterval(
+  () => {
+    const now = Date.now();
+    for (const [key, value] of rateLimitStore.entries()) {
+      if (now > value.resetTime) {
+        rateLimitStore.delete(key);
+      }
+    }
+  },
+  5 * 60 * 1000
+);
+
+// ============================================================================
+// MIDDLEWARE
+// ============================================================================
+
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(rateLimiter); // Apply rate limiting to all routes
 
 // Mount all API routes
 app.use('/api', routes);
