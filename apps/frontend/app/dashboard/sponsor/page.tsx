@@ -3,6 +3,24 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { getUserRole } from '@/lib/auth-helpers';
 import { CampaignList } from './components/campaign-list';
+import type { Campaign } from '@/lib/types';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4291';
+
+// Server-side data fetching for campaigns
+async function getCampaigns(sponsorId: string): Promise<Campaign[]> {
+  try {
+    const res = await fetch(`${API_URL}/api/campaigns?sponsorId=${sponsorId}`, {
+      cache: 'no-store',
+    });
+    if (!res.ok) {
+      throw new Error('Failed to fetch campaigns');
+    }
+    return res.json();
+  } catch {
+    return [];
+  }
+}
 
 export default async function SponsorDashboard() {
   const session = await auth.api.getSession({
@@ -15,9 +33,12 @@ export default async function SponsorDashboard() {
 
   // Verify user has 'sponsor' role
   const roleData = await getUserRole(session.user.id);
-  if (roleData.role !== 'sponsor') {
+  if (roleData.role !== 'sponsor' || !roleData.sponsorId) {
     redirect('/');
   }
+
+  // Fetch campaigns on the server
+  const campaigns = await getCampaigns(roleData.sponsorId);
 
   return (
     <div className="space-y-6">
@@ -26,7 +47,7 @@ export default async function SponsorDashboard() {
         {/* TODO: Add CreateCampaignButton here */}
       </div>
 
-      <CampaignList />
+      <CampaignList campaigns={campaigns} />
     </div>
   );
 }
