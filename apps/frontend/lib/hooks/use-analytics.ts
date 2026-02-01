@@ -102,12 +102,9 @@ export function useAnalytics() {
     trackFilterUse(filterType, filterValue);
   }, []);
 
-  const trackBooking = useCallback(
-    (listing: { id: string; name: string; price: number }) => {
-      trackBookingSubmit(listing);
-    },
-    []
-  );
+  const trackBooking = useCallback((listing: { id: string; name: string; price: number }) => {
+    trackBookingSubmit(listing);
+  }, []);
 
   const trackQuote = useCallback((listing: { id: string; name: string; price: number }) => {
     trackQuoteSubmit(listing);

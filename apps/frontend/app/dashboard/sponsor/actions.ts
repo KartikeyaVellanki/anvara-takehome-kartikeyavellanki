@@ -16,7 +16,7 @@ export interface ActionState {
 async function getAuthHeaders(): Promise<HeadersInit> {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get('better-auth.session_token');
-  
+
   return {
     'Content-Type': 'application/json',
     ...(sessionCookie && { Cookie: `better-auth.session_token=${sessionCookie.value}` }),
@@ -37,23 +37,23 @@ export async function createCampaign(
 
   // Client-side validation
   const fieldErrors: Record<string, string> = {};
-  
+
   if (!name || name.trim().length === 0) {
     fieldErrors.name = 'Name is required';
   }
-  
+
   if (!budget || isNaN(Number(budget)) || Number(budget) <= 0) {
     fieldErrors.budget = 'Budget must be a positive number';
   }
-  
+
   if (!startDate) {
     fieldErrors.startDate = 'Start date is required';
   }
-  
+
   if (!endDate) {
     fieldErrors.endDate = 'End date is required';
   }
-  
+
   if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
     fieldErrors.endDate = 'End date must be after start date';
   }
@@ -64,7 +64,7 @@ export async function createCampaign(
 
   try {
     const headers = await getAuthHeaders();
-    
+
     const res = await fetch(`${API_URL}/api/campaigns`, {
       method: 'POST',
       headers,
@@ -109,23 +109,23 @@ export async function updateCampaign(
 
   // Client-side validation
   const fieldErrors: Record<string, string> = {};
-  
+
   if (!name || name.trim().length === 0) {
     fieldErrors.name = 'Name is required';
   }
-  
+
   if (!budget || isNaN(Number(budget)) || Number(budget) <= 0) {
     fieldErrors.budget = 'Budget must be a positive number';
   }
-  
+
   if (!startDate) {
     fieldErrors.startDate = 'Start date is required';
   }
-  
+
   if (!endDate) {
     fieldErrors.endDate = 'End date is required';
   }
-  
+
   if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
     fieldErrors.endDate = 'End date must be after start date';
   }
@@ -136,7 +136,7 @@ export async function updateCampaign(
 
   try {
     const headers = await getAuthHeaders();
-    
+
     const res = await fetch(`${API_URL}/api/campaigns/${id}`, {
       method: 'PUT',
       headers,
@@ -175,7 +175,7 @@ export async function deleteCampaign(
 
   try {
     const headers = await getAuthHeaders();
-    
+
     const res = await fetch(`${API_URL}/api/campaigns/${id}`, {
       method: 'DELETE',
       headers,

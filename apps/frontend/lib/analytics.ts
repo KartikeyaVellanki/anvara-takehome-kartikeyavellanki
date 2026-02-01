@@ -103,7 +103,11 @@ export interface PageViewProperties {
  * @see https://developers.google.com/analytics/devguides/collection/ga4/events
  */
 interface GtagFunction {
-  (command: 'config' | 'event' | 'set' | 'js', targetOrDate: string | Date, params?: Record<string, unknown>): void;
+  (
+    command: 'config' | 'event' | 'set' | 'js',
+    targetOrDate: string | Date,
+    params?: Record<string, unknown>
+  ): void;
 }
 
 // Extend Window interface for gtag and dataLayer
@@ -356,11 +360,7 @@ export function trackFilterUse(filterType: string, filterValue: string): void {
 /**
  * Track booking submission
  */
-export function trackBookingSubmit(listing: {
-  id: string;
-  name: string;
-  price: number;
-}): void {
+export function trackBookingSubmit(listing: { id: string; name: string; price: number }): void {
   trackConversion('submit_booking', {
     listingId: listing.id,
     listingName: listing.name,
@@ -371,11 +371,7 @@ export function trackBookingSubmit(listing: {
 /**
  * Track quote request submission
  */
-export function trackQuoteSubmit(listing: {
-  id: string;
-  name: string;
-  price: number;
-}): void {
+export function trackQuoteSubmit(listing: { id: string; name: string; price: number }): void {
   trackConversion('submit_quote', {
     listingId: listing.id,
     listingName: listing.name,

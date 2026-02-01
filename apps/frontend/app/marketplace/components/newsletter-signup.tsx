@@ -66,7 +66,9 @@ export function NewsletterSignup() {
             ✓
           </span>
           <div>
-            <p className="font-semibold text-green-800 dark:text-green-200">You&apos;re subscribed!</p>
+            <p className="font-semibold text-green-800 dark:text-green-200">
+              You&apos;re subscribed!
+            </p>
             <p className="text-sm text-green-600 dark:text-green-300">
               Watch your inbox for exclusive deals.
             </p>
@@ -137,9 +139,7 @@ export function NewsletterSignup() {
         </button>
       </form>
 
-      <p className="mt-3 text-center text-xs text-[--color-muted]">
-        No spam, unsubscribe anytime.
-      </p>
+      <p className="mt-3 text-center text-xs text-[--color-muted]">No spam, unsubscribe anytime.</p>
     </div>
   );
 }

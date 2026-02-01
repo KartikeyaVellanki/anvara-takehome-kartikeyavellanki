@@ -58,9 +58,7 @@ export function GoogleAnalyticsProvider({ measurementId }: GoogleAnalyticsProvid
   if (!gaId) {
     if (process.env.NODE_ENV === 'development') {
       // eslint-disable-next-line no-console
-      console.warn(
-        '[GA4] No measurement ID provided. Set NEXT_PUBLIC_GA_MEASUREMENT_ID in .env'
-      );
+      console.warn('[GA4] No measurement ID provided. Set NEXT_PUBLIC_GA_MEASUREMENT_ID in .env');
     }
     return null;
   }

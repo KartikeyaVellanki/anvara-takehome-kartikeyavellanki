@@ -91,9 +91,7 @@ export function Nav() {
         <div className="hidden items-center gap-6 md:flex">
           <NavLink href="/marketplace">Marketplace</NavLink>
 
-          {user && role === 'sponsor' && (
-            <NavLink href="/dashboard/sponsor">My Campaigns</NavLink>
-          )}
+          {user && role === 'sponsor' && <NavLink href="/dashboard/sponsor">My Campaigns</NavLink>}
           {user && role === 'publisher' && (
             <NavLink href="/dashboard/publisher">My Ad Slots</NavLink>
           )}
@@ -146,11 +144,21 @@ export function Nav() {
         >
           {mobileMenuOpen ? (
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           ) : (
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           )}
         </button>

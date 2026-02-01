@@ -26,8 +26,7 @@ export function ABTestDebugPanel() {
   // Check if we should show the panel
   const isDev = process.env.NODE_ENV === 'development';
   const hasUrlParam =
-    typeof window !== 'undefined' &&
-    new URLSearchParams(window.location.search).has('ab_panel');
+    typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('ab_panel');
 
   // Don't render in production unless explicitly enabled
   if (!isDev && !hasUrlParam) {
@@ -145,8 +144,11 @@ export function ABTestDebugPanel() {
               🗑️ Clear All Assignments
             </button>
             <p className="mt-2 text-center text-xs text-gray-500">
-              Use <code className="rounded bg-gray-100 px-1 dark:bg-gray-800">?ab_debug=exp:variant</code> to
-              force variants via URL
+              Use{' '}
+              <code className="rounded bg-gray-100 px-1 dark:bg-gray-800">
+                ?ab_debug=exp:variant
+              </code>{' '}
+              to force variants via URL
             </p>
           </div>
         </div>

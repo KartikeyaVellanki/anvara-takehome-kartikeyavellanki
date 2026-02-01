@@ -12,7 +12,7 @@ interface DeleteCampaignButtonProps {
 
 function DeleteButton() {
   const { pending } = useFormStatus();
-  
+
   return (
     <button
       type="submit"

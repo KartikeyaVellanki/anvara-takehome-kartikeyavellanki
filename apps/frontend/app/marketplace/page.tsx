@@ -9,7 +9,8 @@ export default function MarketplacePage() {
         <div className="max-w-2xl">
           <h1 className="text-3xl font-bold">Find Your Perfect Ad Placement</h1>
           <p className="mt-2 text-lg text-white/90">
-            Browse premium ad slots from verified publishers. Book instantly or request custom quotes.
+            Browse premium ad slots from verified publishers. Book instantly or request custom
+            quotes.
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-white/80">
             <span className="flex items-center gap-1">

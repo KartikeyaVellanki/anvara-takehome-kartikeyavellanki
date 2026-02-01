@@ -219,12 +219,17 @@ export function AdSlotDetail({ id }: Props) {
   if (error || !adSlot) {
     return (
       <div className="space-y-4">
-        <Link href="/marketplace" className="inline-flex items-center gap-2 text-[--color-primary] hover:underline">
+        <Link
+          href="/marketplace"
+          className="inline-flex items-center gap-2 text-[--color-primary] hover:underline"
+        >
           ← Back to Marketplace
         </Link>
         <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center dark:border-red-900 dark:bg-red-900/20">
           <span className="mb-2 block text-3xl">😕</span>
-          <p className="font-medium text-red-800 dark:text-red-200">{error || 'Ad slot not found'}</p>
+          <p className="font-medium text-red-800 dark:text-red-200">
+            {error || 'Ad slot not found'}
+          </p>
         </div>
       </div>
     );
@@ -232,7 +237,10 @@ export function AdSlotDetail({ id }: Props) {
 
   return (
     <div className="space-y-6">
-      <Link href="/marketplace" className="inline-flex items-center gap-2 text-[--color-primary] transition-colors hover:underline">
+      <Link
+        href="/marketplace"
+        className="inline-flex items-center gap-2 text-[--color-primary] transition-colors hover:underline"
+      >
         ← Back to Marketplace
       </Link>
 
@@ -441,9 +449,7 @@ export function AdSlotDetail({ id }: Props) {
                         rows={3}
                       />
                     </div>
-                    {bookingError && (
-                      <p className="text-sm text-red-600">{bookingError}</p>
-                    )}
+                    {bookingError && <p className="text-sm text-red-600">{bookingError}</p>}
                     <button
                       onClick={handleBooking}
                       disabled={booking}
@@ -508,9 +514,7 @@ export function AdSlotDetail({ id }: Props) {
             ) : (
               <div className="space-y-4">
                 <div className="rounded-xl bg-amber-50 p-4 text-center dark:bg-amber-900/20">
-                  <p className="font-medium text-amber-800 dark:text-amber-200">
-                    Currently Booked
-                  </p>
+                  <p className="font-medium text-amber-800 dark:text-amber-200">Currently Booked</p>
                   <p className="mt-1 text-sm text-amber-600 dark:text-amber-300">
                     Request a quote to get notified when available
                   </p>

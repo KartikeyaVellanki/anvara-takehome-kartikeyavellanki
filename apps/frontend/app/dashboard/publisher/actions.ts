@@ -19,7 +19,7 @@ const VALID_AD_SLOT_TYPES = ['DISPLAY', 'VIDEO', 'NATIVE', 'NEWSLETTER', 'PODCAS
 async function getAuthHeaders(): Promise<HeadersInit> {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get('better-auth.session_token');
-  
+
   return {
     'Content-Type': 'application/json',
     ...(sessionCookie && { Cookie: `better-auth.session_token=${sessionCookie.value}` }),
@@ -38,15 +38,15 @@ export async function createAdSlot(
 
   // Client-side validation
   const fieldErrors: Record<string, string> = {};
-  
+
   if (!name || name.trim().length === 0) {
     fieldErrors.name = 'Name is required';
   }
-  
+
   if (!type || !VALID_AD_SLOT_TYPES.includes(type)) {
     fieldErrors.type = 'Please select a valid type';
   }
-  
+
   if (!basePrice || isNaN(Number(basePrice)) || Number(basePrice) <= 0) {
     fieldErrors.basePrice = 'Base price must be a positive number';
   }
@@ -57,7 +57,7 @@ export async function createAdSlot(
 
   try {
     const headers = await getAuthHeaders();
-    
+
     const res = await fetch(`${API_URL}/api/ad-slots`, {
       method: 'POST',
       headers,
@@ -99,15 +99,15 @@ export async function updateAdSlot(
 
   // Client-side validation
   const fieldErrors: Record<string, string> = {};
-  
+
   if (!name || name.trim().length === 0) {
     fieldErrors.name = 'Name is required';
   }
-  
+
   if (!type || !VALID_AD_SLOT_TYPES.includes(type)) {
     fieldErrors.type = 'Please select a valid type';
   }
-  
+
   if (!basePrice || isNaN(Number(basePrice)) || Number(basePrice) <= 0) {
     fieldErrors.basePrice = 'Base price must be a positive number';
   }
@@ -118,7 +118,7 @@ export async function updateAdSlot(
 
   try {
     const headers = await getAuthHeaders();
-    
+
     const res = await fetch(`${API_URL}/api/ad-slots/${id}`, {
       method: 'PUT',
       headers,
@@ -156,7 +156,7 @@ export async function deleteAdSlot(
 
   try {
     const headers = await getAuthHeaders();
-    
+
     const res = await fetch(`${API_URL}/api/ad-slots/${id}`, {
       method: 'DELETE',
       headers,
@@ -188,7 +188,7 @@ export async function toggleAdSlotAvailability(
 
   try {
     const headers = await getAuthHeaders();
-    
+
     const res = await fetch(`${API_URL}/api/ad-slots/${id}`, {
       method: 'PUT',
       headers,

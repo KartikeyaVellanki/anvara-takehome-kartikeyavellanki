@@ -65,16 +65,19 @@ export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps
       <div className="max-h-[90vh] w-full overflow-y-auto rounded-t-2xl bg-[--color-background] p-6 shadow-xl animate-in slide-in-from-bottom duration-300 sm:max-w-lg sm:rounded-2xl">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-xl font-bold">
-            {isEditing ? 'Edit Campaign' : 'Create Campaign'}
-          </h2>
+          <h2 className="text-xl font-bold">{isEditing ? 'Edit Campaign' : 'Create Campaign'}</h2>
           <button
             onClick={onClose}
             className="flex h-10 w-10 items-center justify-center rounded-full text-[--color-muted] transition-colors hover:bg-slate-100 hover:text-[--color-foreground] dark:hover:bg-slate-800"
             aria-label="Close"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -187,7 +190,12 @@ export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps
             <label htmlFor="status" className="mb-2 block text-sm font-medium">
               Status
             </label>
-            <select id="status" name="status" defaultValue={campaign?.status || 'DRAFT'} className={inputClasses}>
+            <select
+              id="status"
+              name="status"
+              defaultValue={campaign?.status || 'DRAFT'}
+              className={inputClasses}
+            >
               <option value="DRAFT">📝 Draft</option>
               <option value="ACTIVE">🚀 Active</option>
               <option value="PAUSED">⏸️ Paused</option>

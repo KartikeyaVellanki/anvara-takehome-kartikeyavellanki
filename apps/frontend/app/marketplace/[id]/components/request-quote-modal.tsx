@@ -91,7 +91,9 @@ export function RequestQuoteModal({
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     // Clear error when user starts typing
@@ -161,7 +163,12 @@ export function RequestQuoteModal({
             aria-label="Close"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -171,7 +178,9 @@ export function RequestQuoteModal({
           <span className="text-2xl">💰</span>
           <div className="text-sm">
             <p className="font-medium">Listed at ${adSlotPrice.toLocaleString()}/mo</p>
-            <p className="text-[--color-muted]">Custom pricing available for bulk or long-term deals</p>
+            <p className="text-[--color-muted]">
+              Custom pricing available for bulk or long-term deals
+            </p>
           </div>
         </div>
 
@@ -207,7 +216,9 @@ export function RequestQuoteModal({
               placeholder="Acme Inc."
               className={`${inputClasses} ${errors.companyName ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : ''}`}
             />
-            {errors.companyName && <p className="mt-1 text-sm text-red-600">{errors.companyName}</p>}
+            {errors.companyName && (
+              <p className="mt-1 text-sm text-red-600">{errors.companyName}</p>
+            )}
           </div>
 
           {/* Phone (optional) */}

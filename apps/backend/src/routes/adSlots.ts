@@ -262,7 +262,9 @@ router.post('/:id/book', requireAuth, async (req: AuthRequest, res: Response) =>
       },
     });
 
-    console.log(`Ad slot ${id} booked by sponsor ${req.user.sponsorId}. Message: ${message || 'None'}`);
+    console.log(
+      `Ad slot ${id} booked by sponsor ${req.user.sponsorId}. Message: ${message || 'None'}`
+    );
 
     res.json({
       success: true,

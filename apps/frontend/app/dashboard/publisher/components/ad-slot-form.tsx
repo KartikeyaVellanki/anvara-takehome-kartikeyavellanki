@@ -66,7 +66,12 @@ export function AdSlotForm({ adSlot, onClose, onSuccess }: AdSlotFormProps) {
             aria-label="Close"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -125,7 +130,12 @@ export function AdSlotForm({ adSlot, onClose, onSuccess }: AdSlotFormProps) {
             <label htmlFor="type" className="mb-2 block text-sm font-medium">
               Type <span className="text-red-500">*</span>
             </label>
-            <select id="type" name="type" defaultValue={adSlot?.type || ''} className={inputClasses}>
+            <select
+              id="type"
+              name="type"
+              defaultValue={adSlot?.type || ''}
+              className={inputClasses}
+            >
               <option value="">Select a type</option>
               <option value="DISPLAY">🖼️ Display</option>
               <option value="VIDEO">🎬 Video</option>

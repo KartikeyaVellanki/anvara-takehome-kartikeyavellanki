@@ -68,7 +68,9 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
               style={{ width: `${Math.min(progress, 100)}%` }}
             />
           </div>
-          <p className="mt-1 text-right text-xs text-[--color-muted]">{progress.toFixed(1)}% used</p>
+          <p className="mt-1 text-right text-xs text-[--color-muted]">
+            {progress.toFixed(1)}% used
+          </p>
         </div>
 
         {/* Dates */}
@@ -100,9 +102,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
         </div>
       </div>
 
-      {showEditForm && (
-        <CampaignForm campaign={campaign} onClose={() => setShowEditForm(false)} />
-      )}
+      {showEditForm && <CampaignForm campaign={campaign} onClose={() => setShowEditForm(false)} />}
     </>
   );
 }
