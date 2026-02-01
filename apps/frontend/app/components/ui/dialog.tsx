@@ -20,7 +20,7 @@ const sizeStyles = {
 
 /**
  * Dialog Component
- * 
+ *
  * Modal dialog with backdrop and keyboard support.
  * Swiss minimal: clean, focused, no excessive styling.
  */
@@ -109,7 +109,12 @@ export function DialogHeader({ children, onClose }: DialogHeaderProps) {
           aria-label="Close dialog"
         >
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       )}
@@ -126,9 +131,7 @@ interface DialogTitleProps {
 
 export function DialogTitle({ children }: DialogTitleProps) {
   return (
-    <h2 className="text-[--text-lg] font-display font-semibold text-[--color-text]">
-      {children}
-    </h2>
+    <h2 className="text-[--text-lg] font-display font-semibold text-[--color-text]">{children}</h2>
   );
 }
 
@@ -140,11 +143,7 @@ interface DialogDescriptionProps {
 }
 
 export function DialogDescription({ children }: DialogDescriptionProps) {
-  return (
-    <p className="mt-1 text-[--text-sm] text-[--color-text-secondary]">
-      {children}
-    </p>
-  );
+  return <p className="mt-1 text-[--text-sm] text-[--color-text-secondary]">{children}</p>;
 }
 
 /**
@@ -156,11 +155,7 @@ interface DialogBodyProps {
 }
 
 export function DialogBody({ children, className = '' }: DialogBodyProps) {
-  return (
-    <div className={`px-5 py-4 ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`px-5 py-4 ${className}`}>{children}</div>;
 }
 
 /**

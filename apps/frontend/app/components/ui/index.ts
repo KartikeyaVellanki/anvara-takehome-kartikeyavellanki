@@ -1,6 +1,6 @@
 /**
  * Anvara UI Component Library
- * 
+ *
  * Reusable components following Swiss Minimalist design principles:
  * - Sharp corners, thin borders
  * - Monochrome with ONE accent color

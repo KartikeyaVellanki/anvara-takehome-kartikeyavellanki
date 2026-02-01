@@ -46,15 +46,7 @@ function calculateStats(campaigns: Campaign[]) {
 /**
  * Stats card component - minimal Swiss design
  */
-function StatCard({
-  label,
-  value,
-  subtext,
-}: {
-  label: string;
-  value: string;
-  subtext?: string;
-}) {
+function StatCard({ label, value, subtext }: { label: string; value: string; subtext?: string }) {
   return (
     <div className="border border-[--color-border] bg-[--color-bg-elevated] p-5">
       <p className="text-[--text-xs] font-medium uppercase tracking-wide text-[--color-text-muted]">
@@ -90,9 +82,8 @@ export default async function SponsorDashboard() {
   const stats = calculateStats(campaigns);
 
   // Calculate utilization percentage
-  const utilization = stats.totalBudget > 0 
-    ? Math.round((stats.totalSpent / stats.totalBudget) * 100) 
-    : 0;
+  const utilization =
+    stats.totalBudget > 0 ? Math.round((stats.totalSpent / stats.totalBudget) * 100) : 0;
 
   return (
     <div className="py-8">
@@ -102,28 +93,20 @@ export default async function SponsorDashboard() {
           <h1 className="font-display text-[--text-3xl] font-semibold text-[--color-text]">
             Campaigns
           </h1>
-          <p className="mt-1 text-[--color-text-secondary]">
-            Manage your advertising campaigns
-          </p>
+          <p className="mt-1 text-[--color-text-secondary]">Manage your advertising campaigns</p>
         </div>
         <CreateCampaignButton />
       </div>
 
       {/* Stats Grid */}
       <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          label="Total Campaigns"
-          value={stats.totalCampaigns.toString()}
-        />
+        <StatCard label="Total Campaigns" value={stats.totalCampaigns.toString()} />
         <StatCard
           label="Active"
           value={stats.activeCampaigns.toString()}
           subtext={`of ${stats.totalCampaigns} campaigns`}
         />
-        <StatCard
-          label="Total Budget"
-          value={`$${stats.totalBudget.toLocaleString()}`}
-        />
+        <StatCard label="Total Budget" value={`$${stats.totalBudget.toLocaleString()}`} />
         <StatCard
           label="Spent"
           value={`$${stats.totalSpent.toLocaleString()}`}

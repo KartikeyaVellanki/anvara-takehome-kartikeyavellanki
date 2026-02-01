@@ -9,11 +9,11 @@ import { ThemeProvider } from './components/theme-provider';
 
 /**
  * Typography Setup
- * 
+ *
  * Bricolage Grotesque: Display font for headings
  * - Distinctive, confident, modern
  * - Used for h1-h6 and display text
- * 
+ *
  * DM Sans: Body font for readable content
  * - Clean, professional, highly legible
  * - Used for paragraphs, labels, UI text

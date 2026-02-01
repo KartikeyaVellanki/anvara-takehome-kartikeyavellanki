@@ -36,7 +36,7 @@ const initialState: ActionState = {};
 
 /**
  * Ad Slot Card Component
- * 
+ *
  * Displays ad slot information with edit/delete actions.
  * Clean Swiss design without emojis.
  */
@@ -52,7 +52,9 @@ export function AdSlotCard({ adSlot }: AdSlotCardProps) {
           <h3 className="font-display text-[--text-base] font-semibold text-[--color-text] transition-colors group-hover:text-[--accent]">
             {adSlot.name}
           </h3>
-          <TypeBadge type={adSlot.type as 'DISPLAY' | 'VIDEO' | 'NATIVE' | 'NEWSLETTER' | 'PODCAST'} />
+          <TypeBadge
+            type={adSlot.type as 'DISPLAY' | 'VIDEO' | 'NATIVE' | 'NEWSLETTER' | 'PODCAST'}
+          />
         </div>
 
         {/* Description */}
@@ -82,11 +84,7 @@ export function AdSlotCard({ adSlot }: AdSlotCardProps) {
           </form>
 
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowEditForm(true)}
-            >
+            <Button variant="ghost" size="sm" onClick={() => setShowEditForm(true)}>
               Edit
             </Button>
             <DeleteAdSlotButton adSlotId={adSlot.id} adSlotName={adSlot.name} />

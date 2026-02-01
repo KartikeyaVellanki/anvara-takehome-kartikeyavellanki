@@ -11,7 +11,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4291';
 
 /**
  * Login Page
- * 
+ *
  * Quick login for demo accounts (sponsor/publisher).
  * Swiss minimalist design with clean form.
  */
@@ -104,18 +104,13 @@ export default function LoginPage() {
               <option value="sponsor">Sponsor (sponsor@example.com)</option>
               <option value="publisher">Publisher (publisher@example.com)</option>
             </Select>
-            <p className="mt-1.5 text-[--text-xs] text-[--color-text-muted]">
-              Password: password
-            </p>
+            <p className="mt-1.5 text-[--text-xs] text-[--color-text-muted]">Password: password</p>
           </div>
 
-          <Button
-            type="submit"
-            isLoading={loading}
-            className="w-full"
-            size="lg"
-          >
-            {loading ? 'Signing in...' : `Sign in as ${role === 'sponsor' ? 'Sponsor' : 'Publisher'}`}
+          <Button type="submit" isLoading={loading} className="w-full" size="lg">
+            {loading
+              ? 'Signing in...'
+              : `Sign in as ${role === 'sponsor' ? 'Sponsor' : 'Publisher'}`}
           </Button>
         </form>
 

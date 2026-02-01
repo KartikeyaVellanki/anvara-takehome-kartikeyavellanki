@@ -8,7 +8,7 @@ type SubmitState = 'idle' | 'loading' | 'success' | 'error';
 
 /**
  * Newsletter Signup Component
- * 
+ *
  * Clean form for email capture with proper validation and states.
  */
 export function NewsletterSignup() {
@@ -68,7 +68,13 @@ export function NewsletterSignup() {
       <div className="border border-[--success] bg-[--success-light] p-5">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center border border-green-300 text-[--success]">
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
@@ -115,17 +121,17 @@ export function NewsletterSignup() {
             aria-describedby={state === 'error' ? 'newsletter-error' : undefined}
           />
           {state === 'error' && (
-            <p id="newsletter-error" className="mt-1.5 text-[--text-xs] text-[--error]" role="alert">
+            <p
+              id="newsletter-error"
+              className="mt-1.5 text-[--text-xs] text-[--error]"
+              role="alert"
+            >
               {errorMessage}
             </p>
           )}
         </div>
 
-        <Button
-          type="submit"
-          isLoading={state === 'loading'}
-          className="w-full"
-        >
+        <Button type="submit" isLoading={state === 'loading'} className="w-full">
           Subscribe
         </Button>
       </form>

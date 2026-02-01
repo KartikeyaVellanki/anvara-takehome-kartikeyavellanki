@@ -77,11 +77,7 @@ export function DeleteCampaignButton({ campaignId, campaignName }: DeleteCampaig
         <DialogFooter>
           <form action={formAction} className="flex items-center gap-3">
             <input type="hidden" name="id" value={campaignId} />
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => setShowConfirm(false)}
-            >
+            <Button type="button" variant="secondary" onClick={() => setShowConfirm(false)}>
               Cancel
             </Button>
             <DeleteButton />

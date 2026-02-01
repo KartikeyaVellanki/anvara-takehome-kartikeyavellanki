@@ -27,7 +27,7 @@ const STORAGE_KEY = 'anvara-theme';
  */
 function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'system';
-  
+
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored === 'light' || stored === 'dark' || stored === 'system') {
     return stored;
@@ -40,14 +40,14 @@ function getInitialTheme(): Theme {
  */
 function resolveTheme(theme: Theme): 'light' | 'dark' {
   if (theme !== 'system') return theme;
-  
+
   if (typeof window === 'undefined') return 'light';
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 /**
  * ThemeProvider
- * 
+ *
  * Manages light/dark mode with:
  * - System preference detection
  * - Manual override support
@@ -77,7 +77,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (!mounted) return;
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
+
     const handleChange = () => {
       if (theme === 'system') {
         setResolvedTheme(mediaQuery.matches ? 'dark' : 'light');
@@ -94,7 +94,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
     const root = document.documentElement;
     root.setAttribute('data-theme', resolvedTheme);
-    
+
     // Also set color-scheme for native elements
     root.style.colorScheme = resolvedTheme;
   }, [resolvedTheme, mounted]);
@@ -113,11 +113,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setTheme,
   };
 
-  return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 /**

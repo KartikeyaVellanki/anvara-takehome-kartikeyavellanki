@@ -221,9 +221,7 @@ export function AdSlotDetail({ id }: Props) {
           <ArrowLeftIcon /> Back to Marketplace
         </Link>
         <div className="border border-[--error] bg-[--error-light] p-6 text-center">
-          <p className="font-medium text-red-800">
-            {error || 'Ad slot not found'}
-          </p>
+          <p className="font-medium text-red-800">{error || 'Ad slot not found'}</p>
         </div>
       </div>
     );
@@ -247,7 +245,11 @@ export function AdSlotDetail({ id }: Props) {
               <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <div className="mb-3 flex items-center gap-2">
-                    <TypeBadge type={adSlot.type as 'DISPLAY' | 'VIDEO' | 'NATIVE' | 'NEWSLETTER' | 'PODCAST'} />
+                    <TypeBadge
+                      type={
+                        adSlot.type as 'DISPLAY' | 'VIDEO' | 'NATIVE' | 'NEWSLETTER' | 'PODCAST'
+                      }
+                    />
                     <StatusBadge status={adSlot.isAvailable ? 'available' : 'booked'} />
                   </div>
                   <h1 className="font-display text-[--text-2xl] font-semibold text-[--color-text]">
@@ -367,10 +369,15 @@ export function AdSlotDetail({ id }: Props) {
                   <div className="space-y-4">
                     <div className="border border-[--color-border] bg-[--color-bg-subtle] p-3">
                       <p className="text-[--text-xs] text-[--color-text-muted]">Booking as</p>
-                      <p className="font-medium text-[--color-text]">{roleInfo.name || user?.name}</p>
+                      <p className="font-medium text-[--color-text]">
+                        {roleInfo.name || user?.name}
+                      </p>
                     </div>
                     <div>
-                      <label htmlFor="message" className="mb-1 block text-[--text-sm] font-medium text-[--color-text]">
+                      <label
+                        htmlFor="message"
+                        className="mb-1 block text-[--text-sm] font-medium text-[--color-text]"
+                      >
                         Message (optional)
                       </label>
                       <Textarea
@@ -393,11 +400,7 @@ export function AdSlotDetail({ id }: Props) {
                       {getCtaText()}
                     </Button>
                     <Divider />
-                    <Button
-                      variant="secondary"
-                      onClick={handleOpenQuoteModal}
-                      className="w-full"
-                    >
+                    <Button variant="secondary" onClick={handleOpenQuoteModal} className="w-full">
                       Request Custom Quote
                     </Button>
                   </div>
@@ -409,11 +412,7 @@ export function AdSlotDetail({ id }: Props) {
                       </Button>
                     </Link>
                     <Divider />
-                    <Button
-                      variant="secondary"
-                      onClick={handleOpenQuoteModal}
-                      className="w-full"
-                    >
+                    <Button variant="secondary" onClick={handleOpenQuoteModal} className="w-full">
                       Request Quote (No Login)
                     </Button>
                     <p className="text-center text-[--text-xs] text-[--color-text-muted]">
@@ -430,10 +429,7 @@ export function AdSlotDetail({ id }: Props) {
                     Request a quote to get notified when available
                   </p>
                 </div>
-                <Button
-                  onClick={handleOpenQuoteModal}
-                  className="w-full"
-                >
+                <Button onClick={handleOpenQuoteModal} className="w-full">
                   Request Quote
                 </Button>
                 <button
@@ -470,7 +466,13 @@ export function AdSlotDetail({ id }: Props) {
 // Helper components
 function ArrowLeftIcon() {
   return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <svg
+      className="h-4 w-4"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.5}
+    >
       <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
     </svg>
   );
@@ -496,7 +498,13 @@ function TrustItem({ children }: { children: React.ReactNode }) {
 
 function CheckIcon() {
   return (
-    <svg className="h-4 w-4 text-[--success]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <svg
+      className="h-4 w-4 text-[--success]"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
     </svg>
   );
@@ -509,16 +517,20 @@ function FAQItem({ question, children }: { question: string; children: React.Rea
         {question}
         <ChevronIcon />
       </summary>
-      <p className="mt-2 text-[--text-sm] text-[--color-text-secondary]">
-        {children}
-      </p>
+      <p className="mt-2 text-[--text-sm] text-[--color-text-secondary]">{children}</p>
     </details>
   );
 }
 
 function ChevronIcon() {
   return (
-    <svg className="h-4 w-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <svg
+      className="h-4 w-4 transition-transform group-open:rotate-180"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.5}
+    >
       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
     </svg>
   );

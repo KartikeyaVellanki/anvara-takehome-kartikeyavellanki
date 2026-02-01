@@ -121,7 +121,13 @@ export function RequestQuoteModal({
       <Dialog open={true} onClose={onClose} size="md">
         <DialogBody className="py-8 text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-[--success] text-[--success]">
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
@@ -170,7 +176,9 @@ export function RequestQuoteModal({
 
           {/* Email */}
           <div>
-            <Label htmlFor="email" required>Work Email</Label>
+            <Label htmlFor="email" required>
+              Work Email
+            </Label>
             <Input
               type="email"
               id="email"
@@ -185,7 +193,9 @@ export function RequestQuoteModal({
 
           {/* Company Name */}
           <div>
-            <Label htmlFor="companyName" required>Company Name</Label>
+            <Label htmlFor="companyName" required>
+              Company Name
+            </Label>
             <Input
               type="text"
               id="companyName"
@@ -215,12 +225,7 @@ export function RequestQuoteModal({
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <Label htmlFor="budget">Budget Range</Label>
-              <Select
-                id="budget"
-                name="budget"
-                value={formData.budget}
-                onChange={handleChange}
-              >
+              <Select id="budget" name="budget" value={formData.budget} onChange={handleChange}>
                 <option value="">Select budget</option>
                 <option value="under-5k">Under $5,000/mo</option>
                 <option value="5k-15k">$5,000 - $15,000/mo</option>

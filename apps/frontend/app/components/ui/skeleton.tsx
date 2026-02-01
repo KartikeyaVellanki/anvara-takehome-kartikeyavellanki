@@ -11,7 +11,7 @@ interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
 
 /**
  * Skeleton Component
- * 
+ *
  * Loading placeholder with subtle animation.
  * Swiss minimal style: clean, no distracting effects.
  */
@@ -55,11 +55,7 @@ export function TextSkeleton({ lines = 3, lastLineWidth = '60%' }: TextSkeletonP
   return (
     <div className="space-y-2">
       {Array.from({ length: lines }).map((_, i) => (
-        <Skeleton
-          key={i}
-          height={14}
-          width={i === lines - 1 ? lastLineWidth : '100%'}
-        />
+        <Skeleton key={i} height={14} width={i === lines - 1 ? lastLineWidth : '100%'} />
       ))}
     </div>
   );

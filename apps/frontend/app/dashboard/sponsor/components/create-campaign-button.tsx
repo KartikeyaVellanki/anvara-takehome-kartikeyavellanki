@@ -13,9 +13,7 @@ export function CreateCampaignButton() {
 
   return (
     <>
-      <Button onClick={() => setShowForm(true)}>
-        Create Campaign
-      </Button>
+      <Button onClick={() => setShowForm(true)}>Create Campaign</Button>
 
       {showForm && <CampaignForm onClose={() => setShowForm(false)} />}
     </>

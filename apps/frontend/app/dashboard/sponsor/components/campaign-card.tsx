@@ -54,7 +54,8 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
             <span className="font-medium text-[--color-text]">
               ${Number(campaign.spent).toLocaleString()}
               <span className="text-[--color-text-muted]">
-                {' '}/ ${Number(campaign.budget).toLocaleString()}
+                {' '}
+                / ${Number(campaign.budget).toLocaleString()}
               </span>
             </span>
           </div>
@@ -88,11 +89,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-2 border-t border-[--color-border] pt-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowEditForm(true)}
-          >
+          <Button variant="ghost" size="sm" onClick={() => setShowEditForm(true)}>
             Edit
           </Button>
           <DeleteCampaignButton campaignId={campaign.id} campaignName={campaign.name} />
@@ -106,8 +103,18 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
 
 function CalendarIcon() {
   return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    <svg
+      className="h-4 w-4"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.5}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+      />
     </svg>
   );
 }

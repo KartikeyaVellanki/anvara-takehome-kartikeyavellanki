@@ -1,4 +1,10 @@
-import { forwardRef, type InputHTMLAttributes, type TextareaHTMLAttributes, type SelectHTMLAttributes, type ReactNode } from 'react';
+import {
+  forwardRef,
+  type InputHTMLAttributes,
+  type TextareaHTMLAttributes,
+  type SelectHTMLAttributes,
+  type ReactNode,
+} from 'react';
 
 /**
  * Shared input styles
@@ -51,7 +57,9 @@ interface HelperTextProps {
 
 export function HelperText({ children, error = false }: HelperTextProps) {
   return (
-    <p className={`mt-1.5 text-[--text-xs] ${error ? 'text-[--error]' : 'text-[--color-text-muted]'}`}>
+    <p
+      className={`mt-1.5 text-[--text-xs] ${error ? 'text-[--error]' : 'text-[--color-text-muted]'}`}
+    >
       {children}
     </p>
   );

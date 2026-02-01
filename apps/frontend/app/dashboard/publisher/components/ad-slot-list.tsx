@@ -8,7 +8,7 @@ interface AdSlotListProps {
 
 /**
  * Ad Slot List Component
- * 
+ *
  * Displays ad slots in a grid layout.
  * Server Component - receives data as props from parent.
  */

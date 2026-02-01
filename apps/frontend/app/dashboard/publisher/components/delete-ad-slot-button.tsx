@@ -64,8 +64,7 @@ export function DeleteAdSlotButton({ adSlotId, adSlotName }: DeleteAdSlotButtonP
         </DialogHeader>
         <DialogBody>
           <p className="text-[--text-sm] text-[--color-text-secondary]">
-            Are you sure you want to delete &quot;{adSlotName}&quot;? This action cannot be
-            undone.
+            Are you sure you want to delete &quot;{adSlotName}&quot;? This action cannot be undone.
           </p>
 
           {state.error && (
@@ -77,11 +76,7 @@ export function DeleteAdSlotButton({ adSlotId, adSlotName }: DeleteAdSlotButtonP
         <DialogFooter>
           <form action={formAction} className="flex items-center gap-3">
             <input type="hidden" name="id" value={adSlotId} />
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => setShowConfirm(false)}
-            >
+            <Button type="button" variant="secondary" onClick={() => setShowConfirm(false)}>
               Cancel
             </Button>
             <DeleteButton />

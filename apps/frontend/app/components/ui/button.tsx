@@ -48,7 +48,7 @@ const sizeStyles: Record<ButtonSize, string> = {
 
 /**
  * Button Component
- * 
+ *
  * A versatile button with multiple variants and sizes.
  * Follows Swiss minimalist design with sharp corners and clear hierarchy.
  */
@@ -120,14 +120,7 @@ function LoadingSpinner({ size }: { size: ButtonSize }) {
       viewBox="0 0 24 24"
       aria-hidden="true"
     >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
       <path
         className="opacity-75"
         fill="currentColor"
@@ -154,12 +147,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     };
 
     return (
-      <Button
-        ref={ref}
-        size={size}
-        className={`${sizeMap[size]} !px-0 ${className}`}
-        {...props}
-      >
+      <Button ref={ref} size={size} className={`${sizeMap[size]} !px-0 ${className}`} {...props}>
         {icon}
       </Button>
     );

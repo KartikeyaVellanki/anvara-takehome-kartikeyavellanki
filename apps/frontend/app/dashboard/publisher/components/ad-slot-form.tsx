@@ -74,7 +74,9 @@ export function AdSlotForm({ adSlot, onClose, onSuccess }: AdSlotFormProps) {
           )}
 
           <div>
-            <Label htmlFor="name" required>Ad Slot Name</Label>
+            <Label htmlFor="name" required>
+              Ad Slot Name
+            </Label>
             <Input
               type="text"
               id="name"
@@ -84,9 +86,7 @@ export function AdSlotForm({ adSlot, onClose, onSuccess }: AdSlotFormProps) {
               error={Boolean(state.fieldErrors?.name)}
               autoFocus
             />
-            {state.fieldErrors?.name && (
-              <HelperText error>{state.fieldErrors.name}</HelperText>
-            )}
+            {state.fieldErrors?.name && <HelperText error>{state.fieldErrors.name}</HelperText>}
           </div>
 
           <div>
@@ -101,7 +101,9 @@ export function AdSlotForm({ adSlot, onClose, onSuccess }: AdSlotFormProps) {
           </div>
 
           <div>
-            <Label htmlFor="type" required>Type</Label>
+            <Label htmlFor="type" required>
+              Type
+            </Label>
             <Select
               id="type"
               name="type"
@@ -115,13 +117,13 @@ export function AdSlotForm({ adSlot, onClose, onSuccess }: AdSlotFormProps) {
               <option value="NEWSLETTER">Newsletter</option>
               <option value="PODCAST">Podcast</option>
             </Select>
-            {state.fieldErrors?.type && (
-              <HelperText error>{state.fieldErrors.type}</HelperText>
-            )}
+            {state.fieldErrors?.type && <HelperText error>{state.fieldErrors.type}</HelperText>}
           </div>
 
           <div>
-            <Label htmlFor="basePrice" required>Base Price ($/month)</Label>
+            <Label htmlFor="basePrice" required>
+              Base Price ($/month)
+            </Label>
             <Input
               type="number"
               id="basePrice"

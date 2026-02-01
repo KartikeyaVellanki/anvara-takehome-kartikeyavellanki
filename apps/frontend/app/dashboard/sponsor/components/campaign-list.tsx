@@ -8,7 +8,7 @@ interface CampaignListProps {
 
 /**
  * Campaign List Component
- * 
+ *
  * Displays campaigns in a grid layout.
  * Server Component - receives data as props from parent.
  */

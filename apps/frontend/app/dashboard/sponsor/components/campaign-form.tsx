@@ -75,7 +75,9 @@ export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps
           )}
 
           <div>
-            <Label htmlFor="name" required>Campaign Name</Label>
+            <Label htmlFor="name" required>
+              Campaign Name
+            </Label>
             <Input
               type="text"
               id="name"
@@ -85,9 +87,7 @@ export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps
               error={Boolean(state.fieldErrors?.name)}
               autoFocus
             />
-            {state.fieldErrors?.name && (
-              <HelperText error>{state.fieldErrors.name}</HelperText>
-            )}
+            {state.fieldErrors?.name && <HelperText error>{state.fieldErrors.name}</HelperText>}
           </div>
 
           <div>
@@ -102,7 +102,9 @@ export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps
           </div>
 
           <div>
-            <Label htmlFor="budget" required>Budget ($)</Label>
+            <Label htmlFor="budget" required>
+              Budget ($)
+            </Label>
             <Input
               type="number"
               id="budget"
@@ -113,14 +115,14 @@ export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps
               placeholder="1000"
               error={Boolean(state.fieldErrors?.budget)}
             />
-            {state.fieldErrors?.budget && (
-              <HelperText error>{state.fieldErrors.budget}</HelperText>
-            )}
+            {state.fieldErrors?.budget && <HelperText error>{state.fieldErrors.budget}</HelperText>}
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <Label htmlFor="startDate" required>Start Date</Label>
+              <Label htmlFor="startDate" required>
+                Start Date
+              </Label>
               <Input
                 type="date"
                 id="startDate"
@@ -133,7 +135,9 @@ export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps
               )}
             </div>
             <div>
-              <Label htmlFor="endDate" required>End Date</Label>
+              <Label htmlFor="endDate" required>
+                End Date
+              </Label>
               <Input
                 type="date"
                 id="endDate"
@@ -149,11 +153,7 @@ export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps
 
           <div>
             <Label htmlFor="status">Status</Label>
-            <Select
-              id="status"
-              name="status"
-              defaultValue={campaign?.status || 'DRAFT'}
-            >
+            <Select id="status" name="status" defaultValue={campaign?.status || 'DRAFT'}>
               <option value="DRAFT">Draft</option>
               <option value="ACTIVE">Active</option>
               <option value="PAUSED">Paused</option>

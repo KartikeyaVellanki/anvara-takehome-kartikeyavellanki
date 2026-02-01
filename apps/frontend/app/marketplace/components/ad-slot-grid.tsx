@@ -36,7 +36,11 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
     <div className="border border-[--error] bg-[--error-light] p-8 text-center">
       <div className="mx-auto mb-4 h-12 w-12 text-[--error]">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          />
         </svg>
       </div>
       <h3 className="mb-2 font-display text-[--text-lg] font-semibold text-[--error]">
@@ -132,7 +136,9 @@ function AdSlotCard({ slot }: { slot: AdSlot }) {
               </p>
             )}
           </div>
-          <TypeBadge type={slot.type as 'DISPLAY' | 'VIDEO' | 'NATIVE' | 'NEWSLETTER' | 'PODCAST'} />
+          <TypeBadge
+            type={slot.type as 'DISPLAY' | 'VIDEO' | 'NATIVE' | 'NEWSLETTER' | 'PODCAST'}
+          />
         </div>
 
         {/* Description */}
@@ -226,9 +232,10 @@ function Pagination({
                 className={`
                   h-9 w-9 text-[--text-sm] font-medium
                   transition-colors duration-[--transition-fast]
-                  ${pageNum === page
-                    ? 'bg-[--accent] text-white'
-                    : 'border border-[--color-border] text-[--color-text-secondary] hover:border-[--accent] hover:text-[--accent]'
+                  ${
+                    pageNum === page
+                      ? 'bg-[--accent] text-white'
+                      : 'border border-[--color-border] text-[--color-text-secondary] hover:border-[--accent] hover:text-[--accent]'
                   }
                 `}
                 aria-current={pageNum === page ? 'page' : undefined}

@@ -51,15 +51,7 @@ function calculateStats(adSlots: AdSlot[]) {
 /**
  * Stats card component - minimal Swiss design
  */
-function StatCard({
-  label,
-  value,
-  subtext,
-}: {
-  label: string;
-  value: string;
-  subtext?: string;
-}) {
+function StatCard({ label, value, subtext }: { label: string; value: string; subtext?: string }) {
   return (
     <div className="border border-[--color-border] bg-[--color-bg-elevated] p-5">
       <p className="text-[--text-xs] font-medium uppercase tracking-wide text-[--color-text-muted]">
@@ -95,9 +87,8 @@ export default async function PublisherDashboard() {
   const stats = calculateStats(adSlots);
 
   // Calculate occupancy rate
-  const occupancyRate = stats.totalSlots > 0 
-    ? Math.round((stats.bookedSlots / stats.totalSlots) * 100) 
-    : 0;
+  const occupancyRate =
+    stats.totalSlots > 0 ? Math.round((stats.bookedSlots / stats.totalSlots) * 100) : 0;
 
   return (
     <div className="py-8">
@@ -107,19 +98,14 @@ export default async function PublisherDashboard() {
           <h1 className="font-display text-[--text-3xl] font-semibold text-[--color-text]">
             Ad Slots
           </h1>
-          <p className="mt-1 text-[--color-text-secondary]">
-            Manage your advertising inventory
-          </p>
+          <p className="mt-1 text-[--color-text-secondary]">Manage your advertising inventory</p>
         </div>
         <CreateAdSlotButton />
       </div>
 
       {/* Stats Grid */}
       <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          label="Total Slots"
-          value={stats.totalSlots.toString()}
-        />
+        <StatCard label="Total Slots" value={stats.totalSlots.toString()} />
         <StatCard
           label="Available"
           value={stats.availableSlots.toString()}

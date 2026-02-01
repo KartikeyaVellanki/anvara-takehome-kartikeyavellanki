@@ -1,8 +1,14 @@
-import { forwardRef, type HTMLAttributes, type TdHTMLAttributes, type ThHTMLAttributes, type ReactNode } from 'react';
+import {
+  forwardRef,
+  type HTMLAttributes,
+  type TdHTMLAttributes,
+  type ThHTMLAttributes,
+  type ReactNode,
+} from 'react';
 
 /**
  * Table Component
- * 
+ *
  * Clean, minimal table with Swiss styling.
  * Thin borders, clear hierarchy, good readability.
  */
@@ -39,11 +45,7 @@ interface TableHeaderProps extends HTMLAttributes<HTMLTableSectionElement> {
 export const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>(
   ({ children, className = '', ...props }, ref) => {
     return (
-      <thead
-        ref={ref}
-        className={`bg-[--color-bg-subtle] ${className}`}
-        {...props}
-      >
+      <thead ref={ref} className={`bg-[--color-bg-subtle] ${className}`} {...props}>
         {children}
       </thead>
     );
@@ -159,11 +161,7 @@ interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
 export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
   ({ children, className = '', ...props }, ref) => {
     return (
-      <td
-        ref={ref}
-        className={`py-3 px-4 text-[--color-text] ${className}`}
-        {...props}
-      >
+      <td ref={ref} className={`py-3 px-4 text-[--color-text] ${className}`} {...props}>
         {children}
       </td>
     );
@@ -233,7 +231,12 @@ export function TableEmpty({
 function SortIcon() {
   return (
     <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+      />
     </svg>
   );
 }

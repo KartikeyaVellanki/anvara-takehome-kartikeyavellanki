@@ -13,9 +13,7 @@ export function CreateAdSlotButton() {
 
   return (
     <>
-      <Button onClick={() => setShowForm(true)}>
-        Create Ad Slot
-      </Button>
+      <Button onClick={() => setShowForm(true)}>Create Ad Slot</Button>
 
       {showForm && <AdSlotForm onClose={() => setShowForm(false)} />}
     </>

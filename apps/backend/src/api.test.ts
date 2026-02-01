@@ -55,9 +55,7 @@ describe('Sponsors API', () => {
 
   describe('POST /api/sponsors', () => {
     it('returns 400 for missing required fields', async () => {
-      const response = await request(app)
-        .post('/api/sponsors')
-        .send({ description: 'Test' });
+      const response = await request(app).post('/api/sponsors').send({ description: 'Test' });
       expect(response.status).toBe(400);
       expect(response.body.error).toBe('Name and email are required');
     });
@@ -153,9 +151,7 @@ describe('Ad Slots API (Marketplace)', () => {
 describe('Newsletter API', () => {
   describe('POST /api/newsletter/subscribe', () => {
     it('returns 400 for missing email', async () => {
-      const response = await request(app)
-        .post('/api/newsletter/subscribe')
-        .send({});
+      const response = await request(app).post('/api/newsletter/subscribe').send({});
       expect(response.status).toBe(400);
       expect(response.body.error).toBe('Email is required');
     });
@@ -189,14 +185,12 @@ describe('Quotes API', () => {
     });
 
     it('returns 400 for invalid email format', async () => {
-      const response = await request(app)
-        .post('/api/quotes/request')
-        .send({
-          email: 'invalid',
-          companyName: 'Test Company',
-          message: 'Test message',
-          adSlotId: 'test-id',
-        });
+      const response = await request(app).post('/api/quotes/request').send({
+        email: 'invalid',
+        companyName: 'Test Company',
+        message: 'Test message',
+        adSlotId: 'test-id',
+      });
       expect(response.status).toBe(400);
       expect(response.body.error).toBe('Invalid email format');
     });

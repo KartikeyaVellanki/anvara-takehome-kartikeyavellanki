@@ -34,7 +34,7 @@ const sizeStyles: Record<BadgeSize, string> = {
 
 /**
  * Badge Component
- * 
+ *
  * Status indicator with semantic colors.
  * Uses subtle backgrounds with clear text contrast.
  */
@@ -59,10 +59,7 @@ export function Badge({
       {...props}
     >
       {dot && (
-        <span
-          className={`w-1.5 h-1.5 rounded-full ${dotColors[variant]}`}
-          aria-hidden="true"
-        />
+        <span className={`w-1.5 h-1.5 rounded-full ${dotColors[variant]}`} aria-hidden="true" />
       )}
       {children}
     </span>
@@ -72,7 +69,15 @@ export function Badge({
 /**
  * Status Badge - Predefined badges for common statuses
  */
-type StatusType = 'active' | 'inactive' | 'pending' | 'completed' | 'draft' | 'paused' | 'available' | 'booked';
+type StatusType =
+  | 'active'
+  | 'inactive'
+  | 'pending'
+  | 'completed'
+  | 'draft'
+  | 'paused'
+  | 'available'
+  | 'booked';
 
 const statusConfig: Record<StatusType, { variant: BadgeVariant; label: string }> = {
   active: { variant: 'success', label: 'Active' },

@@ -17,7 +17,7 @@ const paddingStyles = {
 
 /**
  * Card Component
- * 
+ *
  * A container with subtle border and optional hover state.
  * Swiss minimalist style: sharp corners, thin border, elevated background.
  */
@@ -54,11 +54,7 @@ interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
 export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ children, className = '', ...props }, ref) => {
     return (
-      <div
-        ref={ref}
-        className={`flex items-center justify-between mb-4 ${className}`}
-        {...props}
-      >
+      <div ref={ref} className={`flex items-center justify-between mb-4 ${className}`} {...props}>
         {children}
       </div>
     );
