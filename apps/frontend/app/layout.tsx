@@ -1,9 +1,36 @@
 import type { Metadata } from 'next';
+import { Bricolage_Grotesque, DM_Sans } from 'next/font/google';
 import './globals.css';
 import { Nav } from './components/nav';
 import { GoogleAnalyticsProvider } from './components/google-analytics';
 import { AnalyticsProvider } from './components/analytics-provider';
 import { ABTestDebugPanel } from './components/ab-test-debug-panel';
+import { ThemeProvider } from './components/theme-provider';
+
+/**
+ * Typography Setup
+ * 
+ * Bricolage Grotesque: Display font for headings
+ * - Distinctive, confident, modern
+ * - Used for h1-h6 and display text
+ * 
+ * DM Sans: Body font for readable content
+ * - Clean, professional, highly legible
+ * - Used for paragraphs, labels, UI text
+ */
+const displayFont = Bricolage_Grotesque({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-display',
+  weight: ['400', '500', '600', '700'],
+});
+
+const bodyFont = DM_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-body',
+  weight: ['400', '500', '600', '700'],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -54,19 +81,25 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen antialiased">
-        {/* Google Analytics 4 - loads script and tracks page views */}
-        <GoogleAnalyticsProvider />
+    <html
+      lang="en"
+      className={`${displayFont.variable} ${bodyFont.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="min-h-screen bg-[--color-bg] text-[--color-text] antialiased">
+        <ThemeProvider>
+          {/* Google Analytics 4 - loads script and tracks page views */}
+          <GoogleAnalyticsProvider />
 
-        {/* Analytics Provider - handles page tracking and user identification */}
-        <AnalyticsProvider>
-          <Nav />
-          <main className="mx-auto max-w-6xl p-4">{children}</main>
-        </AnalyticsProvider>
+          {/* Analytics Provider - handles page tracking and user identification */}
+          <AnalyticsProvider>
+            <Nav />
+            <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</main>
+          </AnalyticsProvider>
 
-        {/* A/B Test Debug Panel - visible in development or with ?ab_panel=true */}
-        <ABTestDebugPanel />
+          {/* A/B Test Debug Panel - visible in development or with ?ab_panel=true */}
+          <ABTestDebugPanel />
+        </ThemeProvider>
       </body>
     </html>
   );
