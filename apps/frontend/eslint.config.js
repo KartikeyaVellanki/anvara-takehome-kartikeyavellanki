@@ -9,6 +9,7 @@ export default [
         process: 'readonly',
         React: 'readonly',
         RequestInit: 'readonly',
+        HeadersInit: 'readonly',
       },
     },
     rules: {
