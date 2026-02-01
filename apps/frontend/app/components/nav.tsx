@@ -14,16 +14,34 @@ export function Nav() {
   // TODO: Convert to server component and fetch role server-side
   // Fetch user role from backend when user is logged in
   useEffect(() => {
-    if (user?.id) {
-      fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4291'}/api/auth/role/${user.id}`
-      )
-        .then((res) => res.json())
-        .then((data) => setRole(data.role))
-        .catch(() => setRole(null));
-    } else {
-      setRole(null);
+    let cancelled = false;
+
+    async function fetchRole() {
+      if (!user?.id) {
+        setRole(null);
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4291'}/api/auth/role/${user.id}`
+        );
+        const data = await res.json();
+        if (!cancelled) {
+          setRole(data.role);
+        }
+      } catch {
+        if (!cancelled) {
+          setRole(null);
+        }
+      }
     }
+
+    fetchRole();
+
+    return () => {
+      cancelled = true;
+    };
   }, [user?.id]);
 
   // TODO: Add active link styling using usePathname() from next/navigation
