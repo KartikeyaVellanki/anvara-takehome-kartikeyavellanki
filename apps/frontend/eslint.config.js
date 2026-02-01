@@ -4,6 +4,13 @@ export default [
   ...reactConfig,
   {
     files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+        React: 'readonly',
+        RequestInit: 'readonly',
+      },
+    },
     rules: {
       // Frontend-specific rules
     },
