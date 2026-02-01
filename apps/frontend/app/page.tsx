@@ -219,7 +219,7 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/login"
-              className="w-full rounded-lg bg-white px-8 py-4 text-lg font-semibold text-[--color-primary] shadow-lg transition-all hover:bg-indigo-50 sm:w-auto"
+              className="w-full rounded-lg bg-white px-8 py-4 text-lg font-semibold text-indigo-600 shadow-lg transition-all hover:bg-indigo-50 hover:text-indigo-700 sm:w-auto"
             >
               Create Free Account
             </Link>
