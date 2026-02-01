@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { Button } from './components/ui/button';
 
 export const metadata: Metadata = {
   title: 'Anvara - Connect Sponsors with Premium Publishers',
@@ -7,40 +8,42 @@ export const metadata: Metadata = {
     'The modern sponsorship marketplace. Sponsors find engaged audiences, publishers monetize content. Start growing your brand or revenue today.',
 };
 
-// Feature data for the features section
+/**
+ * Feature data - no emojis, clean professional icons
+ */
 const sponsorFeatures = [
   {
-    icon: '🎯',
     title: 'Targeted Reach',
     description: 'Connect with publishers whose audiences match your ideal customer profile.',
+    icon: TargetIcon,
   },
   {
-    icon: '📊',
     title: 'Campaign Analytics',
     description: 'Track impressions, clicks, and conversions with real-time dashboards.',
+    icon: ChartIcon,
   },
   {
-    icon: '💰',
     title: 'Flexible Budgets',
     description: 'Set your own budget and only pay for the placements that work for you.',
+    icon: WalletIcon,
   },
 ];
 
 const publisherFeatures = [
   {
-    icon: '💵',
     title: 'Monetize Content',
     description: 'Turn your audience into revenue with premium sponsorship opportunities.',
+    icon: CurrencyIcon,
   },
   {
-    icon: '🛡️',
     title: 'Full Control',
     description: 'Approve every sponsor and set your own rates for each ad slot.',
+    icon: ShieldIcon,
   },
   {
-    icon: '📈',
     title: 'Grow Revenue',
     description: 'Access a network of sponsors actively looking for quality publishers.',
+    icon: TrendingIcon,
   },
 ];
 
@@ -53,8 +56,7 @@ const howItWorks = [
   {
     step: 2,
     title: 'Browse the Marketplace',
-    description:
-      'Sponsors discover premium ad slots. Publishers list their inventory and set prices.',
+    description: 'Sponsors discover premium ad slots. Publishers list their inventory and set prices.',
   },
   {
     step: 3,
@@ -65,86 +67,90 @@ const howItWorks = [
 
 const stats = [
   { value: '500+', label: 'Active Publishers' },
-  { value: '$2M+', label: 'Sponsorships Facilitated' },
-  { value: '10K+', label: 'Campaigns Launched' },
-  { value: '98%', label: 'Satisfaction Rate' },
+  { value: '$2M+', label: 'Facilitated' },
+  { value: '10K+', label: 'Campaigns' },
+  { value: '98%', label: 'Satisfaction' },
 ];
 
 export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 sm:py-24">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50 via-white to-emerald-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900" />
-        <div className="mx-auto max-w-4xl text-center">
-          <span className="mb-4 inline-block rounded-full bg-indigo-100 px-4 py-1.5 text-sm font-medium text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300">
-            The Modern Sponsorship Marketplace
-          </span>
-          <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+      <section className="relative overflow-hidden py-20 sm:py-32">
+        {/* Subtle radial background */}
+        <div className="absolute inset-0 -z-10 bg-radial-light" />
+        
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="mb-6 text-[--text-sm] font-medium uppercase tracking-widest text-[--accent]">
+            Sponsorship Marketplace
+          </p>
+          <h1 className="font-display text-[--text-5xl] font-bold leading-[1.1] tracking-tight text-[--color-text] sm:text-6xl">
             Connect Brands with
-            <span className="bg-gradient-to-r from-[--color-primary] to-[--color-secondary] bg-clip-text text-transparent">
-              {' '}
-              Premium Publishers
-            </span>
+            <br />
+            <span className="text-[--accent]">Premium Publishers</span>
           </h1>
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-[--color-muted] sm:text-xl">
+          <p className="mx-auto mt-8 max-w-xl text-[--text-lg] leading-relaxed text-[--color-text-secondary]">
             Anvara brings sponsors and publishers together. Find the perfect audience for your brand
             or monetize your content with quality sponsorships.
           </p>
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/marketplace"
-              className="w-full rounded-lg bg-[--color-primary] px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:bg-[--color-primary-hover] hover:shadow-xl hover:shadow-indigo-500/30 sm:w-auto"
-            >
-              Explore Marketplace
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link href="/marketplace">
+              <Button size="lg">
+                Explore Marketplace
+              </Button>
             </Link>
-            <Link
-              href="/login"
-              className="w-full rounded-lg border-2 border-[--color-border] bg-white px-8 py-4 text-lg font-semibold transition-all hover:border-[--color-primary] hover:text-[--color-primary] sm:w-auto dark:bg-slate-800"
-            >
-              Get Started Free
+            <Link href="/login">
+              <Button variant="secondary" size="lg">
+                Get Started
+              </Button>
             </Link>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="border-y border-[--color-border] bg-slate-50 py-12 dark:bg-slate-800/50">
-        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 px-4 sm:grid-cols-4">
+      <section className="border-y border-[--color-border] py-12">
+        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-8 px-4 sm:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center">
-              <div className="text-3xl font-bold text-[--color-primary] sm:text-4xl">
+              <div className="font-display text-[--text-3xl] font-bold text-[--color-text]">
                 {stat.value}
               </div>
-              <div className="mt-1 text-sm text-[--color-muted]">{stat.label}</div>
+              <div className="mt-1 text-[--text-sm] text-[--color-text-muted]">{stat.label}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* Features Section - Sponsors */}
-      <section className="py-16 sm:py-24">
+      <section className="py-20 sm:py-28">
         <div className="mx-auto max-w-5xl px-4">
-          <div className="mb-12 text-center">
-            <span className="mb-2 inline-block text-sm font-semibold uppercase tracking-wider text-[--color-primary]">
+          <div className="mb-16">
+            <p className="mb-3 text-[--text-sm] font-medium uppercase tracking-widest text-[--accent]">
               For Sponsors
-            </span>
-            <h2 className="mb-4 text-3xl font-bold sm:text-4xl">Reach Your Ideal Audience</h2>
-            <p className="mx-auto max-w-2xl text-[--color-muted]">
+            </p>
+            <h2 className="font-display text-[--text-3xl] font-semibold text-[--color-text]">
+              Reach Your Ideal Audience
+            </h2>
+            <p className="mt-4 max-w-2xl text-[--text-lg] text-[--color-text-secondary]">
               Launch campaigns that connect with engaged audiences through trusted publishers.
             </p>
           </div>
-          <div className="grid gap-8 sm:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-3">
             {sponsorFeatures.map((feature) => (
               <article
                 key={feature.title}
-                className="group rounded-2xl border border-[--color-border] bg-white p-6 transition-all hover:border-[--color-primary]/50 hover:shadow-lg dark:bg-slate-800"
+                className="group border border-[--color-border] bg-[--color-bg-elevated] p-6 transition-colors duration-[--transition-base] hover:border-[--accent]"
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-100 text-2xl transition-transform group-hover:scale-110 dark:bg-indigo-900/50">
-                  {feature.icon}
+                <div className="mb-4 flex h-10 w-10 items-center justify-center border border-[--color-border] text-[--color-text-secondary] transition-colors group-hover:border-[--accent] group-hover:text-[--accent]">
+                  <feature.icon />
                 </div>
-                <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
-                <p className="text-[--color-muted]">{feature.description}</p>
+                <h3 className="mb-2 font-display text-[--text-base] font-semibold text-[--color-text]">
+                  {feature.title}
+                </h3>
+                <p className="text-[--text-sm] leading-relaxed text-[--color-text-secondary]">
+                  {feature.description}
+                </p>
               </article>
             ))}
           </div>
@@ -152,28 +158,34 @@ export default function Home() {
       </section>
 
       {/* Features Section - Publishers */}
-      <section className="bg-slate-50 py-16 sm:py-24 dark:bg-slate-800/50">
+      <section className="border-y border-[--color-border] bg-[--color-bg-subtle] py-20 sm:py-28">
         <div className="mx-auto max-w-5xl px-4">
-          <div className="mb-12 text-center">
-            <span className="mb-2 inline-block text-sm font-semibold uppercase tracking-wider text-[--color-secondary]">
+          <div className="mb-16">
+            <p className="mb-3 text-[--text-sm] font-medium uppercase tracking-widest text-[--accent]">
               For Publishers
-            </span>
-            <h2 className="mb-4 text-3xl font-bold sm:text-4xl">Monetize Your Audience</h2>
-            <p className="mx-auto max-w-2xl text-[--color-muted]">
+            </p>
+            <h2 className="font-display text-[--text-3xl] font-semibold text-[--color-text]">
+              Monetize Your Audience
+            </h2>
+            <p className="mt-4 max-w-2xl text-[--text-lg] text-[--color-text-secondary]">
               Turn your content into revenue with sponsorships from quality brands.
             </p>
           </div>
-          <div className="grid gap-8 sm:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-3">
             {publisherFeatures.map((feature) => (
               <article
                 key={feature.title}
-                className="group rounded-2xl border border-[--color-border] bg-white p-6 transition-all hover:border-[--color-secondary]/50 hover:shadow-lg dark:bg-slate-800"
+                className="group border border-[--color-border] bg-[--color-bg-elevated] p-6 transition-colors duration-[--transition-base] hover:border-[--accent]"
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-2xl transition-transform group-hover:scale-110 dark:bg-emerald-900/50">
-                  {feature.icon}
+                <div className="mb-4 flex h-10 w-10 items-center justify-center border border-[--color-border] text-[--color-text-secondary] transition-colors group-hover:border-[--accent] group-hover:text-[--accent]">
+                  <feature.icon />
                 </div>
-                <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
-                <p className="text-[--color-muted]">{feature.description}</p>
+                <h3 className="mb-2 font-display text-[--text-base] font-semibold text-[--color-text]">
+                  {feature.title}
+                </h3>
+                <p className="text-[--text-sm] leading-relaxed text-[--color-text-secondary]">
+                  {feature.description}
+                </p>
               </article>
             ))}
           </div>
@@ -181,28 +193,32 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-16 sm:py-24">
+      <section className="py-20 sm:py-28">
         <div className="mx-auto max-w-5xl px-4">
-          <div className="mb-12 text-center">
-            <span className="mb-2 inline-block text-sm font-semibold uppercase tracking-wider text-[--color-muted]">
+          <div className="mb-16 text-center">
+            <p className="mb-3 text-[--text-sm] font-medium uppercase tracking-widest text-[--color-text-muted]">
               Simple Process
-            </span>
-            <h2 className="mb-4 text-3xl font-bold sm:text-4xl">How It Works</h2>
-            <p className="mx-auto max-w-2xl text-[--color-muted]">
-              Get started in three simple steps. No complex setup required.
             </p>
+            <h2 className="font-display text-[--text-3xl] font-semibold text-[--color-text]">
+              How It Works
+            </h2>
           </div>
-          <div className="grid gap-8 sm:grid-cols-3">
-            {howItWorks.map((item) => (
+          <div className="grid gap-12 sm:grid-cols-3 sm:gap-8">
+            {howItWorks.map((item, index) => (
               <div key={item.step} className="relative text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[--color-primary] to-[--color-secondary] text-2xl font-bold text-white shadow-lg">
+                {/* Step connector line */}
+                {index < howItWorks.length - 1 && (
+                  <div className="absolute left-[calc(50%+40px)] top-5 hidden h-px w-[calc(100%-80px)] bg-[--color-border] sm:block" />
+                )}
+                <div className="mx-auto mb-6 flex h-10 w-10 items-center justify-center border-2 border-[--accent] font-display text-[--text-lg] font-semibold text-[--accent]">
                   {item.step}
                 </div>
-                {item.step < 3 && (
-                  <div className="absolute left-[60%] top-8 hidden h-0.5 w-[80%] bg-gradient-to-r from-[--color-primary]/50 to-transparent sm:block" />
-                )}
-                <h3 className="mb-2 text-xl font-semibold">{item.title}</h3>
-                <p className="text-[--color-muted]">{item.description}</p>
+                <h3 className="mb-3 font-display text-[--text-lg] font-semibold text-[--color-text]">
+                  {item.title}
+                </h3>
+                <p className="text-[--text-sm] leading-relaxed text-[--color-text-secondary]">
+                  {item.description}
+                </p>
               </div>
             ))}
           </div>
@@ -210,40 +226,96 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-br from-[--color-primary] to-indigo-700 py-16 text-white sm:py-24">
-        <div className="mx-auto max-w-3xl px-4 text-center">
-          <h2 className="mb-4 text-3xl font-bold sm:text-4xl">Ready to Get Started?</h2>
-          <p className="mb-8 text-lg text-indigo-100">
+      <section className="border-t border-[--color-border] bg-[--gray-900] py-20 text-white sm:py-28">
+        <div className="mx-auto max-w-2xl px-4 text-center">
+          <h2 className="font-display text-[--text-3xl] font-semibold">
+            Ready to Get Started?
+          </h2>
+          <p className="mt-4 text-[--text-lg] text-[--gray-400]">
             Join thousands of sponsors and publishers already growing with Anvara.
           </p>
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/login"
-              className="w-full rounded-lg bg-white px-8 py-4 text-lg font-semibold text-indigo-600 shadow-lg transition-all hover:bg-indigo-50 hover:text-indigo-700 sm:w-auto"
-            >
-              Create Free Account
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link href="/login">
+              <Button
+                size="lg"
+                className="bg-white text-[--gray-900] hover:bg-[--gray-100]"
+              >
+                Create Free Account
+              </Button>
             </Link>
-            <Link
-              href="/marketplace"
-              className="w-full rounded-lg border-2 border-white/30 px-8 py-4 text-lg font-semibold transition-all hover:border-white hover:bg-white/10 sm:w-auto"
-            >
-              View Marketplace
+            <Link href="/marketplace">
+              <Button
+                variant="ghost"
+                size="lg"
+                className="border border-[--gray-700] text-white hover:bg-[--gray-800] hover:text-white"
+              >
+                View Marketplace
+              </Button>
             </Link>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[--color-border] py-12">
+      <footer className="border-t border-[--color-border] py-8">
         <div className="mx-auto max-w-5xl px-4">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <div className="text-2xl font-bold text-[--color-primary]">Anvara</div>
-            <p className="text-sm text-[--color-muted]">
+            <div className="font-display text-xl font-semibold text-[--color-text]">Anvara</div>
+            <p className="text-[--text-sm] text-[--color-text-muted]">
               &copy; {new Date().getFullYear()} Anvara. All rights reserved.
             </p>
           </div>
         </div>
       </footer>
     </div>
+  );
+}
+
+// SVG Icons - clean, minimal line icons
+function TargetIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
+
+function ChartIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+  );
+}
+
+function WalletIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+    </svg>
+  );
+}
+
+function CurrencyIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
+
+function ShieldIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+    </svg>
+  );
+}
+
+function TrendingIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+    </svg>
   );
 }
