@@ -14,7 +14,8 @@ async function getAdSlots(publisherId: string): Promise<AdSlot[]> {
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get('better-auth.session_token');
 
-    const res = await fetch(`${API_URL}/api/ad-slots?publisherId=${publisherId}`, {
+    // Request all ad slots for this publisher (high limit to get all)
+    const res = await fetch(`${API_URL}/api/ad-slots?publisherId=${publisherId}&limit=100`, {
       cache: 'no-store',
       headers: {
         ...(sessionCookie && { Cookie: `better-auth.session_token=${sessionCookie.value}` }),
@@ -23,7 +24,9 @@ async function getAdSlots(publisherId: string): Promise<AdSlot[]> {
     if (!res.ok) {
       return [];
     }
-    return res.json();
+    // API returns { data: AdSlot[], pagination: {...} }
+    const response = await res.json();
+    return response.data || [];
   } catch {
     return [];
   }
