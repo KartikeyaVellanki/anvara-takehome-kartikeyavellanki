@@ -1,11 +1,21 @@
 // Utility helpers for the API
 
-// Helper to safely extract route/query params
-// BUG: Return type should be 'string' but function can return empty string silently
-export function getParam(param: unknown): string {
-  if (typeof param === 'string') return param;
-  if (Array.isArray(param) && typeof param[0] === 'string') return param[0];
-  return '';
+/**
+ * Safely extract route/query params from Express request
+ *
+ * @param param - The parameter value from req.params or req.query
+ * @returns The string value or undefined if not a valid string
+ *
+ * Note: Returns undefined instead of empty string to clearly indicate missing params.
+ * This is compatible with Prisma query filters which expect string | undefined.
+ * Callers should handle undefined case explicitly for proper error responses.
+ */
+export function getParam(param: unknown): string | undefined {
+  if (typeof param === 'string' && param.length > 0) return param;
+  if (Array.isArray(param) && typeof param[0] === 'string' && param[0].length > 0) {
+    return param[0];
+  }
+  return undefined;
 }
 
 // Helper to format currency values
@@ -65,12 +75,29 @@ export const DEPRECATED_CONFIG = {
   timeout: 5000,
 };
 
-// BUG: This function has a logic error - it doesn't handle negative numbers correctly
+/**
+ * Clamp a number value between min and max bounds
+ *
+ * Handles edge cases including:
+ * - Negative numbers
+ * - When min > max (swaps them automatically)
+ * - NaN values (returns min as fallback)
+ *
+ * @param value - The number to clamp
+ * @param min - Minimum bound
+ * @param max - Maximum bound
+ * @returns The clamped value
+ */
 export function clampValue(value: number, min: number, max: number): number {
-  // Should use Math.max(min, Math.min(max, value)) but this is wrong
-  if (value < min) return min;
-  if (value > max) return max;
-  return value;
+  // Handle NaN input
+  if (Number.isNaN(value)) return min;
+
+  // Ensure min <= max by swapping if needed
+  const actualMin = Math.min(min, max);
+  const actualMax = Math.max(min, max);
+
+  // Use Math.max/min for clean, correct clamping
+  return Math.max(actualMin, Math.min(actualMax, value));
 }
 
 // Format date for display
