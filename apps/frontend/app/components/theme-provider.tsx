@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
   useCallback,
+  startTransition,
   type ReactNode,
 } from 'react';
 
@@ -58,12 +59,17 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = useState(false);
 
-  // Initialize theme on mount
-  useEffect(() => {
+  /**
+   * Initialize theme on mount - required for SSR hydration.
+   * Uses startTransition to mark as non-urgent update.
+   */
+  useEffect(function initializeTheme() {
     const initial = getInitialTheme();
-    setThemeState(initial);
-    setResolvedTheme(resolveTheme(initial));
-    setMounted(true);
+    startTransition(() => {
+      setThemeState(initial);
+      setResolvedTheme(resolveTheme(initial));
+      setMounted(true);
+    });
   }, []);
 
   // Listen for system preference changes

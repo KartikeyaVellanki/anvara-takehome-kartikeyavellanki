@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback, type ReactNode, type KeyboardEvent } from 'react';
+import { useEffect, useCallback, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 interface DialogProps {

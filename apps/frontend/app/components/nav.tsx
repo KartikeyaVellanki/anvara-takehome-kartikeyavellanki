@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, startTransition } from 'react';
 import { authClient } from '@/auth-client';
 import { useTheme } from './theme-provider';
 import { Button } from './ui/button';
@@ -49,12 +49,19 @@ function ThemeToggle() {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
+  /**
+   * Detect client-side hydration to prevent SSR mismatches.
+   * Using startTransition to mark the update as non-urgent.
+   */
+  useEffect(function onMount() {
+    startTransition(() => {
+      setMounted(true);
+    });
   }, []);
 
+  // Show placeholder during SSR to avoid hydration mismatch
   if (!mounted) {
-    return <div className="h-9 w-9" />;
+    return <div className="h-9 w-9" aria-hidden="true" />;
   }
 
   const cycleTheme = () => {

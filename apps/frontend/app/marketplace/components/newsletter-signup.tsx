@@ -1,15 +1,21 @@
 'use client';
 
 import { useState } from 'react';
+import { Button } from '@/app/components/ui/button';
+import { Input } from '@/app/components/ui/input';
 
 type SubmitState = 'idle' | 'loading' | 'success' | 'error';
 
+/**
+ * Newsletter Signup Component
+ * 
+ * Clean form for email capture with proper validation and states.
+ */
 export function NewsletterSignup() {
   const [email, setEmail] = useState('');
   const [state, setState] = useState<SubmitState>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Basic email validation
   const isValidEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
@@ -17,7 +23,6 @@ export function NewsletterSignup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Client-side validation
     if (!email.trim()) {
       setState('error');
       setErrorMessage('Please enter your email');
@@ -60,23 +65,21 @@ export function NewsletterSignup() {
   // Success state
   if (state === 'success') {
     return (
-      <div className="rounded-xl border border-green-200 bg-green-50 p-5 dark:border-green-800 dark:bg-green-900/20">
+      <div className="border border-[--success] bg-[--success-light] p-5">
         <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-xl dark:bg-green-800">
-            ✓
-          </span>
+          <div className="flex h-10 w-10 items-center justify-center border border-green-300 text-[--success]">
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
           <div>
-            <p className="font-semibold text-green-800 dark:text-green-200">
-              You&apos;re subscribed!
-            </p>
-            <p className="text-sm text-green-600 dark:text-green-300">
-              Watch your inbox for exclusive deals.
-            </p>
+            <p className="font-medium text-green-800">You&apos;re subscribed!</p>
+            <p className="text-[--text-sm] text-green-700">Watch your inbox for updates.</p>
           </div>
         </div>
         <button
           onClick={() => setState('idle')}
-          className="mt-3 text-sm text-green-700 underline hover:text-green-800 dark:text-green-300"
+          className="mt-3 text-[--text-sm] text-green-700 underline hover:text-green-800"
         >
           Subscribe another email
         </button>
@@ -85,13 +88,12 @@ export function NewsletterSignup() {
   }
 
   return (
-    <div className="rounded-xl border border-[--color-border] bg-gradient-to-br from-[--color-primary]/5 to-[--color-secondary]/5 p-5">
-      <div className="mb-4 flex items-center gap-2">
-        <span className="text-2xl">📬</span>
-        <h3 className="font-semibold">Get Exclusive Deals</h3>
-      </div>
-      <p className="mb-4 text-sm text-[--color-muted]">
-        Subscribe to receive alerts about new premium placements and special pricing.
+    <div className="border border-[--color-border] bg-[--color-bg-elevated] p-5">
+      <h3 className="mb-1 font-display text-[--text-sm] font-semibold uppercase tracking-wide text-[--color-text]">
+        Newsletter
+      </h3>
+      <p className="mb-4 text-[--text-sm] text-[--color-text-secondary]">
+        Get alerts about new placements and special pricing.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-3">
@@ -99,7 +101,7 @@ export function NewsletterSignup() {
           <label htmlFor="newsletter-email" className="sr-only">
             Email address
           </label>
-          <input
+          <Input
             type="email"
             id="newsletter-email"
             value={email}
@@ -108,38 +110,29 @@ export function NewsletterSignup() {
               if (state === 'error') setState('idle');
             }}
             placeholder="you@company.com"
-            className={`w-full rounded-lg border px-4 py-3 text-base transition-colors focus:outline-none focus:ring-2 ${
-              state === 'error'
-                ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-200 dark:border-red-700 dark:bg-red-900/20'
-                : 'border-[--color-border] bg-white focus:border-[--color-primary] focus:ring-[--color-primary]/20 dark:bg-slate-800'
-            }`}
+            error={state === 'error'}
             disabled={state === 'loading'}
             aria-describedby={state === 'error' ? 'newsletter-error' : undefined}
           />
           {state === 'error' && (
-            <p id="newsletter-error" className="mt-1 text-sm text-red-600" role="alert">
+            <p id="newsletter-error" className="mt-1.5 text-[--text-xs] text-[--error]" role="alert">
               {errorMessage}
             </p>
           )}
         </div>
 
-        <button
+        <Button
           type="submit"
-          disabled={state === 'loading'}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[--color-primary] px-4 py-3 font-medium text-white transition-all hover:bg-[--color-primary-hover] disabled:opacity-70"
+          isLoading={state === 'loading'}
+          className="w-full"
         >
-          {state === 'loading' ? (
-            <>
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-              Subscribing...
-            </>
-          ) : (
-            'Subscribe'
-          )}
-        </button>
+          Subscribe
+        </Button>
       </form>
 
-      <p className="mt-3 text-center text-xs text-[--color-muted]">No spam, unsubscribe anytime.</p>
+      <p className="mt-3 text-center text-[--text-xs] text-[--color-text-muted]">
+        No spam, unsubscribe anytime.
+      </p>
     </div>
   );
 }
