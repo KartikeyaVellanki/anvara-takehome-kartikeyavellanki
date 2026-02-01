@@ -5,6 +5,15 @@ import { useFormStatus } from 'react-dom';
 import { useEffect, useRef } from 'react';
 import { createCampaign, updateCampaign, type ActionState } from '../actions';
 import type { Campaign } from '@/lib/types';
+import { Button } from '@/app/components/ui/button';
+import { Input, Textarea, Select, Label, HelperText } from '@/app/components/ui/input';
+import {
+  Dialog,
+  DialogHeader,
+  DialogTitle,
+  DialogBody,
+  DialogFooter,
+} from '@/app/components/ui/dialog';
 
 interface CampaignFormProps {
   campaign?: Campaign;
@@ -12,26 +21,22 @@ interface CampaignFormProps {
   onSuccess?: () => void;
 }
 
-// Submit button with pending state and animation
 function SubmitButton({ isEditing }: { isEditing: boolean }) {
   const { pending } = useFormStatus();
 
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="flex min-w-[140px] items-center justify-center gap-2 rounded-lg bg-[--color-primary] px-5 py-3 font-medium text-white shadow-sm transition-all hover:bg-[--color-primary-hover] hover:shadow-md disabled:opacity-50"
-    >
-      {pending && (
-        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-      )}
+    <Button type="submit" isLoading={pending}>
       {pending ? 'Saving...' : isEditing ? 'Update Campaign' : 'Create Campaign'}
-    </button>
+    </Button>
   );
 }
 
 const initialState: ActionState = {};
 
+/**
+ * Campaign Form
+ * Create or edit a campaign with validation.
+ */
 export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps) {
   const isEditing = !!campaign;
   const action = isEditing ? updateCampaign : createCampaign;
@@ -52,170 +57,118 @@ export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps
     return new Date(dateStr).toISOString().split('T')[0];
   };
 
-  // Common input classes for touch-friendly sizing
-  const inputClasses =
-    'w-full rounded-lg border border-[--color-border] bg-[--color-background] px-4 py-3 text-base transition-colors focus:border-[--color-primary] focus:outline-none focus:ring-2 focus:ring-[--color-primary]/20';
-
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      {/* Modal - full screen on mobile, centered card on desktop */}
-      <div className="max-h-[90vh] w-full overflow-y-auto rounded-t-2xl bg-[--color-background] p-6 shadow-xl animate-in slide-in-from-bottom duration-300 sm:max-w-lg sm:rounded-2xl">
-        {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-xl font-bold">{isEditing ? 'Edit Campaign' : 'Create Campaign'}</h2>
-          <button
-            onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-[--color-muted] transition-colors hover:bg-slate-100 hover:text-[--color-foreground] dark:hover:bg-slate-800"
-            aria-label="Close"
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
+    <Dialog open={true} onClose={onClose} size="lg">
+      <DialogHeader onClose={onClose}>
+        <DialogTitle>{isEditing ? 'Edit Campaign' : 'Create Campaign'}</DialogTitle>
+      </DialogHeader>
 
-        {/* Error Alert */}
-        {state.error && (
-          <div className="mb-6 flex items-center gap-3 rounded-lg bg-red-50 p-4 text-red-700 dark:bg-red-900/20 dark:text-red-400">
-            <span className="text-xl">⚠️</span>
-            <span className="text-sm font-medium">{state.error}</span>
-          </div>
-        )}
-
-        <form ref={formRef} action={formAction} className="space-y-5">
+      <form ref={formRef} action={formAction}>
+        <DialogBody className="space-y-5">
           {isEditing && <input type="hidden" name="id" value={campaign.id} />}
 
+          {/* Error Alert */}
+          {state.error && (
+            <div className="border border-[--error] bg-[--error-light] p-4 text-[--text-sm] text-red-800">
+              {state.error}
+            </div>
+          )}
+
           <div>
-            <label htmlFor="name" className="mb-2 block text-sm font-medium">
-              Campaign Name <span className="text-red-500">*</span>
-            </label>
-            <input
+            <Label htmlFor="name" required>Campaign Name</Label>
+            <Input
               type="text"
               id="name"
               name="name"
               defaultValue={campaign?.name || ''}
-              className={inputClasses}
               placeholder="Enter campaign name"
+              error={Boolean(state.fieldErrors?.name)}
               autoFocus
             />
             {state.fieldErrors?.name && (
-              <p className="mt-2 flex items-center gap-1 text-sm text-red-600">
-                <span>⚠</span> {state.fieldErrors.name}
-              </p>
+              <HelperText error>{state.fieldErrors.name}</HelperText>
             )}
           </div>
 
           <div>
-            <label htmlFor="description" className="mb-2 block text-sm font-medium">
-              Description
-            </label>
-            <textarea
+            <Label htmlFor="description">Description</Label>
+            <Textarea
               id="description"
               name="description"
               defaultValue={campaign?.description || ''}
               rows={3}
-              className={inputClasses}
               placeholder="Describe your campaign goals..."
             />
           </div>
 
           <div>
-            <label htmlFor="budget" className="mb-2 block text-sm font-medium">
-              Budget ($) <span className="text-red-500">*</span>
-            </label>
-            <input
+            <Label htmlFor="budget" required>Budget ($)</Label>
+            <Input
               type="number"
               id="budget"
               name="budget"
               defaultValue={campaign?.budget || ''}
-              min="1"
-              step="0.01"
-              inputMode="decimal"
-              className={inputClasses}
+              min={1}
+              step={0.01}
               placeholder="1000"
+              error={Boolean(state.fieldErrors?.budget)}
             />
             {state.fieldErrors?.budget && (
-              <p className="mt-2 flex items-center gap-1 text-sm text-red-600">
-                <span>⚠</span> {state.fieldErrors.budget}
-              </p>
+              <HelperText error>{state.fieldErrors.budget}</HelperText>
             )}
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="startDate" className="mb-2 block text-sm font-medium">
-                Start Date <span className="text-red-500">*</span>
-              </label>
-              <input
+              <Label htmlFor="startDate" required>Start Date</Label>
+              <Input
                 type="date"
                 id="startDate"
                 name="startDate"
                 defaultValue={formatDateForInput(campaign?.startDate)}
-                className={inputClasses}
+                error={Boolean(state.fieldErrors?.startDate)}
               />
               {state.fieldErrors?.startDate && (
-                <p className="mt-2 flex items-center gap-1 text-sm text-red-600">
-                  <span>⚠</span> {state.fieldErrors.startDate}
-                </p>
+                <HelperText error>{state.fieldErrors.startDate}</HelperText>
               )}
             </div>
             <div>
-              <label htmlFor="endDate" className="mb-2 block text-sm font-medium">
-                End Date <span className="text-red-500">*</span>
-              </label>
-              <input
+              <Label htmlFor="endDate" required>End Date</Label>
+              <Input
                 type="date"
                 id="endDate"
                 name="endDate"
                 defaultValue={formatDateForInput(campaign?.endDate)}
-                className={inputClasses}
+                error={Boolean(state.fieldErrors?.endDate)}
               />
               {state.fieldErrors?.endDate && (
-                <p className="mt-2 flex items-center gap-1 text-sm text-red-600">
-                  <span>⚠</span> {state.fieldErrors.endDate}
-                </p>
+                <HelperText error>{state.fieldErrors.endDate}</HelperText>
               )}
             </div>
           </div>
 
           <div>
-            <label htmlFor="status" className="mb-2 block text-sm font-medium">
-              Status
-            </label>
-            <select
+            <Label htmlFor="status">Status</Label>
+            <Select
               id="status"
               name="status"
               defaultValue={campaign?.status || 'DRAFT'}
-              className={inputClasses}
             >
-              <option value="DRAFT">📝 Draft</option>
-              <option value="ACTIVE">🚀 Active</option>
-              <option value="PAUSED">⏸️ Paused</option>
-              <option value="COMPLETED">✅ Completed</option>
-            </select>
+              <option value="DRAFT">Draft</option>
+              <option value="ACTIVE">Active</option>
+              <option value="PAUSED">Paused</option>
+              <option value="COMPLETED">Completed</option>
+            </Select>
           </div>
+        </DialogBody>
 
-          {/* Actions - sticky on mobile */}
-          <div className="flex flex-col-reverse gap-3 border-t border-[--color-border] pt-6 sm:flex-row sm:justify-end">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-lg border border-[--color-border] px-5 py-3 font-medium transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
-            >
-              Cancel
-            </button>
-            <SubmitButton isEditing={isEditing} />
-          </div>
-        </form>
-      </div>
-    </div>
+        <DialogFooter>
+          <Button type="button" variant="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+          <SubmitButton isEditing={isEditing} />
+        </DialogFooter>
+      </form>
+    </Dialog>
   );
 }

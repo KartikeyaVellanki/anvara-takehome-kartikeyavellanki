@@ -2,18 +2,20 @@
 
 import { useState } from 'react';
 import { AdSlotForm } from './ad-slot-form';
+import { Button } from '@/app/components/ui/button';
 
+/**
+ * Create Ad Slot Button
+ * Opens ad slot form in a modal.
+ */
 export function CreateAdSlotButton() {
   const [showForm, setShowForm] = useState(false);
 
   return (
     <>
-      <button
-        onClick={() => setShowForm(true)}
-        className="rounded-md bg-[--color-primary] px-4 py-2 text-white hover:opacity-90"
-      >
+      <Button onClick={() => setShowForm(true)}>
         Create Ad Slot
-      </button>
+      </Button>
 
       {showForm && <AdSlotForm onClose={() => setShowForm(false)} />}
     </>

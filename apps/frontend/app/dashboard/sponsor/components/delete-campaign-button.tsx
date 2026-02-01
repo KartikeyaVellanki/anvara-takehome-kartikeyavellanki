@@ -2,8 +2,16 @@
 
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, startTransition } from 'react';
 import { deleteCampaign, type ActionState } from '../actions';
+import { Button } from '@/app/components/ui/button';
+import {
+  Dialog,
+  DialogHeader,
+  DialogTitle,
+  DialogBody,
+  DialogFooter,
+} from '@/app/components/ui/dialog';
 
 interface DeleteCampaignButtonProps {
   campaignId: string;
@@ -14,72 +22,72 @@ function DeleteButton() {
   const { pending } = useFormStatus();
 
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:opacity-50"
-    >
+    <Button type="submit" variant="danger" isLoading={pending}>
       {pending ? 'Deleting...' : 'Delete'}
-    </button>
+    </Button>
   );
 }
 
 const initialState: ActionState = {};
 
+/**
+ * Delete Campaign Button
+ * Shows confirmation dialog before deleting.
+ */
 export function DeleteCampaignButton({ campaignId, campaignName }: DeleteCampaignButtonProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [state, formAction] = useActionState(deleteCampaign, initialState);
 
   // Close modal on successful deletion
-  // This is an intentional response to server action state change
   useEffect(() => {
     if (state.success) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setShowConfirm(false);
+      startTransition(() => {
+        setShowConfirm(false);
+      });
     }
   }, [state.success]);
 
   return (
     <>
-      <button
+      <Button
+        variant="ghost"
+        size="sm"
         onClick={() => setShowConfirm(true)}
-        className="text-sm text-red-600 hover:text-red-700"
-        title="Delete campaign"
+        className="text-[--error] hover:text-red-700"
       >
         Delete
-      </button>
+      </Button>
 
-      {showConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-sm rounded-lg bg-[--color-background] p-6 shadow-xl">
-            <h3 className="mb-2 text-lg font-semibold">Delete Campaign</h3>
-            <p className="mb-4 text-[--color-muted]">
-              Are you sure you want to delete &quot;{campaignName}&quot;? This action cannot be
-              undone.
-            </p>
+      <Dialog open={showConfirm} onClose={() => setShowConfirm(false)} size="sm">
+        <DialogHeader onClose={() => setShowConfirm(false)}>
+          <DialogTitle>Delete Campaign</DialogTitle>
+        </DialogHeader>
+        <DialogBody>
+          <p className="text-[--text-sm] text-[--color-text-secondary]">
+            Are you sure you want to delete &quot;{campaignName}&quot;? This action cannot be
+            undone.
+          </p>
 
-            {state.error && (
-              <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-600">
-                {state.error}
-              </div>
-            )}
-
-            <form action={formAction}>
-              <input type="hidden" name="id" value={campaignId} />
-              <div className="flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setShowConfirm(false)}
-                  className="rounded-md border border-[--color-border] px-4 py-2 hover:bg-[--color-border]/20"
-                >
-                  Cancel
-                </button>
-                <DeleteButton />
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+          {state.error && (
+            <div className="mt-4 border border-[--error] bg-[--error-light] p-3 text-[--text-sm] text-red-800">
+              {state.error}
+            </div>
+          )}
+        </DialogBody>
+        <DialogFooter>
+          <form action={formAction} className="flex items-center gap-3">
+            <input type="hidden" name="id" value={campaignId} />
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setShowConfirm(false)}
+            >
+              Cancel
+            </Button>
+            <DeleteButton />
+          </form>
+        </DialogFooter>
+      </Dialog>
     </>
   );
 }

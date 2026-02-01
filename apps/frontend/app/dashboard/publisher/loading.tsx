@@ -1,24 +1,35 @@
-// Loading UI for publisher dashboard - shown while data is being fetched
+import { Skeleton, CardSkeleton, StatsCardSkeleton } from '@/app/components/ui/skeleton';
+
+/**
+ * Loading UI for publisher dashboard
+ * Shown while data is being fetched via Suspense.
+ */
 export default function Loading() {
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="h-8 w-40 animate-pulse rounded bg-gray-200" />
+    <div className="py-8">
+      {/* Header */}
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <Skeleton height={32} width={140} className="mb-2" />
+          <Skeleton height={20} width={220} />
+        </div>
+        <Skeleton height={40} width={140} />
       </div>
 
+      {/* Stats Grid */}
+      <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <StatsCardSkeleton key={i} />
+        ))}
+      </div>
+
+      {/* Section Header */}
+      <Skeleton height={24} width={120} className="mb-4" />
+
+      {/* Cards Grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="rounded-lg border border-[--color-border] p-4">
-            <div className="mb-2 flex items-start justify-between">
-              <div className="h-5 w-32 animate-pulse rounded bg-gray-200" />
-              <div className="h-5 w-16 animate-pulse rounded bg-gray-200" />
-            </div>
-            <div className="mb-3 h-4 w-full animate-pulse rounded bg-gray-200" />
-            <div className="flex items-center justify-between">
-              <div className="h-4 w-16 animate-pulse rounded bg-gray-200" />
-              <div className="h-5 w-20 animate-pulse rounded bg-gray-200" />
-            </div>
-          </div>
+        {Array.from({ length: 3 }).map((_, i) => (
+          <CardSkeleton key={i} />
         ))}
       </div>
     </div>

@@ -4,23 +4,20 @@ import { useState } from 'react';
 import type { Campaign } from '@/lib/types';
 import { CampaignForm } from './campaign-form';
 import { DeleteCampaignButton } from './delete-campaign-button';
+import { Button } from '@/app/components/ui/button';
+import { Badge } from '@/app/components/ui/badge';
 
 interface CampaignCardProps {
   campaign: Campaign;
 }
 
-const statusColors: Record<string, string> = {
-  DRAFT: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
-  ACTIVE: 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400',
-  PAUSED: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400',
-  COMPLETED: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400',
-};
+type CampaignStatus = 'DRAFT' | 'ACTIVE' | 'PAUSED' | 'COMPLETED';
 
-const statusIcons: Record<string, string> = {
-  DRAFT: '📝',
-  ACTIVE: '🚀',
-  PAUSED: '⏸️',
-  COMPLETED: '✅',
+const statusVariants: Record<CampaignStatus, 'default' | 'success' | 'warning' | 'accent'> = {
+  DRAFT: 'default',
+  ACTIVE: 'success',
+  PAUSED: 'warning',
+  COMPLETED: 'accent',
 };
 
 export function CampaignCard({ campaign }: CampaignCardProps) {
@@ -28,60 +25,59 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
   const progress =
     campaign.budget > 0 ? (Number(campaign.spent) / Number(campaign.budget)) * 100 : 0;
 
+  const status = campaign.status as CampaignStatus;
+
   return (
     <>
-      <div className="group rounded-xl border border-[--color-border] bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:bg-slate-800">
+      <div className="group border border-[--color-border] bg-[--color-bg-elevated] p-5 transition-colors duration-[--transition-base] hover:border-[--accent]">
         {/* Header */}
-        <div className="mb-3 flex items-start justify-between">
-          <h3 className="font-semibold text-[--color-foreground] transition-colors group-hover:text-[--color-primary]">
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <h3 className="font-display text-[--text-base] font-semibold text-[--color-text] transition-colors group-hover:text-[--accent]">
             {campaign.name}
           </h3>
-          <span
-            className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${statusColors[campaign.status] || 'bg-gray-100'}`}
-          >
-            <span>{statusIcons[campaign.status]}</span>
-            {campaign.status}
-          </span>
+          <Badge variant={statusVariants[status]} dot>
+            {status.charAt(0) + status.slice(1).toLowerCase()}
+          </Badge>
         </div>
 
         {/* Description */}
         {campaign.description && (
-          <p className="mb-4 text-sm leading-relaxed text-[--color-muted] line-clamp-2">
+          <p className="mb-4 text-[--text-sm] leading-relaxed text-[--color-text-secondary] line-clamp-2">
             {campaign.description}
           </p>
         )}
 
         {/* Budget Progress */}
-        <div className="mb-4 rounded-lg bg-slate-50 p-3 dark:bg-slate-700/50">
-          <div className="mb-2 flex justify-between text-sm">
-            <span className="text-[--color-muted]">Budget Progress</span>
-            <span className="font-medium">
-              ${Number(campaign.spent).toLocaleString()}{' '}
-              <span className="text-[--color-muted]">
-                / ${Number(campaign.budget).toLocaleString()}
+        <div className="mb-4 border border-[--color-border] bg-[--color-bg-subtle] p-3">
+          <div className="mb-2 flex justify-between text-[--text-sm]">
+            <span className="text-[--color-text-muted]">Budget</span>
+            <span className="font-medium text-[--color-text]">
+              ${Number(campaign.spent).toLocaleString()}
+              <span className="text-[--color-text-muted]">
+                {' '}/ ${Number(campaign.budget).toLocaleString()}
               </span>
             </span>
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-gray-200 dark:bg-slate-600">
+          <div className="h-1.5 overflow-hidden bg-[--color-border]">
             <div
-              className="h-2 rounded-full bg-gradient-to-r from-[--color-primary] to-[--color-primary-light] transition-all duration-500"
+              className="h-full bg-[--accent] transition-all duration-500"
               style={{ width: `${Math.min(progress, 100)}%` }}
             />
           </div>
-          <p className="mt-1 text-right text-xs text-[--color-muted]">
-            {progress.toFixed(1)}% used
+          <p className="mt-1.5 text-right text-[--text-xs] text-[--color-text-muted]">
+            {progress.toFixed(0)}% utilized
           </p>
         </div>
 
         {/* Dates */}
-        <div className="mb-4 flex items-center gap-2 text-sm text-[--color-muted]">
-          <span>📅</span>
+        <div className="mb-4 flex items-center gap-2 text-[--text-sm] text-[--color-text-secondary]">
+          <CalendarIcon />
           <span>
             {new Date(campaign.startDate).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
             })}{' '}
-            -{' '}
+            &ndash;{' '}
             {new Date(campaign.endDate).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
@@ -92,17 +88,26 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-2 border-t border-[--color-border] pt-4">
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => setShowEditForm(true)}
-            className="rounded-lg bg-[--color-primary]/10 px-4 py-2 text-sm font-medium text-[--color-primary] transition-colors hover:bg-[--color-primary]/20"
           >
             Edit
-          </button>
+          </Button>
           <DeleteCampaignButton campaignId={campaign.id} campaignName={campaign.name} />
         </div>
       </div>
 
       {showEditForm && <CampaignForm campaign={campaign} onClose={() => setShowEditForm(false)} />}
     </>
+  );
+}
+
+function CalendarIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    </svg>
   );
 }
