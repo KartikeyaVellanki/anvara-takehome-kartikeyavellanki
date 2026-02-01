@@ -7,6 +7,10 @@ import { authClient } from '@/auth-client';
 import { RequestQuoteModal } from './request-quote-modal';
 import { useAnalytics } from '@/lib/hooks/use-analytics';
 import { useABTest } from '@/lib/hooks/use-ab-test';
+import { Button } from '@/app/components/ui/button';
+import { StatusBadge, TypeBadge } from '@/app/components/ui/badge';
+import { Textarea } from '@/app/components/ui/input';
+import { Skeleton } from '@/app/components/ui/skeleton';
 
 interface AdSlot {
   id: string;
@@ -35,26 +39,14 @@ interface RoleInfo {
   name?: string;
 }
 
-const typeColors: Record<string, string> = {
-  DISPLAY: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
-  VIDEO: 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300',
-  NATIVE: 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300',
-  NEWSLETTER: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
-  PODCAST: 'bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300',
-};
-
-const typeIcons: Record<string, string> = {
-  DISPLAY: '🖼️',
-  VIDEO: '🎬',
-  NATIVE: '📱',
-  NEWSLETTER: '📧',
-  PODCAST: '🎙️',
-};
-
 interface Props {
   id: string;
 }
 
+/**
+ * Ad Slot Detail Page
+ * Shows full details of an ad slot with booking functionality.
+ */
 export function AdSlotDetail({ id }: Props) {
   const [adSlot, setAdSlot] = useState<AdSlot | null>(null);
   const [loading, setLoading] = useState(true);
@@ -68,25 +60,19 @@ export function AdSlotDetail({ id }: Props) {
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [showQuoteModal, setShowQuoteModal] = useState(false);
 
-  // Analytics hook for tracking user interactions
   const { trackListing, trackCTA, trackBooking, trackError: trackErr } = useAnalytics();
-
-  // A/B test for CTA button text
   const ctaVariant = useABTest('cta-button-text');
 
-  // Get CTA text based on A/B test variant
   const getCtaText = () => {
-    return ctaVariant === 'B' ? '🚀 Get Started' : '🚀 Book Now';
+    return ctaVariant === 'B' ? 'Get Started' : 'Book Now';
   };
 
   useEffect(() => {
-    // Fetch ad slot
     getAdSlot(id)
       .then(setAdSlot)
       .catch(() => setError('Failed to load ad slot details'))
       .finally(() => setLoading(false));
 
-    // Check user session and fetch role
     authClient
       .getSession()
       .then(({ data }) => {
@@ -94,7 +80,6 @@ export function AdSlotDetail({ id }: Props) {
           const sessionUser = data.user as User;
           setUser(sessionUser);
 
-          // Fetch role info from backend
           fetch(
             `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4291'}/api/auth/role/${sessionUser.id}`
           )
@@ -109,7 +94,6 @@ export function AdSlotDetail({ id }: Props) {
       .catch(() => setRoleLoading(false));
   }, [id]);
 
-  // Track listing view when adSlot is loaded (conversion tracking)
   useEffect(() => {
     if (adSlot) {
       trackListing({
@@ -119,14 +103,12 @@ export function AdSlotDetail({ id }: Props) {
         price: Number(adSlot.basePrice),
       });
     }
-    // Only track when listing ID changes, not on every adSlot update
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [adSlot?.id, trackListing]);
 
   const handleBooking = async () => {
     if (!roleInfo?.sponsorId || !adSlot) return;
 
-    // Track CTA click
     trackCTA(getCtaText(), 'listing-detail-sidebar', {
       listingId: adSlot.id,
       listingPrice: Number(adSlot.basePrice),
@@ -153,7 +135,6 @@ export function AdSlotDetail({ id }: Props) {
         throw new Error(data.error || 'Failed to book placement');
       }
 
-      // Track successful booking (macro-conversion)
       trackBooking({
         id: adSlot.id,
         name: adSlot.name,
@@ -171,7 +152,6 @@ export function AdSlotDetail({ id }: Props) {
     }
   };
 
-  // Handler for opening quote modal with analytics
   const handleOpenQuoteModal = () => {
     if (adSlot) {
       trackCTA('Request Quote', 'listing-detail', {
@@ -209,25 +189,39 @@ export function AdSlotDetail({ id }: Props) {
 
   if (loading) {
     return (
-      <div className="py-12 text-center">
-        <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-[--color-primary] border-t-transparent" />
-        <p className="mt-4 text-[--color-muted]">Loading details...</p>
+      <div className="py-8">
+        <Skeleton height={20} width={160} className="mb-6" />
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <div className="border border-[--color-border] bg-[--color-bg-elevated] p-6">
+              <Skeleton height={24} width={100} className="mb-4" />
+              <Skeleton height={32} width="60%" className="mb-2" />
+              <Skeleton height={16} width={200} className="mb-6" />
+              <Skeleton height={80} width="100%" />
+            </div>
+          </div>
+          <div className="lg:col-span-1">
+            <div className="border border-[--color-border] bg-[--color-bg-elevated] p-6">
+              <Skeleton height={40} width={120} className="mx-auto mb-4" />
+              <Skeleton height={48} width="100%" />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (error || !adSlot) {
     return (
-      <div className="space-y-4">
+      <div className="py-8">
         <Link
           href="/marketplace"
-          className="inline-flex items-center gap-2 text-[--color-primary] hover:underline"
+          className="mb-6 inline-flex items-center gap-2 text-[--text-sm] text-[--accent] hover:underline"
         >
-          ← Back to Marketplace
+          <ArrowLeftIcon /> Back to Marketplace
         </Link>
-        <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center dark:border-red-900 dark:bg-red-900/20">
-          <span className="mb-2 block text-3xl">😕</span>
-          <p className="font-medium text-red-800 dark:text-red-200">
+        <div className="border border-[--error] bg-[--error-light] p-6 text-center">
+          <p className="font-medium text-red-800">
             {error || 'Ad slot not found'}
           </p>
         </div>
@@ -236,72 +230,45 @@ export function AdSlotDetail({ id }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="py-8">
       <Link
         href="/marketplace"
-        className="inline-flex items-center gap-2 text-[--color-primary] transition-colors hover:underline"
+        className="mb-6 inline-flex items-center gap-2 text-[--text-sm] text-[--accent] transition-colors hover:underline"
       >
-        ← Back to Marketplace
+        <ArrowLeftIcon /> Back to Marketplace
       </Link>
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main Content */}
-        <div className="lg:col-span-2">
-          <div className="overflow-hidden rounded-2xl border border-[--color-border] bg-white shadow-sm dark:bg-slate-800">
-            {/* Type Header */}
-            <div
-              className={`h-2 ${
-                adSlot.type === 'DISPLAY'
-                  ? 'bg-blue-500'
-                  : adSlot.type === 'VIDEO'
-                    ? 'bg-red-500'
-                    : adSlot.type === 'NATIVE'
-                      ? 'bg-green-500'
-                      : adSlot.type === 'NEWSLETTER'
-                        ? 'bg-purple-500'
-                        : 'bg-orange-500'
-              }`}
-            />
-
+        <div className="lg:col-span-2 space-y-6">
+          <div className="border border-[--color-border] bg-[--color-bg-elevated]">
             <div className="p-6">
               {/* Header */}
               <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <div className="mb-2 flex items-center gap-2">
-                    <span
-                      className={`flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium ${typeColors[adSlot.type] || 'bg-gray-100'}`}
-                    >
-                      {typeIcons[adSlot.type]} {adSlot.type}
-                    </span>
-                    {adSlot.isAvailable ? (
-                      <span className="flex items-center gap-1 rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700 dark:bg-green-900/50 dark:text-green-300">
-                        <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
-                        Available
-                      </span>
-                    ) : (
-                      <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-                        Booked
-                      </span>
-                    )}
+                  <div className="mb-3 flex items-center gap-2">
+                    <TypeBadge type={adSlot.type as 'DISPLAY' | 'VIDEO' | 'NATIVE' | 'NEWSLETTER' | 'PODCAST'} />
+                    <StatusBadge status={adSlot.isAvailable ? 'available' : 'booked'} />
                   </div>
-                  <h1 className="text-2xl font-bold lg:text-3xl">{adSlot.name}</h1>
+                  <h1 className="font-display text-[--text-2xl] font-semibold text-[--color-text]">
+                    {adSlot.name}
+                  </h1>
                   {adSlot.publisher && (
-                    <p className="mt-1 text-[--color-muted]">
+                    <p className="mt-1 text-[--text-sm] text-[--color-text-secondary]">
                       by{' '}
-                      <span className="font-medium text-[--color-foreground]">
+                      <span className="font-medium text-[--color-text]">
                         {adSlot.publisher.name}
                       </span>
                       {adSlot.publisher.website && (
                         <>
-                          {' '}
-                          ·{' '}
+                          {' · '}
                           <a
                             href={adSlot.publisher.website}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[--color-primary] hover:underline"
+                            className="text-[--accent] hover:underline"
                           >
-                            Visit website ↗
+                            Visit website
                           </a>
                         </>
                       )}
@@ -313,113 +280,79 @@ export function AdSlotDetail({ id }: Props) {
               {/* Description */}
               {adSlot.description && (
                 <div className="mb-6">
-                  <h2 className="mb-2 font-semibold">About this placement</h2>
-                  <p className="leading-relaxed text-[--color-muted]">{adSlot.description}</p>
+                  <h2 className="mb-2 font-display text-[--text-base] font-semibold text-[--color-text]">
+                    About this placement
+                  </h2>
+                  <p className="text-[--text-sm] leading-relaxed text-[--color-text-secondary]">
+                    {adSlot.description}
+                  </p>
                 </div>
               )}
 
-              {/* Simulated Metrics - improves conversion by showing value */}
+              {/* Metrics */}
               <div className="mb-6 grid gap-4 sm:grid-cols-3">
-                <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-700/50">
-                  <p className="text-2xl font-bold">25K+</p>
-                  <p className="text-sm text-[--color-muted]">Monthly Impressions</p>
-                </div>
-                <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-700/50">
-                  <p className="text-2xl font-bold">4.8%</p>
-                  <p className="text-sm text-[--color-muted]">Avg Click Rate</p>
-                </div>
-                <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-700/50">
-                  <p className="text-2xl font-bold">85%</p>
-                  <p className="text-sm text-[--color-muted]">Audience Match</p>
-                </div>
+                <MetricCard value="25K+" label="Monthly Impressions" />
+                <MetricCard value="4.8%" label="Avg Click Rate" />
+                <MetricCard value="85%" label="Audience Match" />
               </div>
 
               {/* Trust Signals */}
-              <div className="rounded-xl border border-[--color-border] p-4">
-                <h3 className="mb-3 font-semibold">Why sponsors love this placement</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="text-green-500">✓</span>
-                    <span>Verified publisher with 2+ years on platform</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-green-500">✓</span>
-                    <span>High engagement audience in target demographic</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-green-500">✓</span>
-                    <span>Flexible campaign durations available</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-green-500">✓</span>
-                    <span>Detailed analytics and reporting included</span>
-                  </div>
+              <div className="border border-[--color-border] p-4">
+                <h3 className="mb-3 font-display text-[--text-sm] font-semibold text-[--color-text]">
+                  Why sponsors love this placement
+                </h3>
+                <div className="space-y-2 text-[--text-sm] text-[--color-text-secondary]">
+                  <TrustItem>Verified publisher with 2+ years on platform</TrustItem>
+                  <TrustItem>High engagement audience in target demographic</TrustItem>
+                  <TrustItem>Flexible campaign durations available</TrustItem>
+                  <TrustItem>Detailed analytics and reporting included</TrustItem>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* FAQ Section - addresses common objections */}
-          <div className="mt-6 rounded-2xl border border-[--color-border] bg-white p-6 dark:bg-slate-800">
-            <h2 className="mb-4 text-lg font-semibold">Frequently Asked Questions</h2>
+          {/* FAQ Section */}
+          <div className="border border-[--color-border] bg-[--color-bg-elevated] p-6">
+            <h2 className="mb-4 font-display text-[--text-lg] font-semibold text-[--color-text]">
+              Frequently Asked Questions
+            </h2>
             <div className="space-y-4">
-              <details className="group">
-                <summary className="flex cursor-pointer items-center justify-between font-medium">
-                  How long does it take to get started?
-                  <span className="transition-transform group-open:rotate-180">▼</span>
-                </summary>
-                <p className="mt-2 text-sm text-[--color-muted]">
-                  Most placements go live within 24-48 hours after booking confirmation and creative
-                  approval.
-                </p>
-              </details>
-              <details className="group">
-                <summary className="flex cursor-pointer items-center justify-between font-medium">
-                  Can I cancel or modify my booking?
-                  <span className="transition-transform group-open:rotate-180">▼</span>
-                </summary>
-                <p className="mt-2 text-sm text-[--color-muted]">
-                  Yes, you can modify or cancel with 7 days notice. Contact us for custom
-                  arrangements.
-                </p>
-              </details>
-              <details className="group">
-                <summary className="flex cursor-pointer items-center justify-between font-medium">
-                  What reporting do I get?
-                  <span className="transition-transform group-open:rotate-180">▼</span>
-                </summary>
-                <p className="mt-2 text-sm text-[--color-muted]">
-                  Weekly reports with impressions, clicks, CTR, and audience insights. Real-time
-                  dashboard access included.
-                </p>
-              </details>
+              <FAQItem question="How long does it take to get started?">
+                Most placements go live within 24-48 hours after booking confirmation and creative
+                approval.
+              </FAQItem>
+              <FAQItem question="Can I cancel or modify my booking?">
+                Yes, you can modify or cancel with 7 days notice. Contact us for custom
+                arrangements.
+              </FAQItem>
+              <FAQItem question="What reporting do I get?">
+                Weekly reports with impressions, clicks, CTR, and audience insights. Real-time
+                dashboard access included.
+              </FAQItem>
             </div>
           </div>
         </div>
 
         {/* Sidebar - Booking Card */}
         <div className="lg:col-span-1">
-          <div className="sticky top-24 rounded-2xl border border-[--color-border] bg-white p-6 shadow-lg dark:bg-slate-800">
+          <div className="sticky top-24 border border-[--color-border] bg-[--color-bg-elevated] p-6">
             {/* Price */}
             <div className="mb-6 text-center">
-              <p className="text-3xl font-bold text-[--color-primary]">
+              <p className="font-display text-[--text-3xl] font-bold text-[--color-text]">
                 ${Number(adSlot.basePrice).toLocaleString()}
               </p>
-              <p className="text-[--color-muted]">per month</p>
+              <p className="text-[--text-sm] text-[--color-text-muted]">per month</p>
             </div>
 
             {bookingSuccess ? (
-              <div className="rounded-xl border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
-                <div className="mb-2 flex items-center gap-2">
-                  <span className="text-2xl">🎉</span>
-                  <h3 className="font-semibold text-green-800 dark:text-green-200">Booked!</h3>
-                </div>
-                <p className="text-sm text-green-700 dark:text-green-300">
+              <div className="border border-[--success] bg-[--success-light] p-4">
+                <h3 className="font-semibold text-green-800">Booked!</h3>
+                <p className="mt-1 text-[--text-sm] text-green-700">
                   Your request has been submitted. The publisher will contact you soon.
                 </p>
                 <button
                   onClick={handleUnbook}
-                  className="mt-3 text-sm text-green-700 underline hover:text-green-800 dark:text-green-300"
+                  className="mt-3 text-[--text-sm] text-green-700 underline hover:text-green-800"
                 >
                   Reset for testing
                 </button>
@@ -428,84 +361,62 @@ export function AdSlotDetail({ id }: Props) {
               <>
                 {roleLoading ? (
                   <div className="py-4 text-center">
-                    <div className="mx-auto h-6 w-6 animate-spin rounded-full border-2 border-[--color-primary] border-t-transparent" />
+                    <div className="mx-auto h-6 w-6 animate-spin rounded-full border-2 border-[--accent] border-t-transparent" />
                   </div>
                 ) : roleInfo?.role === 'sponsor' && roleInfo?.sponsorId ? (
                   <div className="space-y-4">
-                    <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-700/50">
-                      <p className="text-xs text-[--color-muted]">Booking as</p>
-                      <p className="font-medium">{roleInfo.name || user?.name}</p>
+                    <div className="border border-[--color-border] bg-[--color-bg-subtle] p-3">
+                      <p className="text-[--text-xs] text-[--color-text-muted]">Booking as</p>
+                      <p className="font-medium text-[--color-text]">{roleInfo.name || user?.name}</p>
                     </div>
                     <div>
-                      <label htmlFor="message" className="mb-1 block text-sm font-medium">
+                      <label htmlFor="message" className="mb-1 block text-[--text-sm] font-medium text-[--color-text]">
                         Message (optional)
                       </label>
-                      <textarea
+                      <Textarea
                         id="message"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Share your campaign goals..."
-                        className="w-full rounded-lg border border-[--color-border] bg-white px-3 py-2 text-sm dark:bg-slate-700"
                         rows={3}
                       />
                     </div>
-                    {bookingError && <p className="text-sm text-red-600">{bookingError}</p>}
-                    <button
+                    {bookingError && (
+                      <p className="text-[--text-sm] text-[--error]">{bookingError}</p>
+                    )}
+                    <Button
                       onClick={handleBooking}
-                      disabled={booking}
-                      className="flex w-full items-center justify-center gap-2 rounded-lg bg-[--color-primary] px-4 py-3 font-semibold text-white transition-all hover:bg-[--color-primary-hover] hover:shadow-md disabled:opacity-50"
+                      isLoading={booking}
+                      className="w-full"
+                      size="lg"
                     >
-                      {booking ? (
-                        <>
-                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                          Booking...
-                        </>
-                      ) : (
-                        getCtaText()
-                      )}
-                    </button>
-                    <div className="relative">
-                      <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-[--color-border]" />
-                      </div>
-                      <div className="relative flex justify-center text-xs">
-                        <span className="bg-white px-2 text-[--color-muted] dark:bg-slate-800">
-                          or
-                        </span>
-                      </div>
-                    </div>
-                    <button
+                      {getCtaText()}
+                    </Button>
+                    <Divider />
+                    <Button
+                      variant="secondary"
                       onClick={handleOpenQuoteModal}
-                      className="w-full rounded-lg border border-[--color-border] px-4 py-3 font-medium transition-colors hover:bg-slate-50 dark:hover:bg-slate-700"
+                      className="w-full"
                     >
-                      💬 Request Custom Quote
-                    </button>
+                      Request Custom Quote
+                    </Button>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <Link
-                      href="/login"
-                      className="block w-full rounded-lg bg-[--color-primary] px-4 py-3 text-center font-semibold text-white transition-all hover:bg-[--color-primary-hover] hover:shadow-md"
-                    >
-                      Log in to Book
+                    <Link href="/login">
+                      <Button className="w-full" size="lg">
+                        Log in to Book
+                      </Button>
                     </Link>
-                    <div className="relative">
-                      <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-[--color-border]" />
-                      </div>
-                      <div className="relative flex justify-center text-xs">
-                        <span className="bg-white px-2 text-[--color-muted] dark:bg-slate-800">
-                          or
-                        </span>
-                      </div>
-                    </div>
-                    <button
+                    <Divider />
+                    <Button
+                      variant="secondary"
                       onClick={handleOpenQuoteModal}
-                      className="w-full rounded-lg border border-[--color-border] px-4 py-3 font-medium transition-colors hover:bg-slate-50 dark:hover:bg-slate-700"
+                      className="w-full"
                     >
-                      💬 Request Quote (No Login)
-                    </button>
-                    <p className="text-center text-xs text-[--color-muted]">
+                      Request Quote (No Login)
+                    </Button>
+                    <p className="text-center text-[--text-xs] text-[--color-text-muted]">
                       Get custom pricing without creating an account
                     </p>
                   </div>
@@ -513,31 +424,31 @@ export function AdSlotDetail({ id }: Props) {
               </>
             ) : (
               <div className="space-y-4">
-                <div className="rounded-xl bg-amber-50 p-4 text-center dark:bg-amber-900/20">
-                  <p className="font-medium text-amber-800 dark:text-amber-200">Currently Booked</p>
-                  <p className="mt-1 text-sm text-amber-600 dark:text-amber-300">
+                <div className="border border-[--warning] bg-[--warning-light] p-4 text-center">
+                  <p className="font-medium text-yellow-800">Currently Booked</p>
+                  <p className="mt-1 text-[--text-sm] text-yellow-700">
                     Request a quote to get notified when available
                   </p>
                 </div>
-                <button
+                <Button
                   onClick={handleOpenQuoteModal}
-                  className="w-full rounded-lg bg-[--color-secondary] px-4 py-3 font-semibold text-white transition-all hover:bg-[--color-secondary-hover] hover:shadow-md"
+                  className="w-full"
                 >
-                  💬 Request Quote
-                </button>
+                  Request Quote
+                </Button>
                 <button
                   onClick={handleUnbook}
-                  className="w-full text-sm text-[--color-muted] hover:underline"
+                  className="w-full text-[--text-sm] text-[--color-text-muted] hover:underline"
                 >
                   Reset listing (demo)
                 </button>
               </div>
             )}
 
-            {/* Urgency / Social Proof */}
-            <div className="mt-6 space-y-2 border-t border-[--color-border] pt-4 text-center text-xs text-[--color-muted]">
-              <p>🔥 3 sponsors viewed this today</p>
-              <p>⏰ Usually books within 48 hours</p>
+            {/* Social Proof */}
+            <div className="mt-6 space-y-2 border-t border-[--color-border] pt-4 text-center text-[--text-xs] text-[--color-text-muted]">
+              <p>3 sponsors viewed this today</p>
+              <p>Usually books within 48 hours</p>
             </div>
           </div>
         </div>
@@ -552,6 +463,76 @@ export function AdSlotDetail({ id }: Props) {
           onClose={() => setShowQuoteModal(false)}
         />
       )}
+    </div>
+  );
+}
+
+// Helper components
+function ArrowLeftIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+    </svg>
+  );
+}
+
+function MetricCard({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="border border-[--color-border] bg-[--color-bg-subtle] p-4">
+      <p className="font-display text-[--text-xl] font-bold text-[--color-text]">{value}</p>
+      <p className="text-[--text-sm] text-[--color-text-muted]">{label}</p>
+    </div>
+  );
+}
+
+function TrustItem({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-2">
+      <CheckIcon />
+      <span>{children}</span>
+    </div>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg className="h-4 w-4 text-[--success]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+  );
+}
+
+function FAQItem({ question, children }: { question: string; children: React.ReactNode }) {
+  return (
+    <details className="group">
+      <summary className="flex cursor-pointer items-center justify-between text-[--text-sm] font-medium text-[--color-text]">
+        {question}
+        <ChevronIcon />
+      </summary>
+      <p className="mt-2 text-[--text-sm] text-[--color-text-secondary]">
+        {children}
+      </p>
+    </details>
+  );
+}
+
+function ChevronIcon() {
+  return (
+    <svg className="h-4 w-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  );
+}
+
+function Divider() {
+  return (
+    <div className="relative">
+      <div className="absolute inset-0 flex items-center">
+        <div className="w-full border-t border-[--color-border]" />
+      </div>
+      <div className="relative flex justify-center text-[--text-xs]">
+        <span className="bg-[--color-bg-elevated] px-2 text-[--color-text-muted]">or</span>
+      </div>
     </div>
   );
 }
