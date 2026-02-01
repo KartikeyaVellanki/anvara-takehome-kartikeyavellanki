@@ -8,7 +8,9 @@ import type { AdSlot } from '@/lib/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4291';
 
-// Server-side data fetching for ad slots
+/**
+ * Server-side data fetching for ad slots
+ */
 async function getAdSlots(publisherId: string): Promise<AdSlot[]> {
   try {
     const cookieStore = await cookies();
@@ -32,7 +34,9 @@ async function getAdSlots(publisherId: string): Promise<AdSlot[]> {
   }
 }
 
-// Calculate dashboard stats from ad slots
+/**
+ * Calculate dashboard stats from ad slots
+ */
 function calculateStats(adSlots: AdSlot[]) {
   const totalSlots = adSlots.length;
   const availableSlots = adSlots.filter((s) => s.isAvailable).length;
@@ -44,29 +48,29 @@ function calculateStats(adSlots: AdSlot[]) {
   return { totalSlots, availableSlots, bookedSlots, totalRevenue };
 }
 
-// Stats card component
+/**
+ * Stats card component - minimal Swiss design
+ */
 function StatCard({
   label,
   value,
-  icon,
-  color,
+  subtext,
 }: {
   label: string;
   value: string;
-  icon: string;
-  color: string;
+  subtext?: string;
 }) {
   return (
-    <div className="rounded-xl border border-[--color-border] bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-slate-800">
-      <div className="flex items-center gap-3">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color} text-xl`}>
-          {icon}
-        </div>
-        <div>
-          <p className="text-sm text-[--color-muted]">{label}</p>
-          <p className="text-xl font-bold">{value}</p>
-        </div>
-      </div>
+    <div className="border border-[--color-border] bg-[--color-bg-elevated] p-5">
+      <p className="text-[--text-xs] font-medium uppercase tracking-wide text-[--color-text-muted]">
+        {label}
+      </p>
+      <p className="mt-1 font-display text-[--text-2xl] font-semibold text-[--color-text]">
+        {value}
+      </p>
+      {subtext && (
+        <p className="mt-0.5 text-[--text-sm] text-[--color-text-secondary]">{subtext}</p>
+      )}
     </div>
   );
 }
@@ -90,48 +94,54 @@ export default async function PublisherDashboard() {
   const adSlots = await getAdSlots(roleData.publisherId);
   const stats = calculateStats(adSlots);
 
+  // Calculate occupancy rate
+  const occupancyRate = stats.totalSlots > 0 
+    ? Math.round((stats.bookedSlots / stats.totalSlots) * 100) 
+    : 0;
+
   return (
-    <div className="space-y-6">
+    <div className="py-8">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold">My Ad Slots</h1>
-          <p className="text-[--color-muted]">Manage your advertising inventory</p>
+          <h1 className="font-display text-[--text-3xl] font-semibold text-[--color-text]">
+            Ad Slots
+          </h1>
+          <p className="mt-1 text-[--color-text-secondary]">
+            Manage your advertising inventory
+          </p>
         </div>
         <CreateAdSlotButton />
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label="Total Ad Slots"
+          label="Total Slots"
           value={stats.totalSlots.toString()}
-          icon="📦"
-          color="bg-indigo-100 dark:bg-indigo-900/50"
         />
         <StatCard
           label="Available"
           value={stats.availableSlots.toString()}
-          icon="✅"
-          color="bg-green-100 dark:bg-green-900/50"
+          subtext={`${100 - occupancyRate}% capacity`}
         />
         <StatCard
           label="Booked"
           value={stats.bookedSlots.toString()}
-          icon="🔒"
-          color="bg-amber-100 dark:bg-amber-900/50"
+          subtext={`${occupancyRate}% occupancy`}
         />
         <StatCard
           label="Monthly Revenue"
           value={`$${stats.totalRevenue.toLocaleString()}`}
-          icon="💵"
-          color="bg-emerald-100 dark:bg-emerald-900/50"
+          subtext="from booked slots"
         />
       </div>
 
       {/* Ad Slots Section */}
       <div>
-        <h2 className="mb-4 text-lg font-semibold">All Ad Slots</h2>
+        <h2 className="mb-4 font-display text-[--text-lg] font-semibold text-[--color-text]">
+          All Ad Slots
+        </h2>
         <AdSlotList adSlots={adSlots} />
       </div>
     </div>

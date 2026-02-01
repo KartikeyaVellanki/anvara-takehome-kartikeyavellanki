@@ -8,7 +8,9 @@ import type { Campaign } from '@/lib/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4291';
 
-// Server-side data fetching for campaigns (with auth)
+/**
+ * Server-side data fetching for campaigns
+ */
 async function getCampaigns(): Promise<Campaign[]> {
   try {
     const cookieStore = await cookies();
@@ -29,7 +31,9 @@ async function getCampaigns(): Promise<Campaign[]> {
   }
 }
 
-// Calculate dashboard stats from campaigns
+/**
+ * Calculate dashboard stats from campaigns
+ */
 function calculateStats(campaigns: Campaign[]) {
   const totalCampaigns = campaigns.length;
   const activeCampaigns = campaigns.filter((c) => c.status === 'ACTIVE').length;
@@ -39,29 +43,29 @@ function calculateStats(campaigns: Campaign[]) {
   return { totalCampaigns, activeCampaigns, totalBudget, totalSpent };
 }
 
-// Stats card component
+/**
+ * Stats card component - minimal Swiss design
+ */
 function StatCard({
   label,
   value,
-  icon,
-  color,
+  subtext,
 }: {
   label: string;
   value: string;
-  icon: string;
-  color: string;
+  subtext?: string;
 }) {
   return (
-    <div className="rounded-xl border border-[--color-border] bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-slate-800">
-      <div className="flex items-center gap-3">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color} text-xl`}>
-          {icon}
-        </div>
-        <div>
-          <p className="text-sm text-[--color-muted]">{label}</p>
-          <p className="text-xl font-bold">{value}</p>
-        </div>
-      </div>
+    <div className="border border-[--color-border] bg-[--color-bg-elevated] p-5">
+      <p className="text-[--text-xs] font-medium uppercase tracking-wide text-[--color-text-muted]">
+        {label}
+      </p>
+      <p className="mt-1 font-display text-[--text-2xl] font-semibold text-[--color-text]">
+        {value}
+      </p>
+      {subtext && (
+        <p className="mt-0.5 text-[--text-sm] text-[--color-text-secondary]">{subtext}</p>
+      )}
     </div>
   );
 }
@@ -85,48 +89,53 @@ export default async function SponsorDashboard() {
   const campaigns = await getCampaigns();
   const stats = calculateStats(campaigns);
 
+  // Calculate utilization percentage
+  const utilization = stats.totalBudget > 0 
+    ? Math.round((stats.totalSpent / stats.totalBudget) * 100) 
+    : 0;
+
   return (
-    <div className="space-y-6">
+    <div className="py-8">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold">My Campaigns</h1>
-          <p className="text-[--color-muted]">Manage your advertising campaigns</p>
+          <h1 className="font-display text-[--text-3xl] font-semibold text-[--color-text]">
+            Campaigns
+          </h1>
+          <p className="mt-1 text-[--color-text-secondary]">
+            Manage your advertising campaigns
+          </p>
         </div>
         <CreateCampaignButton />
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Total Campaigns"
           value={stats.totalCampaigns.toString()}
-          icon="📊"
-          color="bg-indigo-100 dark:bg-indigo-900/50"
         />
         <StatCard
-          label="Active Campaigns"
+          label="Active"
           value={stats.activeCampaigns.toString()}
-          icon="🚀"
-          color="bg-green-100 dark:bg-green-900/50"
+          subtext={`of ${stats.totalCampaigns} campaigns`}
         />
         <StatCard
           label="Total Budget"
           value={`$${stats.totalBudget.toLocaleString()}`}
-          icon="💰"
-          color="bg-amber-100 dark:bg-amber-900/50"
         />
         <StatCard
-          label="Total Spent"
+          label="Spent"
           value={`$${stats.totalSpent.toLocaleString()}`}
-          icon="📈"
-          color="bg-blue-100 dark:bg-blue-900/50"
+          subtext={`${utilization}% utilized`}
         />
       </div>
 
       {/* Campaigns Section */}
       <div>
-        <h2 className="mb-4 text-lg font-semibold">All Campaigns</h2>
+        <h2 className="mb-4 font-display text-[--text-lg] font-semibold text-[--color-text]">
+          All Campaigns
+        </h2>
         <CampaignList campaigns={campaigns} />
       </div>
     </div>
