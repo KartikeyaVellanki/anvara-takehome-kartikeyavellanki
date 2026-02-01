@@ -2,12 +2,19 @@
  * Analytics Utility Module
  *
  * Provides a unified interface for tracking user interactions, page views,
- * and conversion events. Supports Google Analytics 4 (GA4) and custom
- * event tracking with proper TypeScript types.
+ * and conversion events. Integrates with Google Analytics 4 (GA4) using
+ * the official @next/third-parties package.
+ *
+ * @see https://nextjs.org/docs/app/guides/third-party-libraries#google-analytics
+ * @see https://developers.google.com/analytics/devguides/collection/ga4/events
  *
  * Key Concepts:
  * - Micro-conversions: Small actions indicating interest (view listing, click CTA)
  * - Macro-conversions: Major actions (booking, signup, quote request)
+ *
+ * Usage with gtag.js:
+ * GA4 uses gtag('event', 'event_name', { parameters }) for custom events.
+ * The sendGAEvent helper from @next/third-parties wraps this pattern.
  */
 
 // ============================================================================
@@ -90,8 +97,10 @@ export interface PageViewProperties {
  * Type declaration for Google Analytics gtag function
  * GA4 uses the gtag.js library which exposes a global gtag function
  *
- * Note: We check if gtag/dataLayer exist before using them since they may
- * not be loaded (blocked by ad blockers, not configured, etc.)
+ * The @next/third-parties package loads gtag.js and provides sendGAEvent
+ * which wraps gtag('event', ...) calls.
+ *
+ * @see https://developers.google.com/analytics/devguides/collection/ga4/events
  */
 interface GtagFunction {
   (command: 'config' | 'event' | 'set' | 'js', targetOrDate: string | Date, params?: Record<string, unknown>): void;
@@ -106,11 +115,18 @@ declare global {
 }
 
 /**
+ * Check if we're in a browser environment
+ */
+function isBrowser(): boolean {
+  return typeof window !== 'undefined';
+}
+
+/**
  * Check if Google Analytics is available
  * GA may be blocked by ad blockers or not yet loaded
  */
 function isGAAvailable(): boolean {
-  return typeof window !== 'undefined' && typeof window.gtag === 'function';
+  return isBrowser() && typeof window.gtag === 'function';
 }
 
 /**
@@ -121,6 +137,22 @@ function getGAMeasurementId(): string {
   return process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
 }
 
+/**
+ * Send event to GA4 using gtag('event', ...)
+ *
+ * This is the standard GA4 event format as documented:
+ * @see https://developers.google.com/analytics/devguides/collection/ga4/events
+ *
+ * @param eventName - Name of the event (e.g., 'button_click', 'purchase')
+ * @param eventParams - Additional parameters for the event
+ */
+function sendEvent(eventName: string, eventParams?: Record<string, unknown>): void {
+  if (isGAAvailable()) {
+    // GA4 event format: gtag('event', 'event_name', { parameters })
+    window.gtag?.('event', eventName, eventParams);
+  }
+}
+
 // ============================================================================
 // CORE ANALYTICS FUNCTIONS
 // ============================================================================
@@ -128,8 +160,11 @@ function getGAMeasurementId(): string {
 /**
  * Track a page view event
  *
- * Called automatically by the AnalyticsProvider on route changes.
- * Can also be called manually for virtual page views (modals, tabs).
+ * Note: When using @next/third-parties GoogleAnalytics component,
+ * page views are tracked automatically on route changes.
+ * This function can be called for virtual page views (modals, tabs).
+ *
+ * @see https://nextjs.org/docs/app/guides/third-party-libraries#tracking-pageviews
  *
  * @param properties - Page view details including path and title
  */
@@ -142,7 +177,9 @@ export function trackPageView(properties: PageViewProperties): void {
     console.log('[Analytics] Page View:', { path, title });
   }
 
-  // Send to Google Analytics if available
+  // Send page view to Google Analytics using gtag('config', ...)
+  // The @next/third-parties component handles this automatically,
+  // but we can trigger manual page views for virtual navigation
   if (isGAAvailable()) {
     window.gtag?.('config', getGAMeasurementId(), {
       page_path: path,
@@ -151,7 +188,7 @@ export function trackPageView(properties: PageViewProperties): void {
     });
   }
 
-  // Also track as custom event for our own analytics
+  // Also track as custom event for additional analytics
   trackEvent('navigation', 'page_view', {
     path,
     title,
@@ -162,6 +199,9 @@ export function trackPageView(properties: PageViewProperties): void {
  * Track a custom event
  *
  * Generic function for tracking any type of event.
+ * Uses GA4's gtag('event', ...) format as documented:
+ * @see https://developers.google.com/analytics/devguides/collection/ga4/events
+ *
  * Prefer using the specific tracking functions (trackConversion, etc.)
  * for better type safety.
  *
@@ -187,13 +227,12 @@ export function trackEvent(
     console.log('[Analytics] Event:', action, eventData);
   }
 
-  // Send to Google Analytics
-  if (isGAAvailable()) {
-    window.gtag?.('event', action, eventData);
-  }
+  // Send to Google Analytics using gtag('event', ...)
+  // This is the standard GA4 event format
+  sendEvent(action, eventData);
 
-  // Push to data layer for other integrations (GTM, etc.)
-  if (typeof window !== 'undefined') {
+  // Also push to data layer for other integrations (GTM, etc.)
+  if (isBrowser()) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: action,
