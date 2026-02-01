@@ -138,6 +138,7 @@ export function AdSlotDetail({ id }: Props) {
       setAdSlot({ ...adSlot, isAvailable: true });
       setMessage('');
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to unbook:', err);
     }
   };
