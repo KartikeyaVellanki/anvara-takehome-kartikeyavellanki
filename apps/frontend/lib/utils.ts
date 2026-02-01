@@ -46,9 +46,15 @@ export function cn(...classes: (string | boolean | undefined | null)[]): string 
   return classes.filter(Boolean).join(' ');
 }
 
-// Sleep utility for testing/debugging
-// BUG: Missing return type annotation
-export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+/**
+ * Sleep utility for testing/debugging
+ * Returns a promise that resolves after the specified milliseconds
+ *
+ * @param ms - Milliseconds to wait
+ * @returns Promise that resolves after the delay
+ */
+export const sleep = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 // Deep clone an object
 // NOTE: This doesn't handle circular references, dates, or functions
