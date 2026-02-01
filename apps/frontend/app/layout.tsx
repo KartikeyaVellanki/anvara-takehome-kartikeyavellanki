@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Nav } from './components/nav';
+import { GoogleAnalyticsProvider } from './components/google-analytics';
+import { AnalyticsProvider } from './components/analytics-provider';
+import { ABTestDebugPanel } from './components/ab-test-debug-panel';
 
 export const metadata: Metadata = {
   title: {
@@ -50,13 +53,20 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // HINT: If using React Query, you would wrap children with QueryClientProvider here
-  // See: https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr
   return (
     <html lang="en">
       <body className="min-h-screen antialiased">
-        <Nav />
-        <main className="mx-auto max-w-6xl p-4">{children}</main>
+        {/* Google Analytics 4 - loads script and tracks page views */}
+        <GoogleAnalyticsProvider />
+
+        {/* Analytics Provider - handles page tracking and user identification */}
+        <AnalyticsProvider>
+          <Nav />
+          <main className="mx-auto max-w-6xl p-4">{children}</main>
+        </AnalyticsProvider>
+
+        {/* A/B Test Debug Panel - visible in development or with ?ab_panel=true */}
+        <ABTestDebugPanel />
       </body>
     </html>
   );
