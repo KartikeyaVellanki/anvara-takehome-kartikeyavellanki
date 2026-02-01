@@ -8,27 +8,49 @@ const router: IRouter = Router();
 // Valid ad slot types
 const VALID_AD_SLOT_TYPES: AdSlotType[] = ['DISPLAY', 'VIDEO', 'NATIVE', 'NEWSLETTER', 'PODCAST'];
 
-// GET /api/ad-slots - List ad slots (public for marketplace, filtered for publishers)
+// GET /api/ad-slots - List ad slots with pagination (public for marketplace)
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const { publisherId, type, available } = req.query;
+    const { publisherId, type, available, page, limit } = req.query;
 
+    // Pagination parameters with defaults
+    const pageNum = Math.max(1, parseInt(getParam(page) || '1', 10));
+    const limitNum = Math.min(50, Math.max(1, parseInt(getParam(limit) || '9', 10)));
+    const skip = (pageNum - 1) * limitNum;
+
+    // Build where clause
+    const where = {
+      ...(publisherId && { publisherId: getParam(publisherId) }),
+      ...(type && { type: type as AdSlotType }),
+      ...(available === 'true' && { isAvailable: true }),
+    };
+
+    // Get total count for pagination metadata
+    const total = await prisma.adSlot.count({ where });
+
+    // Get paginated results
     const adSlots = await prisma.adSlot.findMany({
-      where: {
-        ...(publisherId && { publisherId: getParam(publisherId) }),
-        ...(type && {
-          type: type as AdSlotType,
-        }),
-        ...(available === 'true' && { isAvailable: true }),
-      },
+      where,
       include: {
         publisher: { select: { id: true, name: true, category: true, monthlyViews: true } },
         _count: { select: { placements: true } },
       },
       orderBy: { basePrice: 'desc' },
+      skip,
+      take: limitNum,
     });
 
-    res.json(adSlots);
+    // Return paginated response with metadata
+    res.json({
+      data: adSlots,
+      pagination: {
+        page: pageNum,
+        limit: limitNum,
+        total,
+        totalPages: Math.ceil(total / limitNum),
+        hasMore: pageNum * limitNum < total,
+      },
+    });
   } catch (error) {
     console.error('Error fetching ad slots:', error);
     res.status(500).json({ error: 'Failed to fetch ad slots' });
