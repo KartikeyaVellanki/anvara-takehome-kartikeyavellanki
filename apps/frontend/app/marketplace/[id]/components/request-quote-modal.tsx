@@ -160,7 +160,7 @@ export function RequestQuoteModal({
         <DialogDescription>Get custom pricing for &quot;{adSlotName}&quot;</DialogDescription>
       </DialogHeader>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
         <DialogBody className="space-y-4">
           {/* Pricing hint */}
           <div className="flex items-center gap-3 rounded-xl border border-[--glass-border] bg-[--color-bg-subtle] p-4">

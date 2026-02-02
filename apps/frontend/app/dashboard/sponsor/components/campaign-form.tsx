@@ -68,7 +68,7 @@ export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps
         <DialogTitle>{isEditing ? 'Edit Campaign' : 'Create Campaign'}</DialogTitle>
       </DialogHeader>
 
-      <form ref={formRef} action={formAction}>
+      <form ref={formRef} action={formAction} className="flex min-h-0 flex-1 flex-col">
         <DialogBody className="space-y-5">
           {isEditing && <input type="hidden" name="id" value={campaign.id} />}
 

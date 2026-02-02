@@ -62,7 +62,7 @@ export function AdSlotForm({ adSlot, onClose, onSuccess }: AdSlotFormProps) {
         <DialogTitle>{isEditing ? 'Edit Ad Slot' : 'Create Ad Slot'}</DialogTitle>
       </DialogHeader>
 
-      <form ref={formRef} action={formAction}>
+      <form ref={formRef} action={formAction} className="flex min-h-0 flex-1 flex-col">
         <DialogBody className="space-y-5">
           {isEditing && (
             <>
