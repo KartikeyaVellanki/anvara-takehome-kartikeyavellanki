@@ -96,6 +96,10 @@ These define and send events like:
 - `submit_quote`
 - `subscribe_newsletter`
 
+Current instrumentation points:
+- Marketplace grid: filter usage + listing click CTA (`apps/frontend/app/marketplace/components/ad-slot-grid.tsx`)
+- Listing detail: view + CTA clicks + booking submit (`apps/frontend/app/marketplace/[id]/components/ad-slot-detail.tsx`)
+
 ### How I Would Evaluate
 - Add a baseline week (current UI) vs. treatment week (new UI), controlling for traffic.
 - Segment by listing type (Newsletter/Podcast/etc.) and by availability.
@@ -110,4 +114,3 @@ These define and send events like:
 3. Click a few listings → confirm detail view + sticky CTA panel
 4. Click **Request Custom Quote** → confirm modal is readable and scrollable
 5. Submit quote request → confirm success state and quoteId response
-
