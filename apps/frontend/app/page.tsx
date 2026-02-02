@@ -8,9 +8,6 @@ export const metadata: Metadata = {
     'The modern sponsorship marketplace. Sponsors find engaged audiences, publishers monetize content. Start growing your brand or revenue today.',
 };
 
-/**
- * Feature data - no emojis, clean professional icons
- */
 const sponsorFeatures = [
   {
     title: 'Targeted Reach',
@@ -73,65 +70,98 @@ const stats = [
   { value: '98%', label: 'Satisfaction' },
 ];
 
+const heroHighlights = [
+  {
+    label: 'Match Engine',
+    description: 'Explainable similarity scores across audience and category.',
+  },
+  {
+    label: 'Pipeline',
+    description: 'Track sponsorship velocity, approvals, and ROI signals.',
+  },
+  {
+    label: 'Automation',
+    description: 'Launch placements and reporting workflows in minutes.',
+  },
+];
+
 export default function Home() {
   return (
-    <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 sm:py-32">
-        {/* Subtle radial background */}
-        <div className="absolute inset-0 -z-10 bg-radial-light" />
+    <div className="flex flex-col gap-20 py-10 sm:py-16">
+      {/* Hero */}
+      <section className="relative">
+        <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-6">
+            <div className="inline-flex items-center rounded-full border border-[--glass-border] bg-[--glass] px-4 py-2 text-[--text-xs] font-semibold uppercase tracking-[0.2em] text-[--color-text-secondary]">
+              Sponsorship Marketplace
+            </div>
+            <h1 className="font-display text-4xl text-[--color-text] sm:text-5xl">
+              Connect Brands with{' '}
+              <span className="text-[--accent]">Premium Publishers</span>
+            </h1>
+            <p className="text-lg text-[--color-text-secondary]">
+              Anvara brings sponsors and publishers together. Find the perfect audience for your brand
+              or monetize your content with quality sponsorships.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link href="/marketplace">
+                <Button size="lg">Explore Marketplace</Button>
+              </Link>
+              <Link href="/login">
+                <Button variant="outlined" size="lg">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {heroHighlights.map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-2xl border border-[--glass-border] bg-[--glass] p-4 text-sm text-[--color-text-secondary] backdrop-blur-xl"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[--color-text-secondary]">
+                    {item.label}
+                  </p>
+                  <p className="mt-2 text-[--color-text]">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
 
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-6 text-[--text-sm] font-medium uppercase tracking-widest text-[--accent]">
-            Sponsorship Marketplace
-          </p>
-          <h1 className="font-display text-[--text-5xl] font-bold leading-[1.1] tracking-tight text-[--color-text] sm:text-6xl">
-            Connect Brands with
-            <br />
-            <span className="text-[--accent]">Premium Publishers</span>
-          </h1>
-          <p className="mx-auto mt-8 max-w-xl text-[--text-lg] leading-relaxed text-[--color-text-secondary]">
-            Anvara brings sponsors and publishers together. Find the perfect audience for your brand
-            or monetize your content with quality sponsorships.
-          </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/marketplace">
-              <Button size="lg">Explore Marketplace</Button>
-            </Link>
-            <Link href="/login">
-              <Button variant="secondary" size="lg">
-                Get Started
-              </Button>
-            </Link>
+          <div className="rounded-3xl border border-[--glass-border] bg-[--glass-strong] p-6 shadow-float backdrop-blur">
+            <div className="grid gap-4 sm:grid-cols-2">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="rounded-2xl border border-[--glass-border] bg-[--glass] p-4 backdrop-blur-xl"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[--color-text-secondary]">
+                    {stat.label}
+                  </p>
+                  <p className="mt-2 text-3xl font-semibold text-[--color-text]">
+                    {stat.value}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 border-t border-[--glass-border] pt-4 text-xs text-[--color-text-muted]">
+              Performance metrics based on the last 90 days of marketplace activity.
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="border-y border-[--color-border] py-12">
-        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-8 px-4 sm:grid-cols-4">
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div className="font-display text-[--text-3xl] font-bold text-[--color-text]">
-                {stat.value}
-              </div>
-              <div className="mt-1 text-[--text-sm] text-[--color-text-muted]">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Features Section - Sponsors */}
-      <section className="py-20 sm:py-28">
-        <div className="mx-auto max-w-5xl px-4">
-          <div className="mb-16">
-            <p className="mb-3 text-[--text-sm] font-medium uppercase tracking-widest text-[--accent]">
+      {/* Features - Sponsors */}
+      <section>
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-12">
+            <p className="mb-3 text-[--text-label-large] font-semibold uppercase tracking-widest text-[--accent]">
               For Sponsors
             </p>
-            <h2 className="font-display text-[--text-3xl] font-semibold text-[--color-text]">
+            <h2 className="text-[--text-headline-large] font-semibold text-[--color-text]">
               Reach Your Ideal Audience
             </h2>
-            <p className="mt-4 max-w-2xl text-[--text-lg] text-[--color-text-secondary]">
+            <p className="mt-4 max-w-2xl text-[--text-body-large] text-[--color-text-secondary]">
               Launch campaigns that connect with engaged audiences through trusted publishers.
             </p>
           </div>
@@ -139,15 +169,15 @@ export default function Home() {
             {sponsorFeatures.map((feature) => (
               <article
                 key={feature.title}
-                className="group border border-[--color-border] bg-[--color-bg-elevated] p-6 transition-colors duration-[--transition-base] hover:border-[--accent]"
+                className="group rounded-2xl border border-[--glass-border] bg-[--glass] p-6 backdrop-blur-xl transition-all duration-200 ease-out hover:border-[--accent]/60"
               >
-                <div className="mb-4 flex h-10 w-10 items-center justify-center border border-[--color-border] text-[--color-text-secondary] transition-colors group-hover:border-[--accent] group-hover:text-[--accent]">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[--accent]/15 text-[--accent]">
                   <feature.icon />
                 </div>
-                <h3 className="mb-2 font-display text-[--text-base] font-semibold text-[--color-text]">
+                <h3 className="mb-2 text-[--text-title-large] font-semibold text-[--color-text]">
                   {feature.title}
                 </h3>
-                <p className="text-[--text-sm] leading-relaxed text-[--color-text-secondary]">
+                <p className="text-[--text-body-medium] leading-relaxed text-[--color-text-secondary]">
                   {feature.description}
                 </p>
               </article>
@@ -156,17 +186,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section - Publishers */}
-      <section className="border-y border-[--color-border] bg-[--color-bg-subtle] py-20 sm:py-28">
-        <div className="mx-auto max-w-5xl px-4">
-          <div className="mb-16">
-            <p className="mb-3 text-[--text-sm] font-medium uppercase tracking-widest text-[--accent]">
+      {/* Features - Publishers */}
+      <section>
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-12">
+            <p className="mb-3 text-[--text-label-large] font-semibold uppercase tracking-widest text-[--accent-2]">
               For Publishers
             </p>
-            <h2 className="font-display text-[--text-3xl] font-semibold text-[--color-text]">
+            <h2 className="text-[--text-headline-large] font-semibold text-[--color-text]">
               Monetize Your Audience
             </h2>
-            <p className="mt-4 max-w-2xl text-[--text-lg] text-[--color-text-secondary]">
+            <p className="mt-4 max-w-2xl text-[--text-body-large] text-[--color-text-secondary]">
               Turn your content into revenue with sponsorships from quality brands.
             </p>
           </div>
@@ -174,15 +204,15 @@ export default function Home() {
             {publisherFeatures.map((feature) => (
               <article
                 key={feature.title}
-                className="group border border-[--color-border] bg-[--color-bg-elevated] p-6 transition-colors duration-[--transition-base] hover:border-[--accent]"
+                className="group rounded-2xl border border-[--glass-border] bg-[--glass-strong] p-6 backdrop-blur-xl transition-all duration-200 ease-out hover:border-[--accent-2]/60"
               >
-                <div className="mb-4 flex h-10 w-10 items-center justify-center border border-[--color-border] text-[--color-text-secondary] transition-colors group-hover:border-[--accent] group-hover:text-[--accent]">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[--accent-2]/15 text-[--accent-2]">
                   <feature.icon />
                 </div>
-                <h3 className="mb-2 font-display text-[--text-base] font-semibold text-[--color-text]">
+                <h3 className="mb-2 text-[--text-title-large] font-semibold text-[--color-text]">
                   {feature.title}
                 </h3>
-                <p className="text-[--text-sm] leading-relaxed text-[--color-text-secondary]">
+                <p className="text-[--text-body-medium] leading-relaxed text-[--color-text-secondary]">
                   {feature.description}
                 </p>
               </article>
@@ -191,31 +221,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="py-20 sm:py-28">
-        <div className="mx-auto max-w-5xl px-4">
-          <div className="mb-16 text-center">
-            <p className="mb-3 text-[--text-sm] font-medium uppercase tracking-widest text-[--color-text-muted]">
+      {/* How It Works */}
+      <section>
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-12 text-center">
+            <p className="mb-3 text-[--text-label-large] font-semibold uppercase tracking-widest text-[--color-text-secondary]">
               Simple Process
             </p>
-            <h2 className="font-display text-[--text-3xl] font-semibold text-[--color-text]">
+            <h2 className="text-[--text-headline-large] font-semibold text-[--color-text]">
               How It Works
             </h2>
           </div>
-          <div className="grid gap-12 sm:grid-cols-3 sm:gap-8">
-            {howItWorks.map((item, index) => (
-              <div key={item.step} className="relative text-center">
-                {/* Step connector line */}
-                {index < howItWorks.length - 1 && (
-                  <div className="absolute left-[calc(50%+40px)] top-5 hidden h-px w-[calc(100%-80px)] bg-[--color-border] sm:block" />
-                )}
-                <div className="mx-auto mb-6 flex h-10 w-10 items-center justify-center border-2 border-[--accent] font-display text-[--text-lg] font-semibold text-[--accent]">
+          <div className="grid gap-8 sm:grid-cols-3">
+            {howItWorks.map((item) => (
+              <div
+                key={item.step}
+                className="rounded-2xl border border-[--glass-border] bg-[--glass] p-6 text-center backdrop-blur-xl"
+              >
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[--accent]/20 text-[--accent] font-semibold">
                   {item.step}
                 </div>
-                <h3 className="mb-3 font-display text-[--text-lg] font-semibold text-[--color-text]">
+                <h3 className="mb-2 text-[--text-title-large] font-semibold text-[--color-text]">
                   {item.title}
                 </h3>
-                <p className="text-[--text-sm] leading-relaxed text-[--color-text-secondary]">
+                <p className="text-[--text-body-medium] leading-relaxed text-[--color-text-secondary]">
                   {item.description}
                 </p>
               </div>
@@ -224,52 +253,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="border-t border-[--color-border] bg-[--gray-900] py-20 text-white sm:py-28">
-        <div className="mx-auto max-w-2xl px-4 text-center">
-          <h2 className="font-display text-[--text-3xl] font-semibold">Ready to Get Started?</h2>
-          <p className="mt-4 text-[--text-lg] text-[--gray-400]">
-            Join thousands of sponsors and publishers already growing with Anvara.
-          </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/login">
-              <Button size="lg" className="bg-white text-[--gray-900] hover:bg-[--gray-100]">
-                Create Free Account
-              </Button>
-            </Link>
-            <Link href="/marketplace">
-              <Button
-                variant="ghost"
-                size="lg"
-                className="border border-[--gray-700] text-white hover:bg-[--gray-800] hover:text-white"
-              >
-                View Marketplace
-              </Button>
-            </Link>
-          </div>
+      {/* CTA */}
+      <section className="rounded-3xl border border-[--glass-border] bg-[--glass-strong] p-10 text-center shadow-float backdrop-blur sm:p-14">
+        <h2 className="text-[--text-headline-large] font-semibold text-[--color-text]">
+          Ready to Get Started?
+        </h2>
+        <p className="mt-4 text-[--text-body-large] text-[--color-text-secondary]">
+          Join thousands of sponsors and publishers already growing with Anvara.
+        </p>
+        <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Link href="/login">
+            <Button size="lg">Create Free Account</Button>
+          </Link>
+          <Link href="/marketplace">
+            <Button variant="outlined" size="lg">
+              View Marketplace
+            </Button>
+          </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[--color-border] py-8">
-        <div className="mx-auto max-w-5xl px-4">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <div className="font-display text-xl font-semibold text-[--color-text]">Anvara</div>
-            <p className="text-[--text-sm] text-[--color-text-muted]">
-              &copy; {new Date().getFullYear()} Anvara. All rights reserved.
-            </p>
-          </div>
+      <footer className="py-6">
+        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 sm:flex-row">
+          <div className="font-display text-[--text-title-large] font-semibold text-[--accent]">Anvara</div>
+          <p className="text-[--text-body-medium] text-[--color-text-muted]">
+            &copy; {new Date().getFullYear()} Anvara. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>
   );
 }
 
-// SVG Icons - clean, minimal line icons
+// SVG Icons
 function TargetIcon() {
   return (
     <svg
-      className="h-5 w-5"
+      className="h-6 w-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -287,7 +308,7 @@ function TargetIcon() {
 function ChartIcon() {
   return (
     <svg
-      className="h-5 w-5"
+      className="h-6 w-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -305,7 +326,7 @@ function ChartIcon() {
 function WalletIcon() {
   return (
     <svg
-      className="h-5 w-5"
+      className="h-6 w-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -323,7 +344,7 @@ function WalletIcon() {
 function CurrencyIcon() {
   return (
     <svg
-      className="h-5 w-5"
+      className="h-6 w-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -341,7 +362,7 @@ function CurrencyIcon() {
 function ShieldIcon() {
   return (
     <svg
-      className="h-5 w-5"
+      className="h-6 w-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -359,7 +380,7 @@ function ShieldIcon() {
 function TrendingIcon() {
   return (
     <svg
-      className="h-5 w-5"
+      className="h-6 w-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"

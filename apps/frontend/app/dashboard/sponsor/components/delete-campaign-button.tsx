@@ -53,7 +53,7 @@ export function DeleteCampaignButton({ campaignId, campaignName }: DeleteCampaig
         variant="ghost"
         size="sm"
         onClick={() => setShowConfirm(true)}
-        className="text-[--error] hover:text-red-700"
+        className="text-[--error] hover:text-[--color-text]"
       >
         Delete
       </Button>
@@ -69,7 +69,7 @@ export function DeleteCampaignButton({ campaignId, campaignName }: DeleteCampaig
           </p>
 
           {state.error && (
-            <div className="mt-4 border border-[--error] bg-[--error-light] p-3 text-[--text-sm] text-red-800">
+            <div className="mt-4 rounded-xl border border-[--error]/40 bg-[--error-light] p-3 text-[--text-sm] text-[--color-text]">
               {state.error}
             </div>
           )}

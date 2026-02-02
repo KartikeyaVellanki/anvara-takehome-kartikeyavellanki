@@ -120,7 +120,7 @@ export function RequestQuoteModal({
     return (
       <Dialog open={true} onClose={onClose} size="md">
         <DialogBody className="py-8 text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-[--success] text-[--success]">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-[--success]/40 bg-[--success-light] text-[--success]">
             <svg
               className="h-6 w-6"
               fill="none"
@@ -137,8 +137,8 @@ export function RequestQuoteModal({
           <p className="mb-4 text-[--text-sm] text-[--color-text-secondary]">
             Your quote ID is <span className="font-mono font-semibold">{quoteId}</span>
           </p>
-          <div className="mb-6 border border-[--color-border] bg-[--color-bg-subtle] p-4 text-left text-[--text-sm]">
-            <p className="font-medium text-[--color-text]">What happens next?</p>
+          <div className="mb-6 rounded-xl border border-[--glass-border] bg-[--color-bg-subtle] p-4 text-left text-[--text-sm]">
+            <p className="font-semibold text-[--color-text]">What happens next?</p>
             <ul className="mt-2 space-y-1 text-[--color-text-secondary]">
               <li>Our team will review your request</li>
               <li>You&apos;ll receive a custom quote within 24 hours</li>
@@ -163,9 +163,9 @@ export function RequestQuoteModal({
       <form onSubmit={handleSubmit}>
         <DialogBody className="space-y-4">
           {/* Pricing hint */}
-          <div className="flex items-center gap-3 border border-[--color-border] bg-[--color-bg-subtle] p-4">
+          <div className="flex items-center gap-3 rounded-xl border border-[--glass-border] bg-[--color-bg-subtle] p-4">
             <div className="text-[--text-sm]">
-              <p className="font-medium text-[--color-text]">
+              <p className="font-semibold text-[--color-text]">
                 Listed at ${adSlotPrice.toLocaleString()}/mo
               </p>
               <p className="text-[--color-text-muted]">

@@ -1,11 +1,10 @@
 /**
  * Anvara UI Component Library
  *
- * Material You (Material Design 3) components:
- * - Pill-shaped buttons with state layers
- * - Tonal surface system (not pure white)
- * - Large organic border radii
- * - Smooth cubic-bezier animations
+ * Futuristic premium components:
+ * - Glassy surfaces with soft borders
+ * - Confident typography and accent-driven CTAs
+ * - Subtle motion for polish
  */
 
 // Core components

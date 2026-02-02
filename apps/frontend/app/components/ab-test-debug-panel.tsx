@@ -38,36 +38,48 @@ export function ABTestDebugPanel() {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-4 left-4 z-[200] flex h-12 w-12 items-center justify-center rounded-full bg-purple-600 text-white shadow-lg transition-transform hover:scale-110"
+        className="fixed bottom-4 left-4 z-[200] flex h-12 w-12 items-center justify-center rounded-full bg-[--accent] text-[--md-on-primary] shadow-glow transition-transform hover:scale-110"
         title="A/B Test Debug Panel"
         aria-label="Toggle A/B test debug panel"
       >
-        <span className="text-xl">🧪</span>
+        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 3h6M10 3v5.5l-4.5 7.7A3 3 0 008.1 20h7.8a3 3 0 002.6-3.8L14 8.5V3" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 14h8" />
+        </svg>
       </button>
 
       {/* Panel */}
       {isOpen && (
-        <div className="fixed bottom-20 left-4 z-[200] w-96 max-w-[calc(100vw-2rem)] rounded-xl border border-purple-200 bg-white shadow-2xl dark:border-purple-800 dark:bg-slate-900">
+        <div className="fixed bottom-20 left-4 z-[200] w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-[--glass-border] bg-[--glass] shadow-float backdrop-blur-2xl">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-purple-100 px-4 py-3 dark:border-purple-800">
+          <div className="flex items-center justify-between border-b border-[--glass-border] px-4 py-3">
             <div className="flex items-center gap-2">
-              <span className="text-xl">🧪</span>
-              <h2 className="font-semibold">A/B Test Debug</h2>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[--accent]/20 text-[--accent]">
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 3h6M10 3v5.5l-4.5 7.7A3 3 0 008.1 20h7.8a3 3 0 002.6-3.8L14 8.5V3" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 14h8" />
+                </svg>
+              </div>
+              <h2 className="font-semibold text-[--color-text]">A/B Test Debug</h2>
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={refresh}
-                className="rounded p-1 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/50"
+                className="rounded p-1 text-[--color-text-secondary] hover:bg-[--glass-strong]"
                 title="Refresh"
               >
-                🔄
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M20 12a8 8 0 10-3.2 6.4M20 12v-4m0 4h-4" />
+                </svg>
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="rounded p-1 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="rounded p-1 text-[--color-text-secondary] hover:bg-[--glass-strong]"
                 title="Close"
               >
-                ✕
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
           </div>
@@ -75,7 +87,7 @@ export function ABTestDebugPanel() {
           {/* Content */}
           <div className="max-h-96 overflow-y-auto p-4">
             {experiments.length === 0 ? (
-              <p className="text-center text-sm text-gray-500">No experiments configured</p>
+              <p className="text-center text-sm text-[--color-text-secondary]">No experiments configured</p>
             ) : (
               <div className="space-y-4">
                 {experiments.map((experiment) => {
@@ -85,15 +97,15 @@ export function ABTestDebugPanel() {
                   return (
                     <div
                       key={experiment.id}
-                      className="rounded-lg border border-gray-200 p-3 dark:border-gray-700"
+                      className="rounded-xl border border-[--glass-border] bg-[--glass-strong] p-3 backdrop-blur-xl"
                     >
                       {/* Experiment Name */}
                       <div className="mb-2 flex items-center justify-between">
-                        <code className="text-sm font-semibold text-purple-600 dark:text-purple-400">
+                        <code className="text-sm font-semibold text-[--accent]">
                           {experiment.id}
                         </code>
                         {currentVariant && (
-                          <span className="rounded bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">
+                          <span className="rounded bg-[--accent]/15 px-2 py-0.5 text-xs font-medium text-[--color-text]">
                             Current: {currentVariant}
                           </span>
                         )}
@@ -111,8 +123,8 @@ export function ABTestDebugPanel() {
                               onClick={() => forceVariant(experiment.id, variant.id)}
                               className={`rounded px-2 py-1 text-xs font-medium transition-colors ${
                                 isActive
-                                  ? 'bg-purple-600 text-white'
-                                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
+                                  ? 'bg-[--accent] text-[--md-on-primary]'
+                                  : 'bg-[--glass-strong] text-[--color-text-secondary] hover:bg-[--glass]'
                               }`}
                               title={`Force variant ${variant.id} (${percentage}%)`}
                             >
@@ -124,7 +136,7 @@ export function ABTestDebugPanel() {
 
                       {/* Assignment Info */}
                       {assignedAt && (
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-[--color-text-secondary]">
                           Assigned: {new Date(assignedAt).toLocaleString()}
                         </p>
                       )}
@@ -136,16 +148,21 @@ export function ABTestDebugPanel() {
           </div>
 
           {/* Footer */}
-          <div className="border-t border-purple-100 px-4 py-3 dark:border-purple-800">
+          <div className="border-t border-[--glass-border] px-4 py-3">
             <button
               onClick={clearAll}
-              className="w-full rounded-lg bg-red-100 px-4 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-200 dark:bg-red-900/50 dark:text-red-300 dark:hover:bg-red-900/70"
+              className="w-full rounded-lg bg-[--error]/15 px-4 py-2 text-sm font-semibold text-[--color-text] transition-colors hover:bg-[--error]/25"
             >
-              🗑️ Clear All Assignments
+              <span className="inline-flex items-center gap-2">
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 7h12M9 7V5h6v2m-8 0l1 12h6l1-12" />
+                </svg>
+                Clear All Assignments
+              </span>
             </button>
-            <p className="mt-2 text-center text-xs text-gray-500">
+            <p className="mt-2 text-center text-xs text-[--color-text-secondary]">
               Use{' '}
-              <code className="rounded bg-gray-100 px-1 dark:bg-gray-800">
+              <code className="rounded bg-[--glass-strong] px-1">
                 ?ab_debug=exp:variant
               </code>{' '}
               to force variants via URL

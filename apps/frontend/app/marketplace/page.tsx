@@ -9,13 +9,16 @@ import { NewsletterSignup } from './components/newsletter-signup';
  */
 export default function MarketplacePage() {
   return (
-    <div className="py-8">
+    <div className="py-12">
       {/* Page Header */}
-      <header className="mb-10">
-        <h1 className="font-display text-[--text-3xl] font-semibold text-[--color-text]">
+      <header className="mb-10 rounded-2xl border border-[var(--card-border)] bg-[var(--glass-surface)] p-6 backdrop-blur-xl">
+        <div className="mb-4 inline-flex items-center rounded-full border border-[--accent]/50 bg-transparent px-4 py-2 text-[--text-xs] font-semibold uppercase tracking-[0.3em] text-[--accent]">
+          Premium Inventory
+        </div>
+        <h1 className="font-display text-[--text-4xl] font-semibold tracking-tight text-[--color-text]">
           Marketplace
         </h1>
-        <p className="mt-2 text-[--text-lg] text-[--color-text-secondary]">
+        <p className="mt-3 max-w-2xl text-[--text-base] text-[--color-text-secondary]">
           Browse premium ad slots from verified publishers
         </p>
       </header>
@@ -28,13 +31,13 @@ export default function MarketplacePage() {
         </div>
 
         {/* Sidebar */}
-        <aside className="w-full space-y-6 lg:w-72 lg:flex-shrink-0">
+        <aside className="w-full space-y-6 lg:w-72 lg:flex-shrink-0 lg:sticky lg:top-24">
           {/* Newsletter Signup */}
           <NewsletterSignup />
 
           {/* Features */}
-          <div className="border border-[--color-border] bg-[--color-bg-elevated] p-5">
-            <h3 className="mb-4 font-display text-[--text-sm] font-semibold uppercase tracking-wide text-[--color-text]">
+          <div className="rounded-2xl border border-[var(--card-border)] bg-[var(--glass-surface)] p-5 backdrop-blur-xl">
+            <h3 className="mb-4 font-display text-[--text-sm] font-semibold uppercase tracking-[0.3em] text-[--color-text]">
               Why Anvara
             </h3>
             <div className="space-y-4">
@@ -72,7 +75,7 @@ function FeatureItem({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="flex h-8 w-8 items-center justify-center border border-[--color-border] text-[--color-text-secondary]">
+      <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--card-border)] bg-transparent text-[--accent]">
         {icon}
       </div>
       <div>

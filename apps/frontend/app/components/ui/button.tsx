@@ -1,13 +1,12 @@
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 /**
- * Material You (MD3) Button Component
+ * Futuristic premium Button Component
  *
  * Key characteristics:
- * - Pill-shaped (rounded-full)
- * - State layers (opacity overlays for hover/active)
- * - Tactile feedback (scale on press)
- * - Smooth cubic-bezier easing
+ * - Pill-shaped, confident emphasis
+ * - Glassy secondary surfaces
+ * - Subtle glow on primary actions
  */
 
 // MD3 variants + backwards-compatible aliases
@@ -26,85 +25,80 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  // MD3 Native Variants
-  // Filled button - Primary CTA
+  // Primary CTA
   filled: `
-    bg-[--md-primary] text-[--md-on-primary]
-    hover:bg-[--md-primary]/90 hover:shadow-md
-    active:bg-[--md-primary]/80 active:scale-95
-    focus-visible:ring-2 focus-visible:ring-[--md-primary] focus-visible:ring-offset-2
+    bg-[--accent] text-[--md-on-primary]
+    hover:bg-[--accent]/90 hover:shadow-glow
+    active:bg-[--accent]/85 active:scale-95
+    focus-visible:ring-2 focus-visible:ring-[--accent]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg]
   `,
-  // Tonal button - Secondary actions
+  // Secondary actions
   tonal: `
-    bg-[--md-secondary-container] text-[--md-on-secondary-container]
-    hover:bg-[--md-secondary-container]/80 hover:shadow-sm
-    active:bg-[--md-secondary-container]/70 active:scale-95
-    focus-visible:ring-2 focus-visible:ring-[--md-secondary] focus-visible:ring-offset-2
+    bg-[--glass] text-[--color-text] border border-[--glass-border] backdrop-blur
+    hover:bg-[--glass-strong]
+    active:scale-95
+    focus-visible:ring-2 focus-visible:ring-[--accent]/30 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg]
   `,
-  // Outlined button - Tertiary actions
+  // Outlined button
   outlined: `
-    bg-transparent text-[--md-primary] border border-[--md-outline]
-    hover:bg-[--md-primary]/5
-    active:bg-[--md-primary]/10 active:scale-95
-    focus-visible:ring-2 focus-visible:ring-[--md-primary] focus-visible:ring-offset-2
+    bg-transparent text-[--color-text] border border-[--glass-border]
+    hover:border-[--accent]/60 hover:text-[--accent]
+    active:scale-95
+    focus-visible:ring-2 focus-visible:ring-[--accent]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg]
   `,
-  // Text button - Minimal emphasis
+  // Text button
   text: `
-    bg-transparent text-[--md-primary]
-    hover:bg-[--md-primary]/10
-    active:bg-[--md-primary]/5 active:scale-95
-    focus-visible:ring-2 focus-visible:ring-[--md-primary] focus-visible:ring-offset-2
+    bg-transparent text-[--accent]
+    hover:bg-[--accent]/10
+    active:bg-[--accent]/5 active:scale-95
+    focus-visible:ring-2 focus-visible:ring-[--accent]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg]
   `,
-  // Elevated button - With shadow
+  // Elevated button
   elevated: `
-    bg-[--md-surface-container-low] text-[--md-primary] shadow-md
-    hover:bg-[--md-surface-container] hover:shadow-lg
-    active:bg-[--md-surface-container-high] active:scale-95
-    focus-visible:ring-2 focus-visible:ring-[--md-primary] focus-visible:ring-offset-2
+    bg-[--glass-strong] text-[--color-text] border border-[--glass-border] shadow-float backdrop-blur-xl
+    hover:bg-[--glass]
+    active:scale-95
+    focus-visible:ring-2 focus-visible:ring-[--accent]/30 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg]
   `,
-  // FAB - Floating Action Button (uses tertiary color)
+  // FAB
   fab: `
-    bg-[--md-tertiary] text-[--md-on-tertiary] shadow-lg
-    hover:bg-[--md-tertiary]/90 hover:shadow-xl
-    active:bg-[--md-tertiary]/80 active:scale-95
-    focus-visible:ring-2 focus-visible:ring-[--md-tertiary] focus-visible:ring-offset-2
+    bg-[--accent-2] text-[--md-on-tertiary] shadow-float
+    hover:bg-[--accent-2]/90
+    active:bg-[--accent-2]/85 active:scale-95
+    focus-visible:ring-2 focus-visible:ring-[--accent-2]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg]
   `,
-  
-  // Legacy Aliases (backwards compatibility)
-  // Primary = Filled
+
+  // Legacy aliases
   primary: `
-    bg-[--md-primary] text-[--md-on-primary]
-    hover:bg-[--md-primary]/90 hover:shadow-md
-    active:bg-[--md-primary]/80 active:scale-95
-    focus-visible:ring-2 focus-visible:ring-[--md-primary] focus-visible:ring-offset-2
+    bg-[--accent] text-[--md-on-primary]
+    hover:bg-[--accent]/90 hover:shadow-glow
+    active:bg-[--accent]/85 active:scale-95
+    focus-visible:ring-2 focus-visible:ring-[--accent]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg]
   `,
-  // Secondary = Tonal
   secondary: `
-    bg-[--md-secondary-container] text-[--md-on-secondary-container]
-    hover:bg-[--md-secondary-container]/80 hover:shadow-sm
-    active:bg-[--md-secondary-container]/70 active:scale-95
-    focus-visible:ring-2 focus-visible:ring-[--md-secondary] focus-visible:ring-offset-2
+    bg-[--glass] text-[--color-text] border border-[--glass-border] backdrop-blur
+    hover:bg-[--glass-strong]
+    active:scale-95
+    focus-visible:ring-2 focus-visible:ring-[--accent]/30 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg]
   `,
-  // Ghost = Text
   ghost: `
-    bg-transparent text-[--md-primary]
-    hover:bg-[--md-primary]/10
-    active:bg-[--md-primary]/5 active:scale-95
-    focus-visible:ring-2 focus-visible:ring-[--md-primary] focus-visible:ring-offset-2
+    bg-transparent text-[--accent]
+    hover:bg-[--accent]/10
+    active:bg-[--accent]/5 active:scale-95
+    focus-visible:ring-2 focus-visible:ring-[--accent]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg]
   `,
-  // Danger = Error filled
   danger: `
-    bg-[--md-error] text-[--md-on-error]
-    hover:bg-[--md-error]/90 hover:shadow-md
-    active:bg-[--md-error]/80 active:scale-95
-    focus-visible:ring-2 focus-visible:ring-[--md-error] focus-visible:ring-offset-2
+    bg-[--error] text-white
+    hover:bg-[--error]/90
+    active:bg-[--error]/85 active:scale-95
+    focus-visible:ring-2 focus-visible:ring-[--error]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg]
   `,
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: 'h-9 px-4 text-[--text-label-medium] gap-1.5',
-  md: 'h-10 px-6 text-[--text-label-large] gap-2',
-  lg: 'h-12 px-8 text-[--text-body-large] gap-2',
+  sm: 'h-9 px-4 text-[--text-sm] gap-1.5',
+  md: 'h-10 px-6 text-[--text-sm] gap-2',
+  lg: 'h-12 px-8 text-[--text-base] gap-2',
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
@@ -129,8 +123,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       disabled={isDisabled}
       className={`
         inline-flex items-center justify-center
-        rounded-full font-medium
-        transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]
+        rounded-full font-semibold tracking-[0.01em]
+        transition-all duration-200 ease-out
         disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none
         ${variantStyles[variant]}
         ${sizeStyles[size]}
@@ -180,7 +174,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       className={`
         inline-flex items-center justify-center
         rounded-full
-        transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]
+        transition-all duration-200 ease-out
         disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none
         ${variantStyles[variant]}
         ${iconSizeStyles[size]}
@@ -222,12 +216,12 @@ export const FAB = forwardRef<HTMLButtonElement, FABProps>(function FAB(
         className={`
           inline-flex items-center justify-center gap-3
           h-14 px-4 rounded-2xl
-          bg-[--md-tertiary] text-[--md-on-tertiary] shadow-lg
-          hover:bg-[--md-tertiary]/90 hover:shadow-xl
-          active:bg-[--md-tertiary]/80 active:scale-95
-          transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]
+          bg-[--accent-2] text-[--md-on-tertiary] shadow-float
+          hover:bg-[--accent-2]/90
+          active:bg-[--accent-2]/85 active:scale-95
+          transition-all duration-200 ease-out
           disabled:opacity-50 disabled:cursor-not-allowed
-          font-medium text-[--text-label-large]
+          font-semibold text-[--text-label-large]
           ${className}
         `}
         {...props}
@@ -246,10 +240,10 @@ export const FAB = forwardRef<HTMLButtonElement, FABProps>(function FAB(
       className={`
         inline-flex items-center justify-center
         rounded-2xl
-        bg-[--md-tertiary] text-[--md-on-tertiary] shadow-lg
-        hover:bg-[--md-tertiary]/90 hover:shadow-xl
-        active:bg-[--md-tertiary]/80 active:scale-95
-        transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]
+        bg-[--accent-2] text-[--md-on-tertiary] shadow-float
+        hover:bg-[--accent-2]/90
+        active:bg-[--accent-2]/85 active:scale-95
+        transition-all duration-200 ease-out
         disabled:opacity-50 disabled:cursor-not-allowed
         ${fabSizeStyles[size]}
         ${className}

@@ -23,7 +23,7 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 const STORAGE_KEY = 'anvara-theme';
 
 /**
- * Get the initial theme from localStorage or default to system
+ * Get the initial theme from localStorage or default to dark
  */
 function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'system';
@@ -32,7 +32,7 @@ function getInitialTheme(): Theme {
   if (stored === 'light' || stored === 'dark' || stored === 'system') {
     return stored;
   }
-  return 'system';
+  return 'dark';
 }
 
 /**
@@ -41,7 +41,7 @@ function getInitialTheme(): Theme {
 function resolveTheme(theme: Theme): 'light' | 'dark' {
   if (theme !== 'system') return theme;
 
-  if (typeof window === 'undefined') return 'light';
+  if (typeof window === 'undefined') return 'dark';
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
@@ -106,7 +106,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // Prevent flash by not rendering until mounted
-  // The CSS will handle the initial theme via media queries
+  // CSS defaults to dark and the data-theme attribute updates after mount
   const value: ThemeContextValue = {
     theme,
     resolvedTheme,

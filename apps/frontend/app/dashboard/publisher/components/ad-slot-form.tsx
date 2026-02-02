@@ -68,7 +68,7 @@ export function AdSlotForm({ adSlot, onClose, onSuccess }: AdSlotFormProps) {
 
           {/* Error Alert */}
           {state.error && (
-            <div className="border border-[--error] bg-[--error-light] p-4 text-[--text-sm] text-red-800">
+            <div className="rounded-xl border border-[--error]/40 bg-[--error-light] p-4 text-[--text-sm] text-[--color-text]">
               {state.error}
             </div>
           )}

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Roboto } from 'next/font/google';
+import { Manrope, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import { Nav } from './components/nav';
 import { GoogleAnalyticsProvider } from './components/google-analytics';
@@ -8,17 +8,22 @@ import { ABTestDebugPanel } from './components/ab-test-debug-panel';
 import { ThemeProvider } from './components/theme-provider';
 
 /**
- * Typography Setup - Material You (MD3)
+ * Typography Setup - Futuristic premium
  *
- * Roboto: The canonical Material Design typeface
- * - Clean, professional, highly legible
- * - Used throughout the interface
+ * Manrope for body text, Space Grotesk for display.
  */
-const roboto = Roboto({
+const manrope = Manrope({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-roboto',
-  weight: ['400', '500', '700'],
+  variable: '--font-sans',
+  weight: ['400', '500', '600', '700'],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-display',
+  weight: ['500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -61,8 +66,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={roboto.variable} suppressHydrationWarning>
-      <body className="min-h-screen bg-[--md-background] text-[--md-on-background] antialiased">
+    <html
+      lang="en"
+      data-theme="dark"
+      className={`${manrope.variable} ${spaceGrotesk.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="min-h-screen bg-[--color-bg] text-[--color-text] antialiased">
         <ThemeProvider>
           {/* Google Analytics 4 - loads script and tracks page views */}
           <GoogleAnalyticsProvider />
@@ -70,7 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* Analytics Provider - handles page tracking and user identification */}
           <AnalyticsProvider>
             <Nav />
-            <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</main>
+            <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 page-fade-in">{children}</main>
           </AnalyticsProvider>
 
           {/* A/B Test Debug Panel - visible in development or with ?ab_panel=true */}

@@ -1,7 +1,7 @@
 /**
- * Material You (MD3) Skeleton Components
+ * Futuristic premium Skeleton Components
  *
- * Shimmer animation with tonal surface colors
+ * Soft shimmer blocks on glassy surfaces.
  */
 
 interface SkeletonProps {
@@ -28,7 +28,7 @@ export function Skeleton({
   return (
     <div
       className={`
-        animate-pulse bg-[--md-surface-container-high]
+        animate-pulse bg-[--glass-strong]
         ${roundedStyles[rounded]}
         ${className}
       `}
@@ -68,13 +68,13 @@ export function TextSkeleton({ lines = 3, className = '' }: TextSkeletonProps) {
  */
 export function CardSkeleton({ className = '' }: { className?: string }) {
   return (
-    <div className={`rounded-3xl bg-[--md-surface-container] p-6 ${className}`}>
+    <div className={`rounded-2xl border border-[--glass-border] bg-[--glass] p-6 ${className}`}>
       <div className="flex items-start justify-between mb-4">
         <Skeleton height={24} width="60%" rounded="sm" />
         <Skeleton height={24} width={80} rounded="full" />
       </div>
       <TextSkeleton lines={2} />
-      <div className="mt-6 flex items-center justify-between pt-4 border-t border-[--md-outline-variant]">
+      <div className="mt-6 flex items-center justify-between pt-4 border-t border-[--glass-border]">
         <Skeleton height={24} width={80} rounded="full" />
         <Skeleton height={36} width={100} rounded="full" />
       </div>
@@ -87,7 +87,7 @@ export function CardSkeleton({ className = '' }: { className?: string }) {
  */
 export function TableRowSkeleton({ columns = 4 }: { columns?: number }) {
   return (
-    <tr className="border-b border-[--md-outline-variant]">
+    <tr className="border-b border-[--glass-border]">
       {Array.from({ length: columns }).map((_, i) => (
         <td key={i} className="px-4 py-4">
           <Skeleton height={16} width={i === 0 ? '70%' : '50%'} rounded="sm" />
@@ -102,10 +102,10 @@ export function TableRowSkeleton({ columns = 4 }: { columns?: number }) {
  */
 export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; columns?: number }) {
   return (
-    <div className="rounded-3xl bg-[--md-surface-container] overflow-hidden">
+    <div className="rounded-2xl border border-[--glass-border] bg-[--glass] overflow-hidden">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-[--md-outline-variant] bg-[--md-surface-container-high]">
+          <tr className="border-b border-[--glass-border] bg-[--glass-strong]">
             {Array.from({ length: columns }).map((_, i) => (
               <th key={i} className="px-4 py-4 text-left">
                 <Skeleton height={14} width="60%" rounded="sm" />
@@ -128,7 +128,7 @@ export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; column
  */
 export function StatsCardSkeleton() {
   return (
-    <div className="rounded-3xl bg-[--md-surface-container] p-6">
+    <div className="rounded-2xl border border-[--glass-border] bg-[--glass] p-6">
       <Skeleton height={12} width={80} rounded="sm" className="mb-3" />
       <Skeleton height={32} width={100} rounded="sm" className="mb-2" />
       <Skeleton height={14} width="60%" rounded="sm" />

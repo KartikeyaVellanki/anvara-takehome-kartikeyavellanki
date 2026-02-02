@@ -53,8 +53,8 @@ function calculateStats(adSlots: AdSlot[]) {
  */
 function StatCard({ label, value, subtext }: { label: string; value: string; subtext?: string }) {
   return (
-    <div className="border border-[--color-border] bg-[--color-bg-elevated] p-5">
-      <p className="text-[--text-xs] font-medium uppercase tracking-wide text-[--color-text-muted]">
+    <div className="rounded-2xl border border-[--glass-border] bg-[--glass-strong] p-5 backdrop-blur">
+      <p className="text-[--text-xs] font-semibold uppercase tracking-wide text-[--color-text-muted]">
         {label}
       </p>
       <p className="mt-1 font-display text-[--text-2xl] font-semibold text-[--color-text]">

@@ -1,12 +1,9 @@
 import { type ReactNode } from 'react';
 
 /**
- * Material You (MD3) Empty State Component
+ * Futuristic premium Empty State Component
  *
- * Key characteristics:
- * - Centered layout with generous spacing
- * - Tonal icon container
- * - Clear hierarchy with title and description
+ * Calm, glassy surface with clear hierarchy.
  */
 
 interface EmptyStateProps {
@@ -22,20 +19,20 @@ export function EmptyState({ icon, title, description, action, className = '' }:
     <div
       className={`
         flex flex-col items-center justify-center
-        rounded-3xl bg-[--md-surface-container] p-12 text-center
+        rounded-2xl border border-[--glass-border] bg-[--glass] p-12 text-center backdrop-blur-xl
         ${className}
       `}
     >
       {icon && (
-        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[--md-surface-container-high] text-[--md-on-surface-variant]">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[--glass-strong] text-[--color-text-secondary]">
           {icon}
         </div>
       )}
-      <h3 className="mb-2 text-[--text-headline-medium] font-medium text-[--md-on-surface]">
+      <h3 className="mb-2 text-[--text-headline-medium] font-semibold text-[--color-text]">
         {title}
       </h3>
       {description && (
-        <p className="mb-8 max-w-md text-[--text-body-large] text-[--md-on-surface-variant]">
+        <p className="mb-8 max-w-md text-[--text-body-large] text-[--color-text-secondary]">
           {description}
         </p>
       )}
@@ -46,7 +43,7 @@ export function EmptyState({ icon, title, description, action, className = '' }:
 
 /**
  * Common icons for empty states
- * Clean, outlined style matching Material Design
+ * Clean, outlined style with soft geometry
  */
 export const EmptyStateIcons = {
   search: (

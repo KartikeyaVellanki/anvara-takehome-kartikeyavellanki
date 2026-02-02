@@ -193,7 +193,7 @@ export function AdSlotDetail({ id }: Props) {
         <Skeleton height={20} width={160} className="mb-6" />
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <div className="border border-[--color-border] bg-[--color-bg-elevated] p-6">
+            <div className="rounded-2xl border border-[--glass-border] bg-[--glass-strong] p-6 backdrop-blur">
               <Skeleton height={24} width={100} className="mb-4" />
               <Skeleton height={32} width="60%" className="mb-2" />
               <Skeleton height={16} width={200} className="mb-6" />
@@ -201,7 +201,7 @@ export function AdSlotDetail({ id }: Props) {
             </div>
           </div>
           <div className="lg:col-span-1">
-            <div className="border border-[--color-border] bg-[--color-bg-elevated] p-6">
+            <div className="rounded-2xl border border-[--glass-border] bg-[--glass-strong] p-6 backdrop-blur">
               <Skeleton height={40} width={120} className="mx-auto mb-4" />
               <Skeleton height={48} width="100%" />
             </div>
@@ -220,8 +220,8 @@ export function AdSlotDetail({ id }: Props) {
         >
           <ArrowLeftIcon /> Back to Marketplace
         </Link>
-        <div className="border border-[--error] bg-[--error-light] p-6 text-center">
-          <p className="font-medium text-red-800">{error || 'Ad slot not found'}</p>
+        <div className="rounded-2xl border border-[--error]/40 bg-[--error-light] p-6 text-center">
+          <p className="font-semibold text-[--color-text]">{error || 'Ad slot not found'}</p>
         </div>
       </div>
     );
@@ -239,7 +239,7 @@ export function AdSlotDetail({ id }: Props) {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="border border-[--color-border] bg-[--color-bg-elevated]">
+          <div className="rounded-2xl border border-[--glass-border] bg-[--glass-strong] backdrop-blur">
             <div className="p-6">
               {/* Header */}
               <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
@@ -299,7 +299,7 @@ export function AdSlotDetail({ id }: Props) {
               </div>
 
               {/* Trust Signals */}
-              <div className="border border-[--color-border] p-4">
+              <div className="rounded-xl border border-[--glass-border] bg-[--glass] p-4">
                 <h3 className="mb-3 font-display text-[--text-sm] font-semibold text-[--color-text]">
                   Why sponsors love this placement
                 </h3>
@@ -314,7 +314,7 @@ export function AdSlotDetail({ id }: Props) {
           </div>
 
           {/* FAQ Section */}
-          <div className="border border-[--color-border] bg-[--color-bg-elevated] p-6">
+          <div className="rounded-2xl border border-[--glass-border] bg-[--glass-strong] p-6 backdrop-blur">
             <h2 className="mb-4 font-display text-[--text-lg] font-semibold text-[--color-text]">
               Frequently Asked Questions
             </h2>
@@ -337,7 +337,7 @@ export function AdSlotDetail({ id }: Props) {
 
         {/* Sidebar - Booking Card */}
         <div className="lg:col-span-1">
-          <div className="sticky top-24 border border-[--color-border] bg-[--color-bg-elevated] p-6">
+          <div className="sticky top-24 rounded-2xl border border-[--glass-border] bg-[--glass-strong] p-6 shadow-float backdrop-blur">
             {/* Price */}
             <div className="mb-6 text-center">
               <p className="font-display text-[--text-3xl] font-bold text-[--color-text]">
@@ -347,14 +347,14 @@ export function AdSlotDetail({ id }: Props) {
             </div>
 
             {bookingSuccess ? (
-              <div className="border border-[--success] bg-[--success-light] p-4">
-                <h3 className="font-semibold text-green-800">Booked!</h3>
-                <p className="mt-1 text-[--text-sm] text-green-700">
+              <div className="rounded-xl border border-[--success]/40 bg-[--success-light] p-4">
+                <h3 className="font-semibold text-[--color-text]">Booked!</h3>
+                <p className="mt-1 text-[--text-sm] text-[--color-text-secondary]">
                   Your request has been submitted. The publisher will contact you soon.
                 </p>
                 <button
                   onClick={handleUnbook}
-                  className="mt-3 text-[--text-sm] text-green-700 underline hover:text-green-800"
+                  className="mt-3 text-[--text-sm] text-[--color-text-secondary] underline hover:text-[--color-text]"
                 >
                   Reset for testing
                 </button>
@@ -367,9 +367,9 @@ export function AdSlotDetail({ id }: Props) {
                   </div>
                 ) : roleInfo?.role === 'sponsor' && roleInfo?.sponsorId ? (
                   <div className="space-y-4">
-                    <div className="border border-[--color-border] bg-[--color-bg-subtle] p-3">
+                    <div className="rounded-xl border border-[--glass-border] bg-[--color-bg-subtle] p-3">
                       <p className="text-[--text-xs] text-[--color-text-muted]">Booking as</p>
-                      <p className="font-medium text-[--color-text]">
+                      <p className="font-semibold text-[--color-text]">
                         {roleInfo.name || user?.name}
                       </p>
                     </div>
@@ -423,9 +423,9 @@ export function AdSlotDetail({ id }: Props) {
               </>
             ) : (
               <div className="space-y-4">
-                <div className="border border-[--warning] bg-[--warning-light] p-4 text-center">
-                  <p className="font-medium text-yellow-800">Currently Booked</p>
-                  <p className="mt-1 text-[--text-sm] text-yellow-700">
+                <div className="rounded-xl border border-[--warning]/40 bg-[--warning-light] p-4 text-center">
+                  <p className="font-semibold text-[--color-text]">Currently Booked</p>
+                  <p className="mt-1 text-[--text-sm] text-[--color-text-secondary]">
                     Request a quote to get notified when available
                   </p>
                 </div>
@@ -442,7 +442,7 @@ export function AdSlotDetail({ id }: Props) {
             )}
 
             {/* Social Proof */}
-            <div className="mt-6 space-y-2 border-t border-[--color-border] pt-4 text-center text-[--text-xs] text-[--color-text-muted]">
+            <div className="mt-6 space-y-2 border-t border-[--glass-border] pt-4 text-center text-[--text-xs] text-[--color-text-muted]">
               <p>3 sponsors viewed this today</p>
               <p>Usually books within 48 hours</p>
             </div>
@@ -480,7 +480,7 @@ function ArrowLeftIcon() {
 
 function MetricCard({ value, label }: { value: string; label: string }) {
   return (
-    <div className="border border-[--color-border] bg-[--color-bg-subtle] p-4">
+    <div className="rounded-xl border border-[--glass-border] bg-[--color-bg-subtle] p-4">
       <p className="font-display text-[--text-xl] font-bold text-[--color-text]">{value}</p>
       <p className="text-[--text-sm] text-[--color-text-muted]">{label}</p>
     </div>
@@ -513,7 +513,7 @@ function CheckIcon() {
 function FAQItem({ question, children }: { question: string; children: React.ReactNode }) {
   return (
     <details className="group">
-      <summary className="flex cursor-pointer items-center justify-between text-[--text-sm] font-medium text-[--color-text]">
+      <summary className="flex cursor-pointer items-center justify-between text-[--text-sm] font-semibold text-[--color-text]">
         {question}
         <ChevronIcon />
       </summary>
@@ -540,10 +540,10 @@ function Divider() {
   return (
     <div className="relative">
       <div className="absolute inset-0 flex items-center">
-        <div className="w-full border-t border-[--color-border]" />
+        <div className="w-full border-t border-[--glass-border]" />
       </div>
       <div className="relative flex justify-center text-[--text-xs]">
-        <span className="bg-[--color-bg-elevated] px-2 text-[--color-text-muted]">or</span>
+        <span className="rounded-full bg-[--glass-strong] px-2 text-[--color-text-muted]">or</span>
       </div>
     </div>
   );

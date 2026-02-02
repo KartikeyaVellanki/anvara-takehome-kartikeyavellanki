@@ -1,13 +1,12 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
- * Material You (MD3) Card Component
+ * Futuristic premium Card Component
  *
  * Key characteristics:
- * - Tonal surface backgrounds (not pure white)
- * - Large organic border radius (24px)
- * - Subtle elevation through shadows
- * - Smooth hover transitions with scale
+ * - Glassy surfaces with soft borders
+ * - Elevated shadow float
+ * - Rounded, confident geometry
  */
 
 type CardVariant = 'elevated' | 'filled' | 'outlined';
@@ -19,20 +18,17 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const variantStyles: Record<CardVariant, string> = {
-  // Elevated - Default card with shadow
   elevated: `
-    bg-[--md-surface] shadow-md
-    hover:shadow-lg
+    bg-[--glass-strong] border border-[--glass-border] shadow-float backdrop-blur-xl
+    hover:border-[--color-border] hover:shadow-float
   `,
-  // Filled - Tonal surface background
   filled: `
-    bg-[--md-surface-container] shadow-sm
-    hover:shadow-md
+    bg-[--glass] border border-[--glass-border] backdrop-blur-xl
+    hover:border-[--color-border]
   `,
-  // Outlined - Border instead of shadow
   outlined: `
-    bg-[--md-surface] border border-[--md-outline-variant]
-    hover:border-[--md-outline]
+    bg-transparent border border-[--glass-border]
+    hover:border-[--accent]/50
   `,
 };
 
@@ -44,9 +40,10 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
     <div
       ref={ref}
       className={`
-        rounded-3xl overflow-hidden
-        transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]
+        relative rounded-2xl overflow-hidden
+        transition-all duration-200 ease-out
         ${variantStyles[variant]}
+        before:pointer-events-none before:absolute before:inset-0 before:content-[''] before:bg-gradient-to-br before:from-[var(--glass-highlight)] before:via-transparent before:to-transparent before:opacity-50
         ${interactive ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]' : ''}
         ${className}
       `}
@@ -90,7 +87,7 @@ export const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(function
   return (
     <Component
       ref={ref}
-      className={`text-[--text-title-large] font-medium text-[--md-on-surface] leading-tight ${className}`}
+      className={`text-[--text-title-large] font-semibold text-[--md-on-surface] leading-tight ${className}`}
       {...props}
     >
       {children}
@@ -192,7 +189,7 @@ export const CardMedia = forwardRef<HTMLDivElement, CardMediaProps>(function Car
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center bg-[--md-surface-container-high]">
+        <div className="flex h-full w-full items-center justify-center bg-[--glass-strong]">
           {children}
         </div>
       )}
@@ -202,7 +199,7 @@ export const CardMedia = forwardRef<HTMLDivElement, CardMediaProps>(function Car
 
 /**
  * StatsCard - Specialized card for displaying metrics
- * Material You style with tonal background
+ * Premium tonal background for clarity
  */
 interface StatsCardProps {
   label: string;

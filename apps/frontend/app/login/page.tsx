@@ -74,7 +74,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center">
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-sm rounded-3xl border border-[--glass-border] bg-[--glass-strong] p-8 shadow-float backdrop-blur">
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="font-display text-[--text-2xl] font-semibold text-[--color-text]">
@@ -87,7 +87,7 @@ export default function LoginPage() {
 
         {/* Error */}
         {error && (
-          <div className="mb-6 border border-[--error] bg-[--error-light] p-4 text-[--text-sm] text-red-800">
+          <div className="mb-6 rounded-xl border border-[--error]/40 bg-[--error-light] p-4 text-[--text-sm] text-[--color-text]">
             {error}
           </div>
         )}

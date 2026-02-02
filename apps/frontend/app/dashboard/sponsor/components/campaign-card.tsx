@@ -29,7 +29,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
 
   return (
     <>
-      <div className="group border border-[--color-border] bg-[--color-bg-elevated] p-5 transition-colors duration-[--transition-base] hover:border-[--accent]">
+      <div className="group rounded-2xl border border-[--glass-border] bg-[--glass-strong] p-5 backdrop-blur transition-colors duration-[--transition-base] hover:border-[--accent]/60">
         {/* Header */}
         <div className="mb-3 flex items-start justify-between gap-3">
           <h3 className="font-display text-[--text-base] font-semibold text-[--color-text] transition-colors group-hover:text-[--accent]">
@@ -48,7 +48,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
         )}
 
         {/* Budget Progress */}
-        <div className="mb-4 border border-[--color-border] bg-[--color-bg-subtle] p-3">
+        <div className="mb-4 rounded-xl border border-[--glass-border] bg-[--color-bg-subtle] p-3">
           <div className="mb-2 flex justify-between text-[--text-sm]">
             <span className="text-[--color-text-muted]">Budget</span>
             <span className="font-medium text-[--color-text]">
@@ -59,7 +59,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
               </span>
             </span>
           </div>
-          <div className="h-1.5 overflow-hidden bg-[--color-border]">
+          <div className="h-1.5 overflow-hidden rounded-full bg-[--color-border]/70">
             <div
               className="h-full bg-[--accent] transition-all duration-500"
               style={{ width: `${Math.min(progress, 100)}%` }}
@@ -88,7 +88,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-2 border-t border-[--color-border] pt-4">
+        <div className="flex items-center justify-end gap-2 border-t border-[--glass-border] pt-4">
           <Button variant="ghost" size="sm" onClick={() => setShowEditForm(true)}>
             Edit
           </Button>

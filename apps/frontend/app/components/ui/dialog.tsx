@@ -4,13 +4,9 @@ import { useEffect, type ReactNode } from 'react';
 import { Button } from './button';
 
 /**
- * Material You (MD3) Dialog Component
+ * Futuristic premium Dialog Component
  *
- * Key characteristics:
- * - Large border radius (28px)
- * - Tonal surface background
- * - Scrim (backdrop) at 32% black opacity
- * - Smooth entrance animation
+ * Glassy surface, soft borders, and focused contrast.
  */
 
 interface DialogProps {
@@ -56,14 +52,14 @@ export function Dialog({ open, onClose, size = 'md', children }: DialogProps) {
       }}
     >
       {/* Scrim (backdrop) */}
-      <div className="absolute inset-0 bg-black/32 animate-in fade-in duration-200" />
+      <div className="absolute inset-0 bg-[--scrim] animate-in fade-in duration-200" />
 
       {/* Dialog surface */}
       <div
         className={`
           relative w-full ${sizeStyles[size]}
-          bg-[--md-surface-container-high] rounded-[28px]
-          shadow-xl
+          bg-[--glass-strong] border border-[--glass-border] rounded-2xl
+          shadow-float backdrop-blur-2xl
           animate-in fade-in zoom-in-95 duration-300 ease-[cubic-bezier(0.2,0,0,1)]
         `}
         role="dialog"
@@ -92,8 +88,8 @@ export function DialogHeader({ onClose, children }: DialogHeaderProps) {
           onClick={onClose}
           className="
             flex h-10 w-10 items-center justify-center
-            rounded-full text-[--md-on-surface-variant]
-            hover:bg-[--md-on-surface-variant]/10
+            rounded-full text-[--color-text-secondary]
+            hover:bg-[--glass-strong]
             transition-colors duration-200
           "
           aria-label="Close dialog"
@@ -116,7 +112,7 @@ interface DialogTitleProps {
 
 export function DialogTitle({ children }: DialogTitleProps) {
   return (
-    <h2 className="text-[--text-headline-medium] font-medium text-[--md-on-surface]">
+    <h2 className="text-[--text-headline-medium] font-semibold text-[--color-text]">
       {children}
     </h2>
   );
@@ -131,7 +127,7 @@ interface DialogDescriptionProps {
 
 export function DialogDescription({ children }: DialogDescriptionProps) {
   return (
-    <p className="mt-2 text-[--text-body-medium] text-[--md-on-surface-variant]">
+    <p className="mt-2 text-[--text-body-medium] text-[--color-text-secondary]">
       {children}
     </p>
   );
@@ -208,7 +204,7 @@ export function ConfirmDialog({
           variant={variant === 'danger' ? 'filled' : 'filled'}
           onClick={onConfirm}
           isLoading={isLoading}
-          className={variant === 'danger' ? 'bg-[--md-error] hover:bg-[--md-error]/90' : ''}
+          className={variant === 'danger' ? 'bg-[--error] hover:bg-[--error]/90' : ''}
         >
           {confirmLabel}
         </Button>
@@ -240,15 +236,15 @@ export function FullScreenDialog({ open, onClose, title, children }: FullScreenD
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-[--md-surface]">
+    <div className="fixed inset-0 z-50 bg-[--color-bg]">
       {/* Header */}
-      <header className="flex items-center gap-4 border-b border-[--md-outline-variant] px-4 h-16">
+      <header className="flex items-center gap-4 border-b border-[--glass-border] px-4 h-16">
         <button
           onClick={onClose}
           className="
             flex h-10 w-10 items-center justify-center
-            rounded-full text-[--md-on-surface]
-            hover:bg-[--md-on-surface-variant]/10
+            rounded-full text-[--color-text]
+            hover:bg-[--glass-strong]
             transition-colors duration-200
           "
           aria-label="Close"
@@ -257,7 +253,7 @@ export function FullScreenDialog({ open, onClose, title, children }: FullScreenD
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <h2 className="text-[--text-title-large] font-medium text-[--md-on-surface]">
+        <h2 className="text-[--text-title-large] font-semibold text-[--color-text]">
           {title}
         </h2>
       </header>

@@ -46,7 +46,7 @@ export function AdSlotCard({ adSlot }: AdSlotCardProps) {
 
   return (
     <>
-      <div className="group border border-[--color-border] bg-[--color-bg-elevated] p-5 transition-colors duration-[--transition-base] hover:border-[--accent]">
+      <div className="group rounded-2xl border border-[--glass-border] bg-[--glass-strong] p-5 backdrop-blur transition-colors duration-[--transition-base] hover:border-[--accent]/60">
         {/* Header */}
         <div className="mb-3 flex items-start justify-between gap-3">
           <h3 className="font-display text-[--text-base] font-semibold text-[--color-text] transition-colors group-hover:text-[--accent]">
@@ -65,7 +65,7 @@ export function AdSlotCard({ adSlot }: AdSlotCardProps) {
         )}
 
         {/* Price & Status */}
-        <div className="mb-4 flex items-center justify-between border border-[--color-border] bg-[--color-bg-subtle] p-3">
+        <div className="mb-4 flex items-center justify-between rounded-xl border border-[--glass-border] bg-[--color-bg-subtle] p-3">
           <StatusBadge status={adSlot.isAvailable ? 'available' : 'booked'} />
           <div className="text-right">
             <span className="font-display text-[--text-lg] font-semibold text-[--color-text]">
@@ -76,7 +76,7 @@ export function AdSlotCard({ adSlot }: AdSlotCardProps) {
         </div>
 
         {/* Actions */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[--color-border] pt-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[--glass-border] pt-4">
           <form action={formAction}>
             <input type="hidden" name="id" value={adSlot.id} />
             <input type="hidden" name="isAvailable" value={String(adSlot.isAvailable)} />

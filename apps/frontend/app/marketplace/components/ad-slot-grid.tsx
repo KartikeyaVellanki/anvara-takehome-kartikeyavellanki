@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getAdSlots, type PaginationMeta } from '@/lib/api';
 import type { AdSlot } from '@/lib/types';
 import { Button } from '@/app/components/ui/button';
-import { StatusBadge, TypeBadge } from '@/app/components/ui/badge';
+import { StatusBadge } from '@/app/components/ui/badge';
 import { Select } from '@/app/components/ui/input';
 import { CardSkeleton } from '@/app/components/ui/skeleton';
 import { EmptyState, EmptyStateIcons } from '@/app/components/ui/empty-state';
@@ -29,12 +29,12 @@ function LoadingState() {
 }
 
 /**
- * Error state - Material You style
+ * Error state - glass surface
  */
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
-    <div className="rounded-3xl bg-[--md-error-container] p-8 text-center">
-      <div className="mx-auto mb-4 h-16 w-16 flex items-center justify-center rounded-full bg-[--md-error]/20 text-[--md-error]">
+    <div className="rounded-2xl border border-[--error]/30 bg-[--error-light] p-8 text-center">
+      <div className="mx-auto mb-4 h-16 w-16 flex items-center justify-center rounded-full bg-[--error]/15 text-[--error]">
         <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path
             strokeLinecap="round"
@@ -43,10 +43,10 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
           />
         </svg>
       </div>
-      <h3 className="mb-2 text-[--text-title-large] font-medium text-[--md-on-error-container]">
+      <h3 className="mb-2 text-[--text-title-large] font-semibold text-[--color-text]">
         Unable to load marketplace
       </h3>
-      <p className="mb-6 text-[--text-body-medium] text-[--md-on-error-container]/80">{message}</p>
+      <p className="mb-6 text-[--text-body-medium] text-[--color-text-secondary]">{message}</p>
       <Button variant="danger" onClick={onRetry}>
         Try Again
       </Button>
@@ -55,7 +55,7 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
 }
 
 /**
- * Filter bar - Material You style
+ * Filter bar - glass controls
  */
 function FilterBar({
   typeFilter,
@@ -73,12 +73,12 @@ function FilterBar({
   onAvailableChange: (available: boolean) => void;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap items-center gap-3">
+    <div className="mb-8 flex flex-wrap items-center gap-3 rounded-2xl border border-[var(--card-border)] bg-[var(--glass-surface)] p-3 backdrop-blur-xl">
       <Select
         value={typeFilter}
         onChange={(e) => onTypeChange(e.target.value as FilterType)}
         aria-label="Filter by type"
-        className="!h-12 w-auto min-w-[140px]"
+        className="!h-11 w-auto min-w-[150px] !rounded-full !bg-[var(--glass-surface)] !border-[var(--card-border)] backdrop-blur-xl"
       >
         <option value="">All Types</option>
         <option value="DISPLAY">Display</option>
@@ -92,19 +92,19 @@ function FilterBar({
         value={sortOption}
         onChange={(e) => onSortChange(e.target.value as SortOption)}
         aria-label="Sort by"
-        className="!h-12 w-auto min-w-[160px]"
+        className="!h-11 w-auto min-w-[170px] !rounded-full !bg-[var(--glass-surface)] !border-[var(--card-border)] backdrop-blur-xl"
       >
         <option value="name">Sort: Name</option>
         <option value="price-asc">Price: Low to High</option>
         <option value="price-desc">Price: High to Low</option>
       </Select>
 
-      <label className="flex cursor-pointer items-center gap-3 px-4 py-3 rounded-full bg-[--md-surface-container] text-[--text-label-large] text-[--md-on-surface-variant] hover:bg-[--md-surface-container-high] transition-colors">
+      <label className="flex cursor-pointer items-center gap-3 rounded-full border border-[var(--card-border)] bg-[var(--glass-surface)] px-4 py-2 text-[--text-sm] text-[--color-text-secondary] transition-colors backdrop-blur-xl hover:border-[var(--card-border-hover)] hover:bg-[var(--glass-surface-strong)]">
         <input
           type="checkbox"
           checked={availableOnly}
           onChange={(e) => onAvailableChange(e.target.checked)}
-          className="h-5 w-5 rounded-sm border-[--md-outline] text-[--md-primary] focus:ring-[--md-primary] focus:ring-offset-0"
+          className="h-4 w-4 rounded-sm border-[var(--card-border)] text-[--accent] focus:ring-[--accent]/40 focus:ring-offset-0"
         />
         Available only
       </label>
@@ -113,48 +113,58 @@ function FilterBar({
 }
 
 /**
- * Ad Slot Card - Material You style
+ * Ad Slot Card - premium glass
  */
 function AdSlotCard({ slot }: { slot: AdSlot }) {
+  const typeLabel = {
+    DISPLAY: 'Display',
+    VIDEO: 'Video',
+    NATIVE: 'Native',
+    NEWSLETTER: 'Newsletter',
+    PODCAST: 'Podcast',
+  }[slot.type];
+
   return (
     <Link
       href={`/marketplace/${slot.id}`}
-      className="group block rounded-3xl bg-[--md-surface-container] overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+      className="group block transform transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_60px_rgba(0,0,0,0.55)] active:scale-[0.98]"
     >
-      <div className="p-6">
-        {/* Header */}
-        <div className="mb-4 flex items-start justify-between gap-3">
+      <div className="relative h-full overflow-hidden rounded-2xl border border-[var(--card-border)] bg-[var(--glass-surface)] p-6 backdrop-blur-xl shadow-[0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-300 group-hover:border-[var(--card-border-hover)]">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <div className="relative flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
-            <h3 className="truncate text-[--text-title-large] font-medium text-[--md-on-surface] transition-colors group-hover:text-[--md-primary]">
+            <h3 className="truncate font-display text-[--text-title-large] font-semibold text-[--color-text]">
               {slot.name}
             </h3>
-            {slot.publisher && (
-              <p className="mt-1 truncate text-[--text-body-medium] text-[--md-on-surface-variant]">
-                {slot.publisher.name}
-              </p>
-            )}
+            <p className="mt-1 truncate text-[--text-label-medium] text-[--color-text-muted]">
+              {slot.publisher?.name || 'Publisher'} · {typeLabel}
+            </p>
           </div>
-          <TypeBadge
-            type={slot.type as 'DISPLAY' | 'VIDEO' | 'NATIVE' | 'NEWSLETTER' | 'PODCAST'}
-          />
+          <StatusBadge status={slot.isAvailable ? 'available' : 'booked'} />
         </div>
 
-        {/* Description */}
         {slot.description && (
-          <p className="mb-4 text-[--text-body-medium] leading-relaxed text-[--md-on-surface-variant] line-clamp-2">
+          <p className="mt-4 text-[--text-body-medium] leading-relaxed text-[--color-text-secondary] line-clamp-2">
             {slot.description}
           </p>
         )}
 
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-4 border-t border-[--md-outline-variant]">
-          <StatusBadge status={slot.isAvailable ? 'available' : 'booked'} />
-          <div className="text-right">
-            <span className="text-[--text-headline-medium] font-medium text-[--md-on-surface]">
+        <div className="mt-6 flex items-center justify-between gap-4 border-t border-white/5 pt-4">
+          <div>
+            <p className="text-[--text-label-small] uppercase tracking-wide text-[--color-text-muted]">
+              Starting from
+            </p>
+            <p className="text-[--text-title-large] font-semibold text-[--accent]">
               ${Number(slot.basePrice).toLocaleString()}
-            </span>
-            <span className="text-[--text-body-medium] text-[--md-on-surface-variant]">/mo</span>
+              <span className="text-[--text-label-medium] text-[--color-text-muted]">/mo</span>
+            </p>
           </div>
+          <span className="inline-flex items-center gap-2 rounded-full border border-[var(--card-border)] px-4 py-2 text-[--text-label-large] font-semibold text-[--color-text] transition-colors group-hover:border-[var(--card-border-hover)] group-hover:text-[--accent]">
+            View
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 5l6 7-6 7" />
+            </svg>
+          </span>
         </div>
       </div>
     </Link>
@@ -162,7 +172,7 @@ function AdSlotCard({ slot }: { slot: AdSlot }) {
 }
 
 /**
- * Pagination - Material You style
+ * Pagination - glass controls
  */
 function Pagination({
   pagination,
@@ -201,10 +211,10 @@ function Pagination({
 
   return (
     <div className="mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
-      <p className="text-[--text-body-medium] text-[--md-on-surface-variant]">
-        Showing <span className="font-medium text-[--md-on-surface]">{startItem}</span> to{' '}
-        <span className="font-medium text-[--md-on-surface]">{endItem}</span> of{' '}
-        <span className="font-medium text-[--md-on-surface]">{total}</span>
+      <p className="text-[--text-body-medium] text-[--color-text-secondary]">
+        Showing <span className="font-semibold text-[--color-text]">{startItem}</span> to{' '}
+        <span className="font-semibold text-[--color-text]">{endItem}</span> of{' '}
+        <span className="font-semibold text-[--color-text]">{total}</span>
       </p>
 
       <nav className="flex items-center gap-1" aria-label="Pagination">
@@ -220,7 +230,7 @@ function Pagination({
         <div className="flex items-center gap-1 mx-2">
           {getPageNumbers().map((pageNum, idx) =>
             pageNum === 'ellipsis' ? (
-              <span key={`ellipsis-${idx}`} className="px-2 text-[--md-on-surface-variant]">
+              <span key={`ellipsis-${idx}`} className="px-2 text-[--color-text-secondary]">
                 ...
               </span>
             ) : (
@@ -229,12 +239,12 @@ function Pagination({
                 onClick={() => onPageChange(pageNum)}
                 className={`
                   h-10 w-10 rounded-full text-[--text-label-large] font-medium
-                  transition-all duration-200 ease-[cubic-bezier(0.2,0,0,1)]
+                  transition-all duration-200 ease-out
                   active:scale-95
                   ${
                     pageNum === page
-                      ? 'bg-[--md-primary] text-[--md-on-primary]'
-                      : 'text-[--md-on-surface-variant] hover:bg-[--md-primary]/10'
+                      ? 'bg-[--accent] text-[--md-on-primary]'
+                      : 'text-[--color-text-secondary] hover:bg-[--accent]/10'
                   }
                 `}
                 aria-current={pageNum === page ? 'page' : undefined}
@@ -344,14 +354,14 @@ export function AdSlotGrid() {
       />
 
       {filteredSlots.length === 0 ? (
-        <div className="rounded-3xl bg-[--md-surface-container] py-12 text-center">
-          <p className="text-[--md-on-surface-variant]">No ad slots match your filters.</p>
+        <div className="rounded-3xl border border-[--glass-border] bg-[--glass] py-12 text-center backdrop-blur-xl">
+          <p className="text-[--color-text-secondary]">No ad slots match your filters.</p>
           <button
             onClick={() => {
               setTypeFilter('');
               setAvailableOnly(false);
             }}
-            className="mt-2 text-[--text-label-large] text-[--md-primary] hover:underline"
+            className="mt-2 text-[--text-label-large] text-[--accent] hover:underline"
           >
             Clear filters
           </button>

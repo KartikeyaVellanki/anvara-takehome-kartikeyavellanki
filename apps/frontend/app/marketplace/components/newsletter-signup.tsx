@@ -65,9 +65,9 @@ export function NewsletterSignup() {
   // Success state
   if (state === 'success') {
     return (
-      <div className="border border-[--success] bg-[--success-light] p-5">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center border border-green-300 text-[--success]">
+    <div className="rounded-2xl border border-[--success]/40 bg-[--success-light] p-5">
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[--success]/40 text-[--success]">
             <svg
               className="h-5 w-5"
               fill="none"
@@ -79,13 +79,13 @@ export function NewsletterSignup() {
             </svg>
           </div>
           <div>
-            <p className="font-medium text-green-800">You&apos;re subscribed!</p>
-            <p className="text-[--text-sm] text-green-700">Watch your inbox for updates.</p>
+            <p className="font-semibold text-[--color-text]">You&apos;re subscribed!</p>
+            <p className="text-[--text-sm] text-[--color-text-secondary]">Watch your inbox for updates.</p>
           </div>
         </div>
         <button
           onClick={() => setState('idle')}
-          className="mt-3 text-[--text-sm] text-green-700 underline hover:text-green-800"
+          className="mt-3 text-[--text-sm] text-[--color-text-secondary] underline hover:text-[--color-text]"
         >
           Subscribe another email
         </button>
@@ -94,7 +94,7 @@ export function NewsletterSignup() {
   }
 
   return (
-    <div className="border border-[--color-border] bg-[--color-bg-elevated] p-5">
+    <div className="rounded-2xl border border-[var(--card-border)] bg-[var(--glass-surface)] p-5 backdrop-blur-xl">
       <h3 className="mb-1 font-display text-[--text-sm] font-semibold uppercase tracking-wide text-[--color-text]">
         Newsletter
       </h3>

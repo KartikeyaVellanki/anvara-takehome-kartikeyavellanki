@@ -1,13 +1,12 @@
 import { forwardRef, type InputHTMLAttributes, type TextareaHTMLAttributes, type SelectHTMLAttributes, type ReactNode } from 'react';
 
 /**
- * Material You (MD3) Input Components
+ * Futuristic premium Input Components
  *
  * Key characteristics:
- * - Filled text field style
- * - Rounded top corners, square bottom
- * - Bottom border indicator (2px)
- * - Tonal background
+ * - Glassy surfaces with soft borders
+ * - Clear focus rings
+ * - Touch-friendly sizing
  */
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -23,25 +22,26 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   return (
     <div className="relative">
       {leftElement && (
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[--md-on-surface-variant]">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[--color-text-muted]">
           {leftElement}
         </div>
       )}
       <input
         ref={ref}
         className={`
-          w-full h-14
-          bg-[--md-surface-container-low] text-[--md-on-surface]
-          rounded-t-xl rounded-b-none
-          border-b-2 border-transparent
-          px-4 py-4
-          text-[--text-body-large]
-          transition-all duration-200 ease-[cubic-bezier(0.2,0,0,1)]
-          placeholder:text-[--md-on-surface-variant]/60
-          hover:bg-[--md-surface-container]
-          focus:outline-none focus:bg-[--md-surface-container] focus:border-[--md-primary]
+          w-full h-11
+          bg-[--glass] text-[--color-text]
+          rounded-xl
+          border border-[--glass-border]
+          px-4
+          text-[--text-base]
+          transition-all duration-200 ease-out
+          placeholder:text-[--color-text-muted]
+          backdrop-blur-xl
+          hover:border-[--accent]/40
+          focus:outline-none focus:border-[--accent]/70 focus:ring-2 focus:ring-[--accent]/25
           disabled:opacity-50 disabled:cursor-not-allowed
-          ${error ? 'border-[--md-error] focus:border-[--md-error]' : 'border-[--md-outline]'}
+          ${error ? 'border-[--error] focus:border-[--error] focus:ring-[--error]/25' : ''}
           ${leftElement ? 'pl-12' : ''}
           ${rightElement ? 'pr-12' : ''}
           ${className}
@@ -49,7 +49,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         {...props}
       />
       {rightElement && (
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[--md-on-surface-variant]">
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[--color-text-muted]">
           {rightElement}
         </div>
       )}
@@ -73,18 +73,19 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       ref={ref}
       className={`
         w-full min-h-[120px]
-        bg-[--md-surface-container-low] text-[--md-on-surface]
-        rounded-t-xl rounded-b-none
-        border-b-2 border-transparent
-        px-4 py-4
-        text-[--text-body-large]
-        transition-all duration-200 ease-[cubic-bezier(0.2,0,0,1)]
-        placeholder:text-[--md-on-surface-variant]/60
-        hover:bg-[--md-surface-container]
-        focus:outline-none focus:bg-[--md-surface-container] focus:border-[--md-primary]
+        bg-[--glass] text-[--color-text]
+        rounded-xl
+        border border-[--glass-border]
+        px-4 py-3
+        text-[--text-base]
+        transition-all duration-200 ease-out
+        placeholder:text-[--color-text-muted]
+        backdrop-blur-xl
+        hover:border-[--accent]/40
+        focus:outline-none focus:border-[--accent]/70 focus:ring-2 focus:ring-[--accent]/25
         disabled:opacity-50 disabled:cursor-not-allowed
         resize-y
-        ${error ? 'border-[--md-error] focus:border-[--md-error]' : 'border-[--md-outline]'}
+        ${error ? 'border-[--error] focus:border-[--error] focus:ring-[--error]/25' : ''}
         ${className}
       `}
       {...props}
@@ -108,18 +109,19 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
       <select
         ref={ref}
         className={`
-          w-full h-14
-          bg-[--md-surface-container-low] text-[--md-on-surface]
-          rounded-t-xl rounded-b-none
-          border-b-2 border-transparent
-          px-4 py-4 pr-10
-          text-[--text-body-large]
+          w-full h-11
+          bg-[--glass] text-[--color-text]
+          rounded-xl
+          border border-[--glass-border]
+          px-4 pr-10
+          text-[--text-base]
           appearance-none cursor-pointer
-          transition-all duration-200 ease-[cubic-bezier(0.2,0,0,1)]
-          hover:bg-[--md-surface-container]
-          focus:outline-none focus:bg-[--md-surface-container] focus:border-[--md-primary]
+          transition-all duration-200 ease-out
+          backdrop-blur-xl
+          hover:border-[--accent]/40
+          focus:outline-none focus:border-[--accent]/70 focus:ring-2 focus:ring-[--accent]/25
           disabled:opacity-50 disabled:cursor-not-allowed
-          ${error ? 'border-[--md-error] focus:border-[--md-error]' : 'border-[--md-outline]'}
+          ${error ? 'border-[--error] focus:border-[--error] focus:ring-[--error]/25' : ''}
           ${className}
         `}
         {...props}
@@ -127,7 +129,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
         {children}
       </select>
       {/* Dropdown arrow */}
-      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[--md-on-surface-variant]">
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[--color-text-muted]">
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
@@ -147,11 +149,11 @@ interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
 export function Label({ required = false, children, className = '', ...props }: LabelProps) {
   return (
     <label
-      className={`block mb-2 text-[--text-label-large] font-medium text-[--md-on-surface] ${className}`}
+      className={`block mb-2 text-[--text-label-large] font-semibold text-[--color-text] ${className}`}
       {...props}
     >
       {children}
-      {required && <span className="ml-1 text-[--md-error]">*</span>}
+      {required && <span className="ml-1 text-[--error]">*</span>}
     </label>
   );
 }
@@ -168,7 +170,7 @@ export function HelperText({ error = false, children }: HelperTextProps) {
   return (
     <p
       className={`mt-1.5 text-[--text-label-medium] ${
-        error ? 'text-[--md-error]' : 'text-[--md-on-surface-variant]'
+        error ? 'text-[--error]' : 'text-[--color-text-muted]'
       }`}
     >
       {children}
@@ -224,7 +226,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functi
           <button
             type="button"
             onClick={onClear}
-            className="p-1 rounded-full hover:bg-[--md-on-surface-variant]/10 transition-colors"
+            className="p-1 rounded-full hover:bg-[--glass-strong] transition-colors"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

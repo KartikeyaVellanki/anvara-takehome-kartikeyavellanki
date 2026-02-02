@@ -1,12 +1,9 @@
 import { type HTMLAttributes, type ReactNode } from 'react';
 
 /**
- * Material You (MD3) Badge/Chip Component
+ * Futuristic premium Badge/Chip Component
  *
- * Key characteristics:
- * - Pill-shaped (rounded-full)
- * - Uses tonal container colors
- * - Small, compact sizing
+ * Compact pills with subtle borders and crisp contrast.
  */
 
 type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'accent';
@@ -18,23 +15,23 @@ interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: 'bg-[--md-surface-container-high] text-[--md-on-surface]',
-  primary: 'bg-[--md-primary-container] text-[--md-on-primary-container]',
-  secondary: 'bg-[--md-secondary-container] text-[--md-on-secondary-container]',
-  success: 'bg-[--md-success-container] text-[--md-on-success-container]',
-  error: 'bg-[--md-error-container] text-[--md-on-error-container]',
-  warning: 'bg-[--md-warning-container] text-[--md-on-warning-container]',
-  accent: 'bg-[--md-tertiary-container] text-[--md-on-tertiary-container]',
+  default: 'bg-transparent text-[--color-text-secondary] border border-[--glass-border]',
+  primary: 'bg-transparent text-[--accent] border border-[--accent]/60',
+  secondary: 'bg-transparent text-[--accent-2] border border-[--accent-2]/50',
+  success: 'bg-transparent text-[--success] border border-[--success]/60',
+  error: 'bg-transparent text-[--error] border border-[--error]/60',
+  warning: 'bg-transparent text-[--warning] border border-[--warning]/60',
+  accent: 'bg-transparent text-[--accent] border border-[--accent]/50',
 };
 
 const dotColors: Record<BadgeVariant, string> = {
-  default: 'bg-[--md-outline]',
-  primary: 'bg-[--md-primary]',
-  secondary: 'bg-[--md-secondary]',
-  success: 'bg-[--md-success]',
-  error: 'bg-[--md-error]',
-  warning: 'bg-[--md-warning]',
-  accent: 'bg-[--md-tertiary]',
+  default: 'bg-[--color-border]',
+  primary: 'bg-[--accent]',
+  secondary: 'bg-[--accent-2]',
+  success: 'bg-[--success]',
+  error: 'bg-[--error]',
+  warning: 'bg-[--warning]',
+  accent: 'bg-[--accent]',
 };
 
 export function Badge({ variant = 'default', dot = false, children, className = '', ...props }: BadgeProps) {
@@ -43,7 +40,7 @@ export function Badge({ variant = 'default', dot = false, children, className = 
       className={`
         inline-flex items-center gap-1.5
         rounded-full px-3 py-1
-        text-[--text-label-small] font-medium
+        text-[--text-label-small] font-semibold
         ${variantStyles[variant]}
         ${className}
       `}
@@ -153,10 +150,10 @@ export function Chip({
         active:scale-95
         ${
           selected
-            ? 'bg-[--md-secondary-container] text-[--md-on-secondary-container]'
-            : 'bg-[--md-surface] text-[--md-on-surface-variant] border border-[--md-outline]'
+            ? 'bg-[--accent]/20 text-[--color-text] border border-[--accent]/50'
+            : 'bg-[--glass] text-[--color-text-secondary] border border-[--glass-border]'
         }
-        hover:shadow-sm
+        hover:shadow-glow
         ${className}
       `}
       {...props}

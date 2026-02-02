@@ -1,13 +1,9 @@
 import { forwardRef, type HTMLAttributes, type TdHTMLAttributes, type ThHTMLAttributes, type ReactNode } from 'react';
 
 /**
- * Material You (MD3) Table Components
+ * Futuristic premium Table Components
  *
- * Key characteristics:
- * - Large border radius on container
- * - Tonal surface backgrounds
- * - Subtle row hover states
- * - Proper spacing and typography
+ * Glassy containers with crisp typography and quiet row hovers.
  */
 
 interface TableProps extends HTMLAttributes<HTMLTableElement> {
@@ -19,7 +15,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   ref
 ) {
   return (
-    <div className="rounded-3xl bg-[--md-surface-container] overflow-hidden">
+    <div className="rounded-2xl border border-[--glass-border] bg-[--glass] backdrop-blur-xl overflow-hidden">
       <div className="overflow-x-auto">
         <table ref={ref} className={`w-full ${className}`} {...props}>
           {children}
@@ -41,7 +37,7 @@ export const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>
     return (
       <thead
         ref={ref}
-        className={`bg-[--md-surface-container-high] ${className}`}
+        className={`bg-[--glass-strong] ${className}`}
         {...props}
       >
         {children}
@@ -83,9 +79,9 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(function 
     <tr
       ref={ref}
       className={`
-        border-b border-[--md-outline-variant] last:border-b-0
+        border-b border-[--glass-border] last:border-b-0
         transition-colors duration-200
-        ${hoverable ? 'hover:bg-[--md-surface-container-high]' : ''}
+        ${hoverable ? 'hover:bg-[--glass-strong]' : ''}
         ${className}
       `}
       {...props}
@@ -114,8 +110,8 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(functi
       ref={ref}
       className={`
         px-4 py-4 text-left
-        text-[--text-label-large] font-medium text-[--md-on-surface-variant]
-        ${sortable ? 'cursor-pointer select-none hover:text-[--md-on-surface]' : ''}
+        text-[--text-label-large] font-semibold text-[--color-text-secondary]
+        ${sortable ? 'cursor-pointer select-none hover:text-[--color-text]' : ''}
         ${className}
       `}
       onClick={sortable ? onSort : undefined}
@@ -124,7 +120,7 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(functi
       <div className="flex items-center gap-2">
         {children}
         {sortable && sortDirection && (
-          <span className="text-[--md-primary]">
+          <span className="text-[--accent]">
             {sortDirection === 'asc' ? (
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
@@ -155,7 +151,7 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(functi
   return (
     <td
       ref={ref}
-      className={`px-4 py-4 text-[--text-body-medium] text-[--md-on-surface] ${className}`}
+      className={`px-4 py-4 text-[--text-body-medium] text-[--color-text] ${className}`}
       {...props}
     >
       {children}
@@ -180,15 +176,15 @@ export function TableEmpty({ icon, title, description, action, colSpan = 4 }: Ta
       <td colSpan={colSpan} className="px-4 py-16 text-center">
         <div className="flex flex-col items-center">
           {icon && (
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[--md-surface-container-high] text-[--md-on-surface-variant]">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[--glass-strong] text-[--color-text-secondary]">
               {icon}
             </div>
           )}
-          <h3 className="mb-2 text-[--text-title-large] font-medium text-[--md-on-surface]">
+          <h3 className="mb-2 text-[--text-title-large] font-semibold text-[--color-text]">
             {title}
           </h3>
           {description && (
-            <p className="mb-6 max-w-sm text-[--text-body-medium] text-[--md-on-surface-variant]">
+            <p className="mb-6 max-w-sm text-[--text-body-medium] text-[--color-text-secondary]">
               {description}
             </p>
           )}
@@ -221,8 +217,8 @@ export function TablePagination({
   const endItem = Math.min(page * itemsPerPage, totalItems || page * itemsPerPage);
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t border-[--md-outline-variant]">
-      <div className="text-[--text-body-medium] text-[--md-on-surface-variant]">
+    <div className="flex items-center justify-between px-4 py-3 border-t border-[--glass-border]">
+      <div className="text-[--text-body-medium] text-[--color-text-secondary]">
         {totalItems ? (
           <span>
             {startItem}&ndash;{endItem} of {totalItems}
@@ -237,8 +233,8 @@ export function TablePagination({
           disabled={page <= 1}
           className="
             flex h-10 w-10 items-center justify-center
-            rounded-full text-[--md-on-surface-variant]
-            hover:bg-[--md-on-surface-variant]/10
+            rounded-full text-[--color-text-secondary]
+            hover:bg-[--glass-strong]
             disabled:opacity-50 disabled:cursor-not-allowed
             transition-colors duration-200
           "
@@ -253,8 +249,8 @@ export function TablePagination({
           disabled={page >= totalPages}
           className="
             flex h-10 w-10 items-center justify-center
-            rounded-full text-[--md-on-surface-variant]
-            hover:bg-[--md-on-surface-variant]/10
+            rounded-full text-[--color-text-secondary]
+            hover:bg-[--glass-strong]
             disabled:opacity-50 disabled:cursor-not-allowed
             transition-colors duration-200
           "
