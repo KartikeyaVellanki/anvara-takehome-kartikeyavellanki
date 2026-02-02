@@ -2,7 +2,8 @@
 
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, startTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { createAdSlot, updateAdSlot, type ActionState } from '../actions';
 import type { AdSlot } from '@/lib/types';
 import { Button } from '@/app/components/ui/button';
@@ -42,14 +43,18 @@ export function AdSlotForm({ adSlot, onClose, onSuccess }: AdSlotFormProps) {
   const action = isEditing ? updateAdSlot : createAdSlot;
   const [state, formAction] = useActionState(action, initialState);
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
 
   // Close form on success
   useEffect(() => {
     if (state.success) {
+      startTransition(() => {
+        router.refresh();
+      });
       onSuccess?.();
       onClose();
     }
-  }, [state.success, onClose, onSuccess]);
+  }, [state.success, onClose, onSuccess, router]);
 
   return (
     <Dialog open={true} onClose={onClose} size="lg">

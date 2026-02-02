@@ -2,7 +2,8 @@
 
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, startTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { createCampaign, updateCampaign, type ActionState } from '../actions';
 import type { Campaign } from '@/lib/types';
 import { Button } from '@/app/components/ui/button';
@@ -42,14 +43,18 @@ export function CampaignForm({ campaign, onClose, onSuccess }: CampaignFormProps
   const action = isEditing ? updateCampaign : createCampaign;
   const [state, formAction] = useActionState(action, initialState);
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
 
   // Close form on success
   useEffect(() => {
     if (state.success) {
+      startTransition(() => {
+        router.refresh();
+      });
       onSuccess?.();
       onClose();
     }
-  }, [state.success, onClose, onSuccess]);
+  }, [state.success, onClose, onSuccess, router]);
 
   // Format date for input (YYYY-MM-DD)
   const formatDateForInput = (dateStr?: string) => {

@@ -48,7 +48,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
         )}
 
         {/* Budget Progress */}
-        <div className="mb-4 rounded-xl border border-white/10 bg-[var(--glass-surface-strong)] p-3 backdrop-blur">
+        <div className="mb-4 rounded-xl border border-[--glass-border] bg-[var(--glass-surface-strong)] p-3 backdrop-blur">
           <div className="mb-2 flex justify-between text-[--text-sm]">
             <span className="text-[--color-text-muted]">Budget</span>
             <span className="font-medium text-[--color-text]">
@@ -88,7 +88,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-2 border-t border-white/10 pt-4">
+        <div className="flex items-center justify-end gap-2 border-t border-[--glass-border] pt-4">
           <Button variant="ghost" size="sm" onClick={() => setShowEditForm(true)}>
             Edit
           </Button>

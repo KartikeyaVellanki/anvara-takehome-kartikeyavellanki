@@ -3,6 +3,7 @@
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useState, useEffect, startTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { deleteCampaign, type ActionState } from '../actions';
 import { Button } from '@/app/components/ui/button';
 import {
@@ -37,15 +38,17 @@ const initialState: ActionState = {};
 export function DeleteCampaignButton({ campaignId, campaignName }: DeleteCampaignButtonProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [state, formAction] = useActionState(deleteCampaign, initialState);
+  const router = useRouter();
 
   // Close modal on successful deletion
   useEffect(() => {
     if (state.success) {
       startTransition(() => {
         setShowConfirm(false);
+        router.refresh();
       });
     }
-  }, [state.success]);
+  }, [state.success, router]);
 
   return (
     <>

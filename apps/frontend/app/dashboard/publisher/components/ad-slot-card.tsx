@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState, startTransition } from 'react';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import type { AdSlot } from '@/lib/types';
 import { AdSlotForm } from './ad-slot-form';
 import { DeleteAdSlotButton } from './delete-ad-slot-button';
@@ -42,7 +43,17 @@ const initialState: ActionState = {};
  */
 export function AdSlotCard({ adSlot }: AdSlotCardProps) {
   const [showEditForm, setShowEditForm] = useState(false);
-  const [, formAction] = useActionState(toggleAdSlotAvailability, initialState);
+  const router = useRouter();
+  const [state, formAction] = useActionState(toggleAdSlotAvailability, initialState);
+
+  // Server Actions revalidate the route, but the client component won't reflect the change
+  // until we refresh the current RSC payload.
+  useEffect(() => {
+    if (!state.success) return;
+    startTransition(() => {
+      router.refresh();
+    });
+  }, [state.success, router]);
 
   return (
     <>
@@ -65,7 +76,7 @@ export function AdSlotCard({ adSlot }: AdSlotCardProps) {
         )}
 
         {/* Price & Status */}
-        <div className="mb-4 flex items-center justify-between rounded-xl border border-white/10 bg-[var(--glass-surface-strong)] p-3 backdrop-blur">
+        <div className="mb-4 flex items-center justify-between rounded-xl border border-[--glass-border] bg-[var(--glass-surface-strong)] p-3 backdrop-blur">
           <StatusBadge status={adSlot.isAvailable ? 'available' : 'booked'} />
           <div className="text-right">
             <span className="font-display text-[--text-lg] font-semibold text-[--accent]">
@@ -76,7 +87,7 @@ export function AdSlotCard({ adSlot }: AdSlotCardProps) {
         </div>
 
         {/* Actions */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[--glass-border] pt-4">
           <form action={formAction}>
             <input type="hidden" name="id" value={adSlot.id} />
             <input type="hidden" name="isAvailable" value={String(adSlot.isAvailable)} />
