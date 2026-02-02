@@ -121,6 +121,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     <button
       ref={ref}
       disabled={isDisabled}
+      aria-busy={isLoading || undefined}
       className={`
         inline-flex items-center justify-center
         rounded-full font-semibold tracking-[0.01em]
@@ -132,15 +133,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       `}
       {...props}
     >
-      {isLoading ? (
-        <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-      ) : (
-        <>
-          {leftIcon && <span className="shrink-0">{leftIcon}</span>}
-          {children}
-          {rightIcon && <span className="shrink-0">{rightIcon}</span>}
-        </>
+      {isLoading && (
+        <span
+          aria-hidden="true"
+          className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+        />
       )}
+      {!isLoading && leftIcon && <span className="shrink-0">{leftIcon}</span>}
+      <span className="inline-flex min-w-0 items-center">{children}</span>
+      {!isLoading && rightIcon && <span className="shrink-0">{rightIcon}</span>}
     </button>
   );
 });
