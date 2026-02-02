@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getAdSlots, type PaginationMeta } from '@/lib/api';
 import type { AdSlot } from '@/lib/types';
+import { useAnalytics } from '@/lib/hooks/use-analytics';
 import { Button } from '@/app/components/ui/button';
 import { StatusBadge } from '@/app/components/ui/badge';
 import { Select } from '@/app/components/ui/input';
@@ -116,6 +117,7 @@ function FilterBar({
  * Ad Slot Card - premium glass
  */
 function AdSlotCard({ slot }: { slot: AdSlot }) {
+  const { trackCTA } = useAnalytics();
   const typeLabel = {
     DISPLAY: 'Display',
     VIDEO: 'Video',
@@ -127,6 +129,13 @@ function AdSlotCard({ slot }: { slot: AdSlot }) {
   return (
     <Link
       href={`/marketplace/${slot.id}`}
+      onClick={() => {
+        trackCTA('View', 'marketplace-grid', {
+          listingId: slot.id,
+          listingType: slot.type,
+          listingPrice: Number(slot.basePrice),
+        });
+      }}
       className="group block transform transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_60px_rgba(0,0,0,0.55)] active:scale-[0.98]"
     >
       <div className="relative h-full overflow-hidden rounded-2xl border border-[var(--card-border)] bg-[var(--glass-surface)] p-6 backdrop-blur-xl shadow-[0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-300 group-hover:border-[var(--card-border-hover)]">
@@ -272,6 +281,7 @@ function Pagination({
  * Main Ad Slot Grid Component
  */
 export function AdSlotGrid() {
+  const { trackFilter } = useAnalytics();
   const [adSlots, setAdSlots] = useState<AdSlot[]>([]);
   const [pagination, setPagination] = useState<PaginationMeta | null>(null);
   const [loading, setLoading] = useState(true);
@@ -282,6 +292,21 @@ export function AdSlotGrid() {
   const [typeFilter, setTypeFilter] = useState<FilterType>('');
   const [sortOption, setSortOption] = useState<SortOption>('name');
   const [availableOnly, setAvailableOnly] = useState(false);
+
+  const handleTypeChange = (type: FilterType) => {
+    setTypeFilter(type);
+    trackFilter('type', type || 'all');
+  };
+
+  const handleSortChange = (sort: SortOption) => {
+    setSortOption(sort);
+    trackFilter('sort', sort);
+  };
+
+  const handleAvailableChange = (available: boolean) => {
+    setAvailableOnly(available);
+    trackFilter('available_only', available ? 'true' : 'false');
+  };
 
   const fetchAdSlots = (page: number) => {
     setLoading(true);
@@ -347,10 +372,10 @@ export function AdSlotGrid() {
       <FilterBar
         typeFilter={typeFilter}
         sortOption={sortOption}
-        onTypeChange={setTypeFilter}
-        onSortChange={setSortOption}
+        onTypeChange={handleTypeChange}
+        onSortChange={handleSortChange}
         availableOnly={availableOnly}
-        onAvailableChange={setAvailableOnly}
+        onAvailableChange={handleAvailableChange}
       />
 
       {filteredSlots.length === 0 ? (
@@ -360,6 +385,7 @@ export function AdSlotGrid() {
             onClick={() => {
               setTypeFilter('');
               setAvailableOnly(false);
+              trackFilter('clear', 'true');
             }}
             className="mt-2 text-[--text-label-large] text-[--accent] hover:underline"
           >
