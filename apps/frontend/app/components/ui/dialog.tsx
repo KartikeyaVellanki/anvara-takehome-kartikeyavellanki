@@ -45,27 +45,39 @@ export function Dialog({ open, onClose, size = 'md', children }: DialogProps) {
   if (!open) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
+    <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Scrim (backdrop) */}
-      <div className="absolute inset-0 bg-[--scrim] animate-in fade-in duration-200" />
+      <div className="fixed inset-0 bg-[--scrim] animate-in fade-in duration-200" />
 
-      {/* Dialog surface */}
       <div
-        className={`
-          relative w-full ${sizeStyles[size]}
-          bg-[--glass-strong] border border-[--glass-border] rounded-2xl
-          shadow-float backdrop-blur-2xl
-          animate-in fade-in zoom-in-95 duration-300 ease-[cubic-bezier(0.2,0,0,1)]
-        `}
-        role="dialog"
-        aria-modal="true"
+        className="relative flex min-h-full items-start justify-center p-4 py-10"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) onClose();
+        }}
       >
-        {children}
+        {/* Dialog surface */}
+        <div
+          className={`
+            relative w-full ${sizeStyles[size]}
+            max-h-[calc(100vh-5rem)]
+            overflow-hidden
+            rounded-2xl
+            border border-[--modal-border]
+            bg-[--modal-bg]
+            shadow-[0_18px_60px_rgba(0,0,0,0.55)]
+            backdrop-blur-2xl
+            flex flex-col
+            animate-in fade-in zoom-in-95 duration-300 ease-[cubic-bezier(0.2,0,0,1)]
+          `}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent"
+          />
+          <div className="relative flex min-h-0 flex-1 flex-col">{children}</div>
+        </div>
       </div>
     </div>
   );
@@ -81,7 +93,7 @@ interface DialogHeaderProps {
 
 export function DialogHeader({ onClose, children }: DialogHeaderProps) {
   return (
-    <div className="flex items-start justify-between gap-4 px-6 pt-6">
+    <div className="flex items-start justify-between gap-4 border-b border-white/10 px-6 py-5">
       <div className="flex-1">{children}</div>
       {onClose && (
         <button
@@ -89,7 +101,7 @@ export function DialogHeader({ onClose, children }: DialogHeaderProps) {
           className="
             flex h-10 w-10 items-center justify-center
             rounded-full text-[--color-text-secondary]
-            hover:bg-[--glass-strong]
+            hover:bg-white/10
             transition-colors duration-200
           "
           aria-label="Close dialog"
@@ -143,7 +155,7 @@ interface DialogBodyProps {
 
 export function DialogBody({ className = '', children }: DialogBodyProps) {
   return (
-    <div className={`px-6 py-4 ${className}`}>
+    <div className={`min-h-0 flex-1 overflow-y-auto px-6 py-5 ${className}`}>
       {children}
     </div>
   );
@@ -158,7 +170,7 @@ interface DialogFooterProps {
 
 export function DialogFooter({ children }: DialogFooterProps) {
   return (
-    <div className="flex items-center justify-end gap-2 px-6 pb-6 pt-2">
+    <div className="flex items-center justify-end gap-2 border-t border-white/10 px-6 py-5">
       {children}
     </div>
   );
