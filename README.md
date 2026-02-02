@@ -42,10 +42,24 @@ Do not open pull requests to the original repo.
 
 ## tl;dr
 
-- **�  New here? [Setup the Project](#quick-start)**
-- **🎯 Ready to code? [Start the Challenges](#individual-challenges)**
-- **❓ Need help? [Check the Docs](docs/README.md)**
-- **📤 Done? [Submit Your Work](docs/submission.md)**
+- **New here?** [Setup the Project](#quick-start)
+- **Ready to code?** [Start the Challenges](#individual-challenges)
+- **Need help?** [Check the Docs](docs/README.md)
+- **Done?** [Submit Your Work](docs/submission.md)
+
+## Notes for Reviewers
+
+Highlights of decisions and tradeoffs made while completing the take-home:
+
+- **Premium UI pass (UI-only):** Introduced a dark-first, theme-aware token system with glass surfaces and consistent typography, while keeping all existing flows/routes/server actions intact.
+- **Modal usability fixes:** Addressed issues where modals were visually “embedded”/clipped and non-scrollable; ensured long forms (quote request, create/edit flows) scroll correctly and remain readable in both light and dark mode.
+- **Server Action UX:** After mutations (create/edit/delete/toggle availability) we refresh the current route so the Server Component payload updates immediately and the UI reflects changes without manual reloads.
+- **Marketplace conversion challenge:** Added a short product writeup + measurement plan and implemented UI/UX improvements on the grid/detail funnel. Also added lightweight analytics instrumentation for marketplace grid interactions (filters + listing clicks).
+- **Testing + reliability:** Made `pnpm test` pass at the repo root by adding small, focused frontend unit tests and additional backend endpoint coverage. Backend tests load the monorepo `.env` so they run against the same DB config as `pnpm dev`.
+
+Useful references:
+- Verification + status: `docs/CHALLENGE_VERIFICATION_SUMMARY.md`
+- Conversion challenge writeup: `docs/bonus-challenges/business/01-marketplace-conversions-submission.md`
 
 ## About This Assessment
 
