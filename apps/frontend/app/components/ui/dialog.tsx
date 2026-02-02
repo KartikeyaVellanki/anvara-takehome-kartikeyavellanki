@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { Button } from './button';
 
 /**
@@ -23,6 +24,24 @@ const sizeStyles = {
 };
 
 export function Dialog({ open, onClose, size = 'md', children }: DialogProps) {
+  const [portalEl, setPortalEl] = useState<HTMLDivElement | null>(null);
+
+  // Render dialogs in a portal attached to <body> to avoid clipping/positioning issues
+  // when parents have transforms/filters/overflow that can break `position: fixed`.
+  useEffect(() => {
+    if (!open) return;
+
+    const el = document.createElement('div');
+    el.setAttribute('data-anvara-dialog-portal', 'true');
+    setPortalEl(el);
+    document.body.appendChild(el);
+
+    return () => {
+      document.body.removeChild(el);
+      setPortalEl(null);
+    };
+  }, [open]);
+
   // Handle escape key
   useEffect(() => {
     function handleKeyDown(e: globalThis.KeyboardEvent) {
@@ -42,9 +61,9 @@ export function Dialog({ open, onClose, size = 'md', children }: DialogProps) {
     };
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!open || !portalEl) return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Scrim (backdrop) */}
       <div className="fixed inset-0 bg-[--scrim] animate-in fade-in duration-200" />
@@ -80,7 +99,7 @@ export function Dialog({ open, onClose, size = 'md', children }: DialogProps) {
         </div>
       </div>
     </div>
-  );
+  , portalEl);
 }
 
 /**
@@ -93,7 +112,7 @@ interface DialogHeaderProps {
 
 export function DialogHeader({ onClose, children }: DialogHeaderProps) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-white/10 px-6 py-5">
+    <div className="flex items-start justify-between gap-4 border-b border-[--modal-border] px-6 py-5">
       <div className="flex-1">{children}</div>
       {onClose && (
         <button
@@ -170,7 +189,7 @@ interface DialogFooterProps {
 
 export function DialogFooter({ children }: DialogFooterProps) {
   return (
-    <div className="flex items-center justify-end gap-2 border-t border-white/10 px-6 py-5">
+    <div className="flex items-center justify-end gap-2 border-t border-[--modal-border] px-6 py-5">
       {children}
     </div>
   );
