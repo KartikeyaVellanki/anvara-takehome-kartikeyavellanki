@@ -29,7 +29,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
 
   return (
     <>
-      <div className="group rounded-2xl border border-[--glass-border] bg-[--glass-strong] p-5 backdrop-blur transition-colors duration-[--transition-base] hover:border-[--accent]/60">
+      <div className="group rounded-2xl border border-[var(--card-border)] bg-[var(--glass-surface)] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--card-border-hover)] hover:shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
         {/* Header */}
         <div className="mb-3 flex items-start justify-between gap-3">
           <h3 className="font-display text-[--text-base] font-semibold text-[--color-text] transition-colors group-hover:text-[--accent]">
@@ -48,7 +48,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
         )}
 
         {/* Budget Progress */}
-        <div className="mb-4 rounded-xl border border-[--glass-border] bg-[--color-bg-subtle] p-3">
+        <div className="mb-4 rounded-xl border border-white/10 bg-[var(--glass-surface-strong)] p-3 backdrop-blur">
           <div className="mb-2 flex justify-between text-[--text-sm]">
             <span className="text-[--color-text-muted]">Budget</span>
             <span className="font-medium text-[--color-text]">
@@ -88,7 +88,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-2 border-t border-[--glass-border] pt-4">
+        <div className="flex items-center justify-end gap-2 border-t border-white/10 pt-4">
           <Button variant="ghost" size="sm" onClick={() => setShowEditForm(true)}>
             Edit
           </Button>
