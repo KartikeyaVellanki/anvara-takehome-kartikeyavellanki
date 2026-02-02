@@ -35,7 +35,7 @@ router.post('/subscribe', (req: Request, res: Response) => {
   if (!isValidEmail(normalizedEmail)) {
     return res.status(400).json({
       success: false,
-      error: 'Please enter a valid email address',
+      error: 'Invalid email format',
     });
   }
 
