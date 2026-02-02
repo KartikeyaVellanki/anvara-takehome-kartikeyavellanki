@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
+import { useEffect, type ReactNode } from 'react';
 import { Button } from './button';
 
 /**
@@ -24,24 +23,6 @@ const sizeStyles = {
 };
 
 export function Dialog({ open, onClose, size = 'md', children }: DialogProps) {
-  const [portalEl, setPortalEl] = useState<HTMLDivElement | null>(null);
-
-  // Render dialogs in a portal attached to <body> to avoid clipping/positioning issues
-  // when parents have transforms/filters/overflow that can break `position: fixed`.
-  useEffect(() => {
-    if (!open) return;
-
-    const el = document.createElement('div');
-    el.setAttribute('data-anvara-dialog-portal', 'true');
-    setPortalEl(el);
-    document.body.appendChild(el);
-
-    return () => {
-      document.body.removeChild(el);
-      setPortalEl(null);
-    };
-  }, [open]);
-
   // Handle escape key
   useEffect(() => {
     function handleKeyDown(e: globalThis.KeyboardEvent) {
@@ -61,9 +42,9 @@ export function Dialog({ open, onClose, size = 'md', children }: DialogProps) {
     };
   }, [open, onClose]);
 
-  if (!open || !portalEl) return null;
+  if (!open) return null;
 
-  return createPortal(
+  return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Scrim (backdrop) */}
       <div className="fixed inset-0 bg-[--scrim] animate-in fade-in duration-200" />
@@ -99,7 +80,7 @@ export function Dialog({ open, onClose, size = 'md', children }: DialogProps) {
         </div>
       </div>
     </div>
-  , portalEl);
+  );
 }
 
 /**
