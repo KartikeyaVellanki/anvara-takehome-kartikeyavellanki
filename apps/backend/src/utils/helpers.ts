@@ -69,12 +69,6 @@ export const buildFilters = (
   return filters;
 };
 
-// Deprecated config - kept for backwards compatibility
-export const DEPRECATED_CONFIG = {
-  apiVersion: 'v1',
-  timeout: 5000,
-};
-
 /**
  * Clamp a number value between min and max bounds
  *
