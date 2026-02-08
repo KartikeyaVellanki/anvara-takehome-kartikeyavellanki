@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAdSlot } from '@/lib/api';
 import { authClient } from '@/auth-client';
 import { RequestQuoteModal } from './request-quote-modal';
@@ -62,6 +63,60 @@ export function AdSlotDetail({ id }: Props) {
 
   const { trackListing, trackCTA, trackBooking, trackError: trackErr } = useAnalytics();
   const ctaVariant = useABTest('cta-button-text');
+  const queryClient = useQueryClient();
+
+  const bookingMutation = useMutation({
+    mutationFn: async ({ sponsorId, message }: { sponsorId: string; message?: string }) => {
+      if (!adSlot) {
+        throw new Error('Ad slot not available');
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4291'}/api/ad-slots/${adSlot.id}/book`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sponsorId,
+            message: message || undefined,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to book placement');
+      }
+
+      return response.json();
+    },
+    onMutate: () => {
+      setBooking(true);
+      setBookingError(null);
+    },
+    onSuccess: () => {
+      if (!adSlot) return;
+      trackBooking({
+        id: adSlot.id,
+        name: adSlot.name,
+        price: Number(adSlot.basePrice),
+      });
+      setBookingSuccess(true);
+      setAdSlot({ ...adSlot, isAvailable: false });
+      queryClient.invalidateQueries({ queryKey: ['adSlots'] });
+      queryClient.invalidateQueries({ queryKey: ['adSlotDetail', adSlot.id] });
+    },
+    onError: (err) => {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to book placement';
+      if (adSlot) {
+        trackErr('booking_error', errorMessage, { listingId: adSlot.id });
+      }
+      setBookingError(errorMessage);
+    },
+    onSettled: () => {
+      setBooking(false);
+    },
+  });
 
   const getCtaText = () => {
     return ctaVariant === 'B' ? 'Get Started' : 'Book Now';
@@ -114,42 +169,10 @@ export function AdSlotDetail({ id }: Props) {
       listingPrice: Number(adSlot.basePrice),
     });
 
-    setBooking(true);
-    setBookingError(null);
-
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4291'}/api/ad-slots/${adSlot.id}/book`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            sponsorId: roleInfo.sponsorId,
-            message: message || undefined,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Failed to book placement');
-      }
-
-      trackBooking({
-        id: adSlot.id,
-        name: adSlot.name,
-        price: Number(adSlot.basePrice),
-      });
-
-      setBookingSuccess(true);
-      setAdSlot({ ...adSlot, isAvailable: false });
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to book placement';
-      trackErr('booking_error', errorMessage, { listingId: adSlot.id });
-      setBookingError(errorMessage);
-    } finally {
-      setBooking(false);
-    }
+    bookingMutation.mutate({
+      sponsorId: roleInfo.sponsorId,
+      message,
+    });
   };
 
   const handleOpenQuoteModal = () => {
