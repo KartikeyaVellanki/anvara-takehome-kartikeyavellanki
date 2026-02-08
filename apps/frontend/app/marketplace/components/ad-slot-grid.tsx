@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getAdSlots, type PaginationMeta } from '@/lib/api';
 import type { AdSlot } from '@/lib/types';
 import { useAnalytics } from '@/lib/hooks/use-analytics';
@@ -15,6 +16,10 @@ const ITEMS_PER_PAGE = 9;
 
 type FilterType = '' | 'DISPLAY' | 'VIDEO' | 'NATIVE' | 'NEWSLETTER' | 'PODCAST';
 type SortOption = 'price-asc' | 'price-desc' | 'name';
+
+async function fetchAdSlots(page: number) {
+  return getAdSlots({ page, limit: ITEMS_PER_PAGE });
+}
 
 /**
  * Loading state with skeleton cards
@@ -282,10 +287,6 @@ function Pagination({
  */
 export function AdSlotGrid() {
   const { trackFilter } = useAnalytics();
-  const [adSlots, setAdSlots] = useState<AdSlot[]>([]);
-  const [pagination, setPagination] = useState<PaginationMeta | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
   // Filter states
@@ -308,28 +309,32 @@ export function AdSlotGrid() {
     trackFilter('available_only', available ? 'true' : 'false');
   };
 
-  const fetchAdSlots = (page: number) => {
-    setLoading(true);
-    setError(null);
-    getAdSlots({ page, limit: ITEMS_PER_PAGE })
-      .then((response) => {
-        setAdSlots(response.data);
-        setPagination(response.pagination);
-      })
-      .catch(() => setError('Please check your connection and try again.'))
-      .finally(() => setLoading(false));
-  };
+  const queryKey = useMemo(
+    () => ['adSlots', currentPage, typeFilter, sortOption, availableOnly],
+    [currentPage, typeFilter, sortOption, availableOnly]
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    fetchAdSlots(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    fetchAdSlots(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    refetch,
+  } = useQuery({
+    queryKey,
+    queryFn: () => fetchAdSlots(currentPage),
+    staleTime: 30_000,
+    placeholderData: keepPreviousData,
+  });
+
+  const adSlots = data?.data ?? [];
+  const pagination = data?.pagination ?? null;
 
   // Client-side filtering and sorting
   const filteredSlots = adSlots
@@ -344,12 +349,17 @@ export function AdSlotGrid() {
       return a.name.localeCompare(b.name);
     });
 
-  if (loading) {
+  if (isLoading) {
     return <LoadingState />;
   }
 
-  if (error) {
-    return <ErrorState message={error} onRetry={() => fetchAdSlots(currentPage)} />;
+  if (isError) {
+    return (
+      <ErrorState
+        message={error instanceof Error ? error.message : 'Please check your connection and try again.'}
+        onRetry={() => refetch()}
+      />
+    );
   }
 
   if (adSlots.length === 0) {
@@ -369,6 +379,7 @@ export function AdSlotGrid() {
 
   return (
     <>
+      {isFetching && <div className="sr-only">Refreshing listings</div>}
       <FilterBar
         typeFilter={typeFilter}
         sortOption={sortOption}
