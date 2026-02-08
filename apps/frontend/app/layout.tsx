@@ -6,6 +6,7 @@ import { GoogleAnalyticsProvider } from './components/google-analytics';
 import { AnalyticsProvider } from './components/analytics-provider';
 import { ABTestDebugPanel } from './components/ab-test-debug-panel';
 import { ThemeProvider } from './components/theme-provider';
+import { Providers } from './providers';
 
 /**
  * Typography Setup - Futuristic premium
@@ -73,19 +74,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-[--color-bg] text-[--color-text] antialiased">
-        <ThemeProvider>
-          {/* Google Analytics 4 - loads script and tracks page views */}
-          <GoogleAnalyticsProvider />
+        <Providers>
+          <ThemeProvider>
+            {/* Google Analytics 4 - loads script and tracks page views */}
+            <GoogleAnalyticsProvider />
 
-          {/* Analytics Provider - handles page tracking and user identification */}
-          <AnalyticsProvider>
-            <Nav />
-            <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 page-fade-in">{children}</main>
-          </AnalyticsProvider>
+            {/* Analytics Provider - handles page tracking and user identification */}
+            <AnalyticsProvider>
+              <Nav />
+              <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 page-fade-in">
+                {children}
+              </main>
+            </AnalyticsProvider>
 
-          {/* A/B Test Debug Panel - visible in development or with ?ab_panel=true */}
-          <ABTestDebugPanel />
-        </ThemeProvider>
+            {/* A/B Test Debug Panel - visible in development or with ?ab_panel=true */}
+            <ABTestDebugPanel />
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
