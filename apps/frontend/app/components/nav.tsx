@@ -118,6 +118,10 @@ export function Nav() {
         setUser(null);
         setRoleInfo(null);
       }
+    } catch {
+      // Fail gracefully if auth endpoint is unreachable (network/CORS/etc.)
+      setUser(null);
+      setRoleInfo(null);
     } finally {
       if (withLoading) {
         setLoading(false);
