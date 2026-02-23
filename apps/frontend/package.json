@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "dotenv -e ../../.env -- next dev -p 3847",
+    "dev": "dotenv -e ../../.env -- next dev -p 3847 --hostname 127.0.0.1",
     "build": "dotenv -e ../../.env -- next build",
     "start": "dotenv -e ../../.env -- next start -p 3847",
     "lint": "eslint .",
