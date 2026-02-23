@@ -43,11 +43,14 @@ router.get('/:id', async (req: AuthRequest, res: Response) => {
   try {
     const id = getParam(req.params.id);
 
+    if (!id || !req.user) {
+      return res.status(400).json({ error: "campaign id is needed"});
+    }
     // Find campaign and verify ownership
     const campaign = await prisma.campaign.findFirst({
       where: {
         id,
-        sponsor: { userId: req.user!.id },
+        sponsor: { userId: req.user.id },
       },
       include: {
         sponsor: true,
