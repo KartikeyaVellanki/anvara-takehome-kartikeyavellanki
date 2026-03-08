@@ -1,13 +1,3 @@
-# Documentation
-
-Welcome to the Anvara Take-Home Test! This folder contains all the documentation you need.
-
-## 🎯 Quick Links
-
-- **Ready to get set up?** Start with the [Setup Guide](setup.md)
-- **All set up?** Check out the [Challenges](challenges/README.md)
-- **Done!?** See [Submission Guide](submission.md)
-
 ## 📂 Structure
 
 ```
@@ -39,20 +29,3 @@ docs/
         ├── 02-conversion-tracking.md # Event tracking
         └── 03-ab-testing.md          # A/B testing
 ```
-
-## 💡 Tips
-
-- Read error messages carefully
-- Use TypeScript hover hints in VS Code (`Ctrl+K Ctrl+I`)
-- Check the browser network tab for API debugging
-- Use Prisma Studio to inspect the database
-- Commit frequently with descriptive messages
-
-## 🆘 Need Help?
-
-- Check the hints in each challenge
-- Review the example code patterns
-- Look at the existing codebase for reference
-- Consult the official docs linked in each challenge
-
-Good luck! 🚀
